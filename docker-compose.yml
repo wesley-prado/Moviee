@@ -1,0 +1,6 @@
+services:
+  moviee:
+    build: .
+    container_name: moviee
+    ports:
+      - "8080:8080"
