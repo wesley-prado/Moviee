@@ -1,4 +1,4 @@
-package com.codemages.moviee2;
+package com.codemages.moviee;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
