@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,9 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 public class UserController {
+        private static final MediaType DEFAULT_MEDIA_TYPE = MediaType
+                        .parseMediaType("application/hal+json");
+
         @Autowired
         private UserModelAssembler userModelAssembler;
         @Autowired
@@ -35,6 +39,7 @@ public class UserController {
         public ResponseEntity<CollectionModel<EntityModel<UserResponseDTO>>> getUsersV1() {
 
                 return ResponseEntity.status(HttpStatus.OK)
+                                .contentType(DEFAULT_MEDIA_TYPE)
                                 .body(userModelAssembler.toCollectionModel(
                                                 userService.findAll()));
         }
