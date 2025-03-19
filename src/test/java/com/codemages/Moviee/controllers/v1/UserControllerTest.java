@@ -54,10 +54,8 @@ class UserControllerTest {
 
     @Test
     void testGetUsersV1() throws Exception {
-        // Arrange
         when(userService.findAll()).thenReturn(userList);
 
-        // Act & Assert
         mvc.perform(
                 get("/api/v1/users").accept(DEFAULT_MEDIA_TYPE).secure(false))
                 .andExpect(status().isOk())
