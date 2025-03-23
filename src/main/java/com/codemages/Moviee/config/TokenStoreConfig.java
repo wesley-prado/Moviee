@@ -19,31 +19,31 @@ import com.nimbusds.jose.proc.SecurityContext;
 
 @Configuration
 public class TokenStoreConfig {
-  @Bean
-  JWKSource<SecurityContext> jwkSource() {
-    KeyPair keyPair = generateRsaKeyPair();
-    RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
-    RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
+	@Bean
+	JWKSource<SecurityContext> jwkSource() {
+		KeyPair keyPair = generateRsaKeyPair();
+		RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+		RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
 
-    RSAKey rsakey = new RSAKey.Builder(publicKey).privateKey(privateKey)
-        .build();
+		RSAKey rsakey = new RSAKey.Builder(publicKey).privateKey(privateKey)
+				.build();
 
-    return new ImmutableJWKSet<>(new JWKSet(rsakey));
-  }
+		return new ImmutableJWKSet<>(new JWKSet(rsakey));
+	}
 
-  private KeyPair generateRsaKeyPair() {
-    try {
-      KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-      keyPairGenerator.initialize(2048);
+	private KeyPair generateRsaKeyPair() {
+		try {
+			KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+			keyPairGenerator.initialize(2048);
 
-      return keyPairGenerator.generateKeyPair();
-    } catch (Exception e) {
-      throw new IllegalStateException(e);
-    }
-  }
+			return keyPairGenerator.generateKeyPair();
+		} catch (Exception e) {
+			throw new IllegalStateException(e);
+		}
+	}
 
-  @Bean
-  JwtDecoder jwtDecoder(JWKSource<SecurityContext> jwkSource) {
-    return OAuth2AuthorizationServerConfiguration.jwtDecoder(jwkSource);
-  }
+	@Bean
+	JwtDecoder jwtDecoder(JWKSource<SecurityContext> jwkSource) {
+		return OAuth2AuthorizationServerConfiguration.jwtDecoder(jwkSource);
+	}
 }
