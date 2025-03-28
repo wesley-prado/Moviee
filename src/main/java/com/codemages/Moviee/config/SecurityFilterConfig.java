@@ -17,6 +17,9 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 
 @Configuration
 public class SecurityFilterConfig {
+	private static final String CUSTOM_CONSENT_PAGE_URI = "/oauth2/consent";
+	private static final String CUSTOM_LOGIN_PAGE_URI = "/login";
+
 	@Bean
 	@Order(1)
 	SecurityFilterChain authServSecurityFilterChain(HttpSecurity http)
@@ -26,11 +29,8 @@ public class SecurityFilterConfig {
 		RequestMatcher endpointsMatcher = authorizationServerConfigurer
 				.getEndpointsMatcher();
 
-		authorizationServerConfigurer
-				.oidc(oidc -> oidc.providerConfigurationEndpoint(withDefaults())
-						.clientRegistrationEndpoint(withDefaults())
-						.userInfoEndpoint(withDefaults()))
-				.tokenEndpoint(withDefaults());
+		authorizationServerConfigurer.oidc(withDefaults()).authorizationEndpoint(
+				auth -> auth.consentPage(CUSTOM_CONSENT_PAGE_URI));
 
 		http.securityMatcher(endpointsMatcher)
 				.authorizeHttpRequests(authz -> authz.anyRequest().authenticated())
@@ -39,24 +39,8 @@ public class SecurityFilterConfig {
 
 		http.exceptionHandling(
 				exceptions -> exceptions.defaultAuthenticationEntryPointFor(
-						new LoginUrlAuthenticationEntryPoint("/login"),
+						new LoginUrlAuthenticationEntryPoint(CUSTOM_LOGIN_PAGE_URI),
 						new MediaTypeRequestMatcher(MediaType.TEXT_HTML)));
-
-		return http.build();
-	}
-
-	@Bean
-	@Order(2)
-	SecurityFilterChain resourceServerSecurityFilterChain(HttpSecurity http)
-			throws Exception {
-		http.authorizeHttpRequests(
-				authz -> authz.requestMatchers("/login").permitAll())
-				.securityMatcher("/userinfo", "/api/**")
-				.authorizeHttpRequests(authorize -> authorize
-						.requestMatchers("/userinfo").hasAuthority("SCOPE_openid")
-						.requestMatchers("/api/**").authenticated())
-				.oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults())).formLogin(
-						form -> form.loginPage("/login").defaultSuccessUrl("/home", true));
 
 		return http.build();
 	}
@@ -64,7 +48,12 @@ public class SecurityFilterConfig {
 	@Bean
 	@Order(3)
 	SecurityFilterChain defaultFilterChain(HttpSecurity http) throws Exception {
-		http.csrf(csrf -> csrf.disable())
+		http.authorizeHttpRequests(auth -> auth
+				.requestMatchers(CUSTOM_LOGIN_PAGE_URI, "/error/**", "/userinfo",
+						"/api/**", "*.js", "*.css", "*.html")
+				.permitAll().anyRequest().authenticated())
+				.formLogin(form -> form.loginPage(CUSTOM_LOGIN_PAGE_URI))
+				.csrf(csrf -> csrf.disable())
 				.headers(headers -> headers.frameOptions(fo -> fo.disable()));
 
 		return http.build();

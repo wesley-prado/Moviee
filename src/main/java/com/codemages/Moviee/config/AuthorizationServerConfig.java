@@ -10,6 +10,7 @@ import org.springframework.security.oauth2.server.authorization.settings.Authori
 public class AuthorizationServerConfig {
 	@Bean
 	AuthorizationServerSettings authorizationServerSettings() {
-		return AuthorizationServerSettings.builder().build();
+		return AuthorizationServerSettings.builder().issuer("http://localhost:8080")
+				.build();
 	}
 }

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Moviee - Authorize Application</title>
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+		/>
+		<style>
+			body {
+				background-color: #121212;
+				color: #f8f9fa;
+				height: 100vh;
+			}
+			.consent-container {
+				max-width: 600px;
+				margin: 0 auto;
+				padding-top: 100px;
+			}
+			.card {
+				color: #f8f9fa;
+				background-color: #1e1e1e;
+				border: none;
+				border-radius: 10px;
+				box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+			}
+			.error-message {
+				background-color: #ffebee;
+				color: #d32f2f;
+				padding: 10px;
+				border-radius: 5px;
+				margin-bottom: 20px;
+			}
+			.error-message p {
+				margin: 0;
+			}
+			.scope-list {
+				list-style-type: none;
+				padding: 0;
+			}
+			.btn-primary {
+				background-color: #6200ee;
+				border-color: #6200ee;
+			}
+			.btn-primary:hover {
+				background-color: #7c4dff;
+				border-color: #7c4dff;
+			}
+			.btn-outline-secondary {
+				color: #f8f9fa;
+				border-color: #6c757d;
+			}
+			.scope-item {
+				background-color: #2d2d2d;
+				padding: 10px 15px;
+				margin-bottom: 10px;
+				border-radius: 5px;
+			}
+		</style>
+		<script>
+			function cancelConsent() {
+				document.consent_form.reset();
+				document.consent_form.submit();
+			}
+		</script>
+	</head>
+	<body>
+		<div class="container consent-container">
+			<div class="text-center mb-4">
+				<h1 class="mb-4">Moviee</h1>
+			</div>
+			<div class="card p-4">
+				<div class="card-body">
+					<h2 class="text-center mb-4">Authorize Application</h2>
+
+					<div class="mb-4 text-center">
+						<p>
+							<span th:text="${clientName}">Application</span> wants to access
+							your account
+						</p>
+					</div>
+					<!-- 
+					<form name="consent_form" method="post" action="/oauth2/authorize">
+						<input type="hidden" name="client_id" th:value="${clientId}" />
+						<input type="hidden" name="state" th:value="${state}" />
+
+						<div
+							th:each="scope: ${scopes}"
+							class="form-group form-check py-1"
+							style="margin-left: 5%"
+						>
+							<input
+								class="form-check-input"
+								type="checkbox"
+								name="scope"
+								th:value="${scope.scope}"
+								th:id="${scope.scope}"
+								checked
+							/>
+							<label
+								class="form-check-label font-weight-bold"
+								th:for="${scope.scope}"
+								th:text="${scope.scope}=='profile'?(${scope.description}+'('+${principalName}+')'):${scope.description}"
+							></label>
+						</div>
+
+						<hr style="width: 90%" />
+						<p style="margin-left: 5%">
+							<b th:text="${clientName}"></b> has not been installed on any
+							account you have access to.
+						</p>
+						<hr style="width: 90%" />
+						<div class="form-group pt-3" style="width: 100%; height: 80px">
+							<button
+								class="btn btn-primary btn-lg"
+								type="submit"
+								id="submit-consent"
+								name="user_oauth_approval"
+							>
+								Approve
+							</button>
+							<button
+								class="btn btn-primary btn-lg"
+								type="button"
+								id="cancel-consent"
+								onclick="cancelConsent();"
+								name="user_oauth_approval"
+							>
+								Cancel
+							</button>
+						</div>
+						<div style="margin-top: 5px; width: 100%; height: 50px">
+							<p style="text-align: center; font-size: 14px">
+								Authorization will redirect to
+							</p>
+							<p style="text-align: center; font-size: 14px">
+								<b th:text="${redirectUri}"></b>
+							</p>
+						</div>
+					</form> -->
+
+					<form name="consent_form" method="post" action="/oauth2/authorize">
+						<input type="hidden" name="client_id" th:value="${clientId}" />
+						<input type="hidden" name="state" th:value="${state}" />
+
+						<div class="mb-4">
+							<h5>This application will be able to:</h5>
+							<div class="scope-list">
+								<div th:each="scope : ${scopes}" class="scope-item">
+									<input
+										class="form-check-input"
+										type="checkbox"
+										name="scope"
+										th:value="${scope.scope}"
+										th:id="${scope.scope}"
+										checked
+									/>
+									<label
+										class="form-check-label font-weight-bold"
+										th:for="${scope.scope}"
+										th:text="${scope.scope}=='profile'?(${scope.description}+'('+${principalName}+')'):${scope.description}"
+									></label>
+								</div>
+							</div>
+						</div>
+
+						<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+							<button
+								type="button"
+								name="user_oauth_approval"
+								value="false"
+								class="btn btn-outline-secondary me-md-2"
+								onclick="cancelConsent()"
+							>
+								Cancel
+							</button>
+							<button
+								type="submit"
+								name="user_oauth_approval"
+								value="true"
+								class="btn btn-primary"
+							>
+								Authorize
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+	</body>
+</html>

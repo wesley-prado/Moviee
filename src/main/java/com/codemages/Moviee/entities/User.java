@@ -3,8 +3,6 @@ package com.codemages.moviee.entities;
 import java.io.Serializable;
 import java.util.UUID;
 
-import com.codemages.moviee.entities.UserStatus;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -23,40 +21,40 @@ import lombok.Setter;
 @Getter
 @Setter
 public class User implements Serializable {
-  @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private UUID id;
-  private String username;
-  private String email;
-  private String password;
+	@Id
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private UUID id;
+	private String username;
+	private String email;
+	private String password;
 
-  @ManyToOne(optional = false)
-  @JoinColumn(name = "role_id", nullable = false)
-  private Role role;
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "role_id", nullable = false)
+	private Role role;
 
-  @Enumerated(EnumType.STRING)
-  @Column(nullable = false)
-  private UserStatus status;
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private UserStatus status;
 
-  public User() {
-    // Default constructor
-  }
+	public User() {
+		// Default constructor
+	}
 
-  public User(UUID id, String username, String email, String password,
-      Role role) {
-    this.id = id;
-    this.username = username;
-    this.email = email;
-    this.password = password;
-    this.role = role;
-    this.status = UserStatus.ACTIVE;
-  }
+	public User(UUID id, String username, String email, String password,
+			Role role) {
+		this.id = id;
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.role = role;
+		this.status = UserStatus.ACTIVE;
+	}
 
-  public void activate() {
-    this.status = UserStatus.ACTIVE;
-  }
+	public void activate() {
+		this.status = UserStatus.ACTIVE;
+	}
 
-  public void deactivate() {
-    this.status = UserStatus.INACTIVE;
-  }
+	public void deactivate() {
+		this.status = UserStatus.INACTIVE;
+	}
 }
