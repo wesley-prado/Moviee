@@ -3,10 +3,12 @@ spring:
   application:
     name: moviee
 ---
+logging.level.org.springframework:
+  web: DEBUG
+  security: DEBUG
 spring:
   config:
     activate.on-profile: test
-  logging.level.org.springframework.web: 'debug'
   datasource:
     url: jdbc:h2:mem:mydb
     driver-class-name: org.h2.Driver
