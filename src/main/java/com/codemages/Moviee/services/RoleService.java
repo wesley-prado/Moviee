@@ -15,23 +15,28 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class RoleService {
-  @Autowired
-  private RoleRepository roleRepository;
+	private static final String ROLE_PREFIX = "ROLE_";
 
-  public RoleResponseDTO save(RoleCreateDTO dto) {
-    Role entity = new Role();
-    entity.setName(dto.name());
-    entity.setStatus(RoleStatus.ACTIVE);
+	@Autowired
+	private RoleRepository roleRepository;
 
-    entity = roleRepository.save(entity);
+	public RoleResponseDTO save(RoleCreateDTO dto) {
+		Role entity = new Role();
+		entity.setName(ROLE_PREFIX + dto.name().toUpperCase());
+		entity.setStatus(RoleStatus.ACTIVE);
 
-    return new RoleResponseDTO(entity.getId(), entity.getName());
-  }
+		entity = roleRepository.save(entity);
 
-  public RoleResponseDTO findByName(String name) throws RoleException {
-    Role entity = roleRepository.findByName(name)
-        .orElseThrow(() -> new RoleException("Role not found"));
+		return new RoleResponseDTO(entity.getId(), entity.getName());
+	}
 
-    return new RoleResponseDTO(entity.getId(), entity.getName());
-  }
+	public RoleResponseDTO findByName(String name) throws RoleException {
+		String roleName = name.startsWith(ROLE_PREFIX) ? name
+				: ROLE_PREFIX + name.toUpperCase();
+
+		Role entity = roleRepository.findByName(roleName)
+				.orElseThrow(() -> new RoleException("Role not found"));
+
+		return new RoleResponseDTO(entity.getId(), entity.getName());
+	}
 }

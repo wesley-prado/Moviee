@@ -36,7 +36,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@GetMapping(produces = "application/hal+json")
 	public ResponseEntity<CollectionModel<EntityModel<UserResponseDTO>>> getUsersV1() {
 
