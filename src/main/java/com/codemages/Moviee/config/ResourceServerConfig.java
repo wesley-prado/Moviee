@@ -9,6 +9,8 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import com.codemages.moviee.security.CustomJwtGrantedAuthoritiesConverter;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 public class ResourceServerConfig {
 	private static final String CUSTOM_LOGIN_PAGE_URI = "/login";
@@ -17,12 +19,24 @@ public class ResourceServerConfig {
 	@Order(2)
 	SecurityFilterChain resourceServerFilterChain(HttpSecurity http)
 			throws Exception {
-		http.authorizeHttpRequests(
-				auth -> auth.requestMatchers(CUSTOM_LOGIN_PAGE_URI, "/error/**")
-						.permitAll().anyRequest().authenticated())
-				.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt
-						.jwtAuthenticationConverter(jwtAuthenticationConverter())))
-				.formLogin(form -> form.loginPage(CUSTOM_LOGIN_PAGE_URI));
+
+		http.cors(withDefaults())
+				.csrf(csrf -> csrf.ignoringRequestMatchers("/api/**", "/explorer/**"));
+
+		http.authorizeHttpRequests(auth -> auth
+				.requestMatchers(CUSTOM_LOGIN_PAGE_URI, "/error/**", "/api/public/**")
+				.permitAll().requestMatchers("/explorer/**").hasAuthority("ROLE_ADMIN")
+				.anyRequest().authenticated());
+
+		http.oauth2ResourceServer(oauth2 -> oauth2.jwt(
+				jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
+
+		http.formLogin(form -> form.loginPage(CUSTOM_LOGIN_PAGE_URI)
+				.failureUrl(CUSTOM_LOGIN_PAGE_URI + "?error=true").permitAll())
+				.logout(logout -> logout.logoutUrl("/logout")
+						.logoutSuccessUrl(CUSTOM_LOGIN_PAGE_URI).invalidateHttpSession(true)
+						.permitAll().clearAuthentication(true));
+
 		return http.build();
 	}
 
