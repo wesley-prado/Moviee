@@ -27,6 +27,11 @@ public class User implements Serializable {
 	private String username;
 	private String email;
 	private String password;
+	private String document;
+
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private DocumentType documentType;
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "role_id", nullable = false)
@@ -36,18 +41,18 @@ public class User implements Serializable {
 	@Column(nullable = false)
 	private UserStatus status;
 
-	public User() {
-		// Default constructor
-	}
+	public User() {}
 
 	public User(UUID id, String username, String email, String password,
-			Role role) {
+			Role role, String document, DocumentType documentType) {
 		this.id = id;
 		this.username = username;
 		this.email = email;
 		this.password = password;
 		this.role = role;
 		this.status = UserStatus.ACTIVE;
+		this.document = document;
+		this.documentType = documentType;
 	}
 
 	public void activate() {

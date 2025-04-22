@@ -3,6 +3,7 @@ package com.codemages.moviee.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
@@ -25,7 +26,10 @@ public class ResourceServerConfig {
 
 		http.authorizeHttpRequests(auth -> auth
 				.requestMatchers(CUSTOM_LOGIN_PAGE_URI, "/error/**", "/api/public/**")
-				.permitAll().requestMatchers("/explorer/**").hasAuthority("ROLE_ADMIN")
+				.permitAll()
+				.requestMatchers(HttpMethod.POST, "/api/v1/users")
+				.permitAll()
+				.requestMatchers("/explorer/**").hasAuthority("ROLE_ADMIN")
 				.anyRequest().authenticated());
 
 		http.oauth2ResourceServer(oauth2 -> oauth2.jwt(

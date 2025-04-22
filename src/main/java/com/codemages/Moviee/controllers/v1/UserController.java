@@ -57,7 +57,7 @@ public class UserController {
 				.body(userModelAssembler.toModel(dto));
 	}
 
-	@PostMapping(produces = "application/hal+json")
+	@PostMapping(consumes = "application/json", produces = "application/hal+json")
 	public ResponseEntity<EntityModel<UserResponseDTO>> createUserV1(
 			@RequestBody @Valid UserCreateDTO dto) {
 		UserResponseDTO result = userService.save(dto);
