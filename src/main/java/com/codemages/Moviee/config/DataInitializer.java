@@ -5,11 +5,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.codemages.moviee.dtos.ClientDTO;
 import com.codemages.moviee.dtos.RoleCreateDTO;
 import com.codemages.moviee.dtos.UserCreateDTO;
+import com.codemages.moviee.entities.DocumentType;
 import com.codemages.moviee.services.ClientService;
 import com.codemages.moviee.services.RoleService;
 import com.codemages.moviee.services.UserService;
@@ -17,11 +17,9 @@ import com.codemages.moviee.services.UserService;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
-@Profile("test")
+@Profile("dev")
 @RequiredArgsConstructor
 public class DataInitializer {
-	@Autowired
-	private final PasswordEncoder passwordEncoder;
 	@Autowired
 	private final RoleService roleService;
 	@Autowired
@@ -37,9 +35,11 @@ public class DataInitializer {
 				roleService.save(new RoleCreateDTO("USER"));
 
 				UserCreateDTO admin = new UserCreateDTO("admin", "admin@mail.com",
-						passwordEncoder.encode("admin"), "ADMIN");
+						"Admin1#@", "ADMIN", "30342640038",
+						DocumentType.CPF.name());
 				UserCreateDTO user = new UserCreateDTO("user", "user@mail.com",
-						passwordEncoder.encode("user"), "USER");
+						"User1#@@", "USER", "336189783",
+						DocumentType.RG.name());
 
 				userService.save(admin);
 				userService.save(user);
@@ -47,7 +47,7 @@ public class DataInitializer {
 
 			if (clientService.count() == 0) {
 				var dto = new ClientDTO("my_client_id",
-						passwordEncoder.encode("my_client_secret"),
+						"my_client_secret",
 						"http://127.0.0.1:8080/login/oauth2/code/client-server");
 
 				clientService.save(dto);
