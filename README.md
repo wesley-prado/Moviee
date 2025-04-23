@@ -126,10 +126,6 @@ The application is pre-configured with the following users in development mode:
 - ⬜ Integration tests
 - ⬜ CI/CD pipeline
 
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
 ## License
 
 This project is licensed under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
