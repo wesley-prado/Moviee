@@ -33,8 +33,7 @@ public class User implements Serializable {
 	@Column(nullable = false)
 	private DocumentType documentType;
 
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "role_id", nullable = false)
+	@Enumerated(EnumType.STRING)
 	private Role role;
 
 	@Enumerated(EnumType.STRING)

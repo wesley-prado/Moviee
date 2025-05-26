@@ -3,56 +3,70 @@ package com.codemages.moviee.services;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.codemages.moviee.dtos.RoleResponseDTO;
 import com.codemages.moviee.dtos.UserCreateDTO;
 import com.codemages.moviee.dtos.UserResponseDTO;
 import com.codemages.moviee.entities.DocumentType;
 import com.codemages.moviee.entities.Role;
-import com.codemages.moviee.entities.RoleStatus;
 import com.codemages.moviee.entities.User;
+import com.codemages.moviee.exceptions.DuplicateUserException;
 import com.codemages.moviee.repositories.UserRepository;
 import com.codemages.moviee.utils.validators.Validator;
 
-import lombok.RequiredArgsConstructor;
-
 @Service
-@RequiredArgsConstructor
 public class UserService {
-	@Autowired
-	private final RoleService roleService;
-	@Autowired
 	private final UserRepository userRepository;
-	@Autowired
 	private final PasswordEncoder passwordEncoder;
-	@Autowired
 	@Qualifier("passwordValidator")
 	private final Validator<String> passwordValidator;
 
-	public UserResponseDTO save(UserCreateDTO userCreateDto) {
+	public UserService(
+			UserRepository userRepository,
+			PasswordEncoder passwordEncoder,
+			@Qualifier("passwordValidator") Validator<String> passwordValidator) {
+		this.userRepository = userRepository;
+		this.passwordEncoder = passwordEncoder;
+		this.passwordValidator = passwordValidator;
+	}
+
+	public UserResponseDTO createUser(UserCreateDTO userCreateDto) {
+		validateUser(userCreateDto);
+
+		return toUserResponseDTO(
+				userRepository.save(createUserEntity(userCreateDto)));
+	}
+
+	private void validateUser(UserCreateDTO userCreateDto) {
 		if (!passwordValidator.isValid(userCreateDto.password())) {
 			throw new IllegalArgumentException("Password is not valid");
 		}
 
-		RoleResponseDTO role = roleService.findByName(userCreateDto.role());
+		User u = userRepository.findOptionalByEmailOrUsername(
+				userCreateDto.email(), userCreateDto.username()).orElse(null);
 
-		User u = new User(
+		if (u != null) {
+			if (u.getEmail().equals(userCreateDto.email())) {
+				throw new DuplicateUserException("Email already registered");
+			}
+
+			if (u.getUsername().equals(userCreateDto.username())) {
+				throw new DuplicateUserException("Username already registered");
+			}
+		}
+	}
+
+	private User createUserEntity(UserCreateDTO userCreateDto) {
+		return new User(
 				null,
 				userCreateDto.username(),
 				userCreateDto.email(),
 				passwordEncoder.encode(userCreateDto.password()),
-				new Role(
-						role.id(),
-						role.name(),
-						RoleStatus.ACTIVE),
+				Role.valueOf(userCreateDto.role()),
 				userCreateDto.document(),
 				DocumentType.fromString(userCreateDto.documentType()));
-
-		return toUserResponseDTO(userRepository.save(u));
 	}
 
 	public List<UserResponseDTO> findAll() {
@@ -70,9 +84,7 @@ public class UserService {
 						u.getId(),
 						u.getUsername(),
 						u.getEmail(),
-						new RoleResponseDTO(
-								u.getRole().getId(),
-								u.getRole().getName()),
+						u.getRole().name(),
 						u.getStatus().toString());
 	}
 

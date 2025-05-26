@@ -7,11 +7,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.codemages.moviee.dtos.ClientDTO;
-import com.codemages.moviee.dtos.RoleCreateDTO;
 import com.codemages.moviee.dtos.UserCreateDTO;
 import com.codemages.moviee.entities.DocumentType;
+import com.codemages.moviee.entities.Role;
 import com.codemages.moviee.services.ClientService;
-import com.codemages.moviee.services.RoleService;
 import com.codemages.moviee.services.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -21,8 +20,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DataInitializer {
 	@Autowired
-	private final RoleService roleService;
-	@Autowired
 	private final UserService userService;
 	@Autowired
 	private final ClientService clientService;
@@ -31,18 +28,15 @@ public class DataInitializer {
 	CommandLineRunner initData() {
 		return args -> {
 			if (userService.count() == 0) {
-				roleService.save(new RoleCreateDTO("ADMIN"));
-				roleService.save(new RoleCreateDTO("USER"));
-
 				UserCreateDTO admin = new UserCreateDTO("admin", "admin@mail.com",
-						"Admin1#@", "ADMIN", "30342640038",
-						DocumentType.CPF.name());
+						"Admin1#@", "30342640038",
+						DocumentType.CPF.name(), Role.ADMIN.name());
 				UserCreateDTO user = new UserCreateDTO("user", "user@mail.com",
-						"User1#@@", "USER", "336189783",
-						DocumentType.RG.name());
+						"User1#@@", "336189783",
+						DocumentType.RG.name(), Role.USER.name());
 
-				userService.save(admin);
-				userService.save(user);
+				userService.createUser(admin);
+				userService.createUser(user);
 			}
 
 			if (clientService.count() == 0) {

@@ -1,9 +1,14 @@
 package com.codemages.moviee.controllers.v1;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -18,8 +23,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.codemages.moviee.dtos.RoleResponseDTO;
 import com.codemages.moviee.dtos.UserResponseDTO;
+import com.codemages.moviee.entities.Role;
 import com.codemages.moviee.entities.UserStatus;
 import com.codemages.moviee.services.UserService;
 
@@ -39,7 +44,7 @@ class UserControllerTest {
 	@BeforeEach
 	void makeData() {
 		userResponseDTO = new UserResponseDTO(userId, "Test User",
-				"wesleyprado.dev@gmail.com", new RoleResponseDTO(1L, "ROLE_ADMIN"),
+				"wesleyprado.dev@gmail.com", Role.USER.name(),
 				UserStatus.ACTIVE.name());
 
 		userList = List.of(userResponseDTO);
@@ -80,4 +85,18 @@ class UserControllerTest {
 
 		verify(userService, never()).findAll();
 	}
+
+	// @Test
+	// @WithMockUser(authorities = "ROLE_ADMIN")
+	// void createUserV1_whenUserHasAdminAuthority_shouldReturnCreated() {
+	// var inputMock = new UserCreateDTO("any_username", "any_mail@mail.com",
+	// "any_password", "07145472473", "CPF", 1L);
+	// var outputMock = new UserResponseDTO(userId, "any_username",
+	// "any_mail@mail.com", new RoleResponseDTO(1L, "ADMIN"),
+	// UserStatus.ACTIVE.name());
+
+	// when(userService.createUser(inputMock)).thenReturn(outputMock);
+
+	// mvc.perform(get("/api/v1/admin"))
+	// }
 }

@@ -1,5 +1,7 @@
 package com.codemages.moviee.assemblers;
 
+import java.util.List;
+
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
@@ -13,20 +15,20 @@ import lombok.NonNull;
 
 @Component
 public class UserModelAssembler implements
-                RepresentationModelAssembler<UserResponseDTO, EntityModel<UserResponseDTO>> {
+		RepresentationModelAssembler<UserResponseDTO, EntityModel<UserResponseDTO>> {
 
-        @NonNull
-        @Override
-        public EntityModel<UserResponseDTO> toModel(UserResponseDTO dto) {
-                Link selfLink = WebMvcLinkBuilder
-                                .linkTo(WebMvcLinkBuilder
-                                                .methodOn(UserController.class)
-                                                .getUserV1(dto.id()))
-                                .withSelfRel();
-                Link usersLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
-                                .methodOn(UserController.class).getUsersV1())
-                                .withRel("users");
+	@NonNull
+	@Override
+	public EntityModel<UserResponseDTO> toModel(UserResponseDTO dto) {
+		Link selfLink = WebMvcLinkBuilder
+				.linkTo(WebMvcLinkBuilder
+						.methodOn(UserController.class)
+						.getUser(dto.id()))
+				.withSelfRel();
+		Link usersLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
+				.methodOn(UserController.class).getUsers())
+				.withRel("users");
 
-                return EntityModel.of(dto, selfLink, usersLink);
-        }
+		return EntityModel.of(dto, selfLink, usersLink);
+	}
 }

@@ -30,7 +30,7 @@ public class CustomUserDetailService implements UserDetailsService {
 
 		return org.springframework.security.core.userdetails.User.builder()
 				.username(user.getUsername()).password(user.getPassword())
-				.authorities(new SimpleGrantedAuthority(user.getRole().getName()))
+				.authorities(new SimpleGrantedAuthority(user.getRole().name()))
 				.build();
 	}
 }

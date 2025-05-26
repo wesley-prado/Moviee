@@ -29,7 +29,7 @@ public class ResourceServerConfig {
 				.permitAll()
 				.requestMatchers(HttpMethod.POST, "/api/v1/users")
 				.permitAll()
-				.requestMatchers("/explorer/**").hasAuthority("ROLE_ADMIN")
+				.requestMatchers("/explorer/**").hasAuthority("ADMIN")
 				.anyRequest().authenticated());
 
 		http.oauth2ResourceServer(oauth2 -> oauth2.jwt(

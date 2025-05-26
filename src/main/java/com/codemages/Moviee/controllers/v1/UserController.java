@@ -1,8 +1,11 @@
 package com.codemages.moviee.controllers.v1;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.BeanDefinitionDsl.Role;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
@@ -28,24 +31,25 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 public class UserController {
+	private static final String RESPONSE_TYPE = "application/hal+json";
 	private static final MediaType DEFAULT_MEDIA_TYPE = MediaType
-			.parseMediaType("application/hal+json");
+			.parseMediaType(RESPONSE_TYPE);
 
 	@Autowired
 	private UserModelAssembler userModelAssembler;
 	@Autowired
 	private UserService userService;
 
-	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
-	@GetMapping(produces = "application/hal+json")
-	public ResponseEntity<CollectionModel<EntityModel<UserResponseDTO>>> getUsersV1() {
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@GetMapping(produces = RESPONSE_TYPE)
+	public ResponseEntity<CollectionModel<EntityModel<UserResponseDTO>>> getUsers() {
 
-		return ResponseEntity.status(HttpStatus.OK).contentType(DEFAULT_MEDIA_TYPE)
+		return ResponseEntity.ok().contentType(DEFAULT_MEDIA_TYPE)
 				.body(userModelAssembler.toCollectionModel(userService.findAll()));
 	}
 
-	@GetMapping(value = "/{id}", produces = "application/hal+json")
-	public ResponseEntity<EntityModel<UserResponseDTO>> getUserV1(
+	@GetMapping(value = "/{id}", produces = RESPONSE_TYPE)
+	public ResponseEntity<EntityModel<UserResponseDTO>> getUser(
 			@PathVariable UUID id) {
 		UserResponseDTO dto = userService.findById(id);
 
@@ -53,16 +57,17 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 
-		return ResponseEntity.status(HttpStatus.OK)
+		return ResponseEntity.ok().contentType(DEFAULT_MEDIA_TYPE)
 				.body(userModelAssembler.toModel(dto));
 	}
 
-	@PostMapping(consumes = "application/json", produces = "application/hal+json")
-	public ResponseEntity<EntityModel<UserResponseDTO>> createUserV1(
+	@PostMapping(consumes = "application/json", produces = RESPONSE_TYPE)
+	public ResponseEntity<EntityModel<UserResponseDTO>> createUser(
 			@RequestBody @Valid UserCreateDTO dto) {
-		UserResponseDTO result = userService.save(dto);
+		UserResponseDTO result = userService.createUser(dto);
 
 		return ResponseEntity.status(HttpStatus.CREATED)
+				.contentType(DEFAULT_MEDIA_TYPE)
 				.body(userModelAssembler.toModel(result));
 	}
 }
