@@ -17,6 +17,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.codemages.moviee.security.AuthContextHelper;
 
@@ -31,6 +32,7 @@ public class RoleController {
 	@Autowired
 	private RoleModelAssembler roleModelAssembler;
 
+	@PreAuthorize("permitAll()")
 	@GetMapping(produces = RESPONSE_TYPE)
 	public ResponseEntity<CollectionModel<EntityModel<RoleResponseDTO>>> getRoles() {
 		List<RoleResponseDTO> roles = Arrays.stream(Role.values())

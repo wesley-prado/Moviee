@@ -1,11 +1,8 @@
 package com.codemages.moviee.controllers.v1;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.BeanDefinitionDsl.Role;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
@@ -20,8 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codemages.moviee.assemblers.UserModelAssembler;
+import com.codemages.moviee.dtos.RestResponse;
 import com.codemages.moviee.dtos.UserCreateDTO;
 import com.codemages.moviee.dtos.UserResponseDTO;
+import com.codemages.moviee.entities.Role;
+import com.codemages.moviee.security.AuthContextHelper;
 import com.codemages.moviee.services.UserService;
 
 import jakarta.validation.Valid;
@@ -39,6 +39,8 @@ public class UserController {
 	private UserModelAssembler userModelAssembler;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private AuthContextHelper authContextHelper;
 
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@GetMapping(produces = RESPONSE_TYPE)
@@ -62,12 +64,30 @@ public class UserController {
 	}
 
 	@PostMapping(consumes = "application/json", produces = RESPONSE_TYPE)
-	public ResponseEntity<EntityModel<UserResponseDTO>> createUser(
+	public ResponseEntity<EntityModel<RestResponse<UserResponseDTO>>> createUser(
 			@RequestBody @Valid UserCreateDTO dto) {
+
+		if (dto.role().equalsIgnoreCase(Role.ADMIN.name())
+				&& !authContextHelper.isUserAdmin()) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN)
+					.contentType(DEFAULT_MEDIA_TYPE)
+					.body(EntityModel.of(
+							new RestResponse<>(
+									"You do not have permission to create an admin user.")));
+		}
+
 		UserResponseDTO result = userService.createUser(dto);
+
+		if (result == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.contentType(DEFAULT_MEDIA_TYPE)
+					.body(EntityModel.of(new RestResponse<>(
+							"User creation failed. Please check the input data.")));
+		}
 
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.contentType(DEFAULT_MEDIA_TYPE)
-				.body(userModelAssembler.toModel(result));
+				.body(EntityModel
+						.of(new RestResponse<>(result, "User created successfully.")));
 	}
 }

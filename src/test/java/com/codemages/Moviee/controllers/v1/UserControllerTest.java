@@ -85,18 +85,4 @@ class UserControllerTest {
 
 		verify(userService, never()).findAll();
 	}
-
-	// @Test
-	// @WithMockUser(authorities = "ROLE_ADMIN")
-	// void createUserV1_whenUserHasAdminAuthority_shouldReturnCreated() {
-	// var inputMock = new UserCreateDTO("any_username", "any_mail@mail.com",
-	// "any_password", "07145472473", "CPF", 1L);
-	// var outputMock = new UserResponseDTO(userId, "any_username",
-	// "any_mail@mail.com", new RoleResponseDTO(1L, "ADMIN"),
-	// UserStatus.ACTIVE.name());
-
-	// when(userService.createUser(inputMock)).thenReturn(outputMock);
-
-	// mvc.perform(get("/api/v1/admin"))
-	// }
 }

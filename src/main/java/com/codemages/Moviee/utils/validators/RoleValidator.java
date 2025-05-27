@@ -1,6 +1,6 @@
 package com.codemages.moviee.utils.validators;
 
-import org.springframework.context.support.BeanDefinitionDsl.Role;
+import com.codemages.moviee.entities.Role;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -15,6 +15,7 @@ public class RoleValidator implements ConstraintValidator<ValidRole, String> {
 			Role.valueOf(role);
 			return true;
 		} catch (Exception e) {
+			System.out.println("Invalid role: " + role);
 			return false;
 		}
 	}

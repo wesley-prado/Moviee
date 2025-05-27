@@ -6,13 +6,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AuthContextHelper {
-	public void getCurrentUser() {
+	public boolean isUserAdmin() {
 		Authentication auth = SecurityContextHolder.getContext()
 				.getAuthentication();
-		System.out.println("Authentication: " + auth);
-		System.out.println("Authentication name: " + auth.getName());
 
-		Object principal = SecurityContextHolder.getContext().getAuthentication()
-				.getPrincipal();
+		return auth != null && auth.getAuthorities().stream()
+				.anyMatch(grantedAuthority -> grantedAuthority.getAuthority()
+						.equalsIgnoreCase("ADMIN"));
 	}
 }
