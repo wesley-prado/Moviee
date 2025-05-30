@@ -9,26 +9,28 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
 import com.codemages.moviee.controllers.v1.UserController;
+import com.codemages.moviee.dtos.RestResponse;
 import com.codemages.moviee.dtos.UserResponseDTO;
 
 import lombok.NonNull;
 
 @Component
 public class UserModelAssembler implements
-		RepresentationModelAssembler<UserResponseDTO, EntityModel<UserResponseDTO>> {
+		RepresentationModelAssembler<RestResponse<List<UserResponseDTO>>, EntityModel<RestResponse<List<UserResponseDTO>>>> {
 
 	@NonNull
 	@Override
-	public EntityModel<UserResponseDTO> toModel(UserResponseDTO dto) {
+	public EntityModel<RestResponse<List<UserResponseDTO>>> toModel(
+			RestResponse<List<UserResponseDTO>> response) {
 		Link selfLink = WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder
 						.methodOn(UserController.class)
-						.getUser(dto.id()))
+						.getUser(response.data().getFirst().id()))
 				.withSelfRel();
 		Link usersLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
 				.methodOn(UserController.class).getUsers())
 				.withRel("users");
 
-		return EntityModel.of(dto, selfLink, usersLink);
+		return EntityModel.of(response, selfLink, usersLink);
 	}
 }

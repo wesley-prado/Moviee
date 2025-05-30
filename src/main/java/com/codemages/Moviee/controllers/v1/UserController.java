@@ -1,9 +1,9 @@
 package com.codemages.moviee.controllers.v1;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -44,34 +44,49 @@ public class UserController {
 
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@GetMapping(produces = RESPONSE_TYPE)
-	public ResponseEntity<CollectionModel<EntityModel<UserResponseDTO>>> getUsers() {
+	public ResponseEntity<EntityModel<RestResponse<List<UserResponseDTO>>>> getUsers() {
+
+		List<UserResponseDTO> users = userService.findAll();
+
+		if (users.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.contentType(DEFAULT_MEDIA_TYPE)
+					.body(EntityModel.of(new RestResponse<>(
+							"No users found.")));
+		}
 
 		return ResponseEntity.ok().contentType(DEFAULT_MEDIA_TYPE)
-				.body(userModelAssembler.toCollectionModel(userService.findAll()));
+				.body(userModelAssembler.toModel(
+						new RestResponse<>(users, "List of all users.")));
 	}
 
 	@GetMapping(value = "/{id}", produces = RESPONSE_TYPE)
-	public ResponseEntity<EntityModel<UserResponseDTO>> getUser(
+	public ResponseEntity<EntityModel<RestResponse<List<UserResponseDTO>>>> getUser(
 			@PathVariable UUID id) {
 		UserResponseDTO dto = userService.findById(id);
 
 		if (dto == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.contentType(DEFAULT_MEDIA_TYPE)
+					.body(EntityModel.of(new RestResponse<List<UserResponseDTO>>(
+							"User not found with ID: " + id)));
 		}
 
 		return ResponseEntity.ok().contentType(DEFAULT_MEDIA_TYPE)
-				.body(userModelAssembler.toModel(dto));
+				.body(
+						userModelAssembler.toModel(new RestResponse<>(
+								List.of(dto), "User details retrieved successfully.")));
 	}
 
 	@PostMapping(consumes = "application/json", produces = RESPONSE_TYPE)
-	public ResponseEntity<EntityModel<RestResponse<UserResponseDTO>>> createUser(
+	public ResponseEntity<EntityModel<RestResponse<List<UserResponseDTO>>>> createUser(
 			@RequestBody @Valid UserCreateDTO dto) {
 
 		if (dto.role().equalsIgnoreCase(Role.ADMIN.name())
 				&& !authContextHelper.isUserAdmin()) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN)
 					.contentType(DEFAULT_MEDIA_TYPE)
-					.body(EntityModel.of(
+					.body(userModelAssembler.toModel(
 							new RestResponse<>(
 									"You do not have permission to create an admin user.")));
 		}
@@ -87,7 +102,7 @@ public class UserController {
 
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.contentType(DEFAULT_MEDIA_TYPE)
-				.body(EntityModel
-						.of(new RestResponse<>(result, "User created successfully.")));
+				.body(userModelAssembler.toModel(
+						new RestResponse<>(List.of(result), "User created successfully.")));
 	}
 }

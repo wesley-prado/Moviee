@@ -9,19 +9,23 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
 import com.codemages.moviee.controllers.v1.RoleController;
+import com.codemages.moviee.dtos.RestResponse;
 import com.codemages.moviee.dtos.RoleResponseDTO;
 
+import lombok.NonNull;
+
+@NonNull
 @Component
 public class RoleModelAssembler implements
-		RepresentationModelAssembler<RoleResponseDTO, EntityModel<RoleResponseDTO>> {
+		RepresentationModelAssembler<RestResponse<List<RoleResponseDTO>>, EntityModel<RestResponse<List<RoleResponseDTO>>>> {
 
 	@Override
-	public EntityModel<RoleResponseDTO> toModel(RoleResponseDTO dto) {
+	public EntityModel<RestResponse<List<RoleResponseDTO>>> toModel(
+			RestResponse<List<RoleResponseDTO>> response) {
 		Link rolesLink = WebMvcLinkBuilder.linkTo(
 				WebMvcLinkBuilder.methodOn(RoleController.class).getRoles())
 				.withRel("roles");
 
-		return EntityModel.of(dto, rolesLink);
+		return EntityModel.of(response, rolesLink);
 	}
-
 }
