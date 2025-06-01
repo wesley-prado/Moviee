@@ -54,7 +54,7 @@ class UserControllerTest {
 	}
 
 	@Test
-	@WithMockUser(username = "admin", password = "admin", authorities = "ROLE_ADMIN")
+	@WithMockUser(username = "admin", password = "Admin1#@", authorities = "ADMIN")
 	void getUsersV1_whenUserHasAdminAuthority_shouldReturnSuccess()
 			throws Exception {
 		when(userService.findAll()).thenReturn(userList);

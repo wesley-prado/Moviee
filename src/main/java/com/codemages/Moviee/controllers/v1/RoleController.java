@@ -4,7 +4,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codemages.moviee.assemblers.RoleModelAssembler;
-import com.codemages.moviee.dtos.RestResponse;
 import com.codemages.moviee.dtos.RoleResponseDTO;
 import com.codemages.moviee.entities.Role;
 
@@ -14,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +31,7 @@ public class RoleController {
 	private RoleModelAssembler roleModelAssembler;
 
 	@GetMapping(produces = RESPONSE_TYPE)
-	public ResponseEntity<EntityModel<RestResponse<List<RoleResponseDTO>>>> getRoles() {
+	public ResponseEntity<CollectionModel<EntityModel<RoleResponseDTO>>> getRoles() {
 		List<RoleResponseDTO> roles = Arrays.stream(Role.values())
 				.map(Role::name)
 				.map(RoleResponseDTO::new)
@@ -39,7 +39,6 @@ public class RoleController {
 
 		return ResponseEntity.ok().contentType(DEFAULT_MEDIA_TYPE)
 				.body(roleModelAssembler
-						.toModel(new RestResponse<>(roles,
-								"List of all roles.")));
+						.toCollectionModel(roles));
 	}
 }

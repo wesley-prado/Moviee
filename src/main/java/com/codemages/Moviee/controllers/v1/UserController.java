@@ -1,9 +1,11 @@
 package com.codemages.moviee.controllers.v1;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,10 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codemages.moviee.assemblers.UserModelAssembler;
-import com.codemages.moviee.dtos.RestResponse;
 import com.codemages.moviee.dtos.UserCreateDTO;
 import com.codemages.moviee.dtos.UserResponseDTO;
 import com.codemages.moviee.entities.Role;
+import com.codemages.moviee.exceptions.ForbiddenOperationException;
+import com.codemages.moviee.exceptions.UserNotCreatedException;
+import com.codemages.moviee.exceptions.UserNotFoundException;
 import com.codemages.moviee.security.AuthContextHelper;
 import com.codemages.moviee.services.UserService;
 
@@ -44,65 +48,47 @@ public class UserController {
 
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@GetMapping(produces = RESPONSE_TYPE)
-	public ResponseEntity<EntityModel<RestResponse<List<UserResponseDTO>>>> getUsers() {
+	public ResponseEntity<CollectionModel<EntityModel<UserResponseDTO>>> getUsers() {
 
 		List<UserResponseDTO> users = userService.findAll();
 
-		if (users.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.contentType(DEFAULT_MEDIA_TYPE)
-					.body(EntityModel.of(new RestResponse<>(
-							"No users found.")));
-		}
-
 		return ResponseEntity.ok().contentType(DEFAULT_MEDIA_TYPE)
-				.body(userModelAssembler.toModel(
-						new RestResponse<>(users, "List of all users.")));
+				.body(userModelAssembler.toCollectionModel(users));
 	}
 
 	@GetMapping(value = "/{id}", produces = RESPONSE_TYPE)
-	public ResponseEntity<EntityModel<RestResponse<List<UserResponseDTO>>>> getUser(
+	public ResponseEntity<EntityModel<UserResponseDTO>> getUser(
 			@PathVariable UUID id) {
 		UserResponseDTO dto = userService.findById(id);
 
 		if (dto == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.contentType(DEFAULT_MEDIA_TYPE)
-					.body(EntityModel.of(new RestResponse<List<UserResponseDTO>>(
-							"User not found with ID: " + id)));
+			throw new UserNotFoundException("User with ID " + id + " not found.");
 		}
 
 		return ResponseEntity.ok().contentType(DEFAULT_MEDIA_TYPE)
-				.body(
-						userModelAssembler.toModel(new RestResponse<>(
-								List.of(dto), "User details retrieved successfully.")));
+				.body(userModelAssembler.toModel(dto));
+
 	}
 
 	@PostMapping(consumes = "application/json", produces = RESPONSE_TYPE)
-	public ResponseEntity<EntityModel<RestResponse<List<UserResponseDTO>>>> createUser(
+	public ResponseEntity<EntityModel<UserResponseDTO>> createUser(
 			@RequestBody @Valid UserCreateDTO dto) {
 
 		if (dto.role().equalsIgnoreCase(Role.ADMIN.name())
 				&& !authContextHelper.isUserAdmin()) {
-			return ResponseEntity.status(HttpStatus.FORBIDDEN)
-					.contentType(DEFAULT_MEDIA_TYPE)
-					.body(userModelAssembler.toModel(
-							new RestResponse<>(
-									"You do not have permission to create an admin user.")));
+			throw new ForbiddenOperationException(
+					"Only admins can create other admins.");
 		}
 
 		UserResponseDTO result = userService.createUser(dto);
 
 		if (result == null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.contentType(DEFAULT_MEDIA_TYPE)
-					.body(EntityModel.of(new RestResponse<>(
-							"User creation failed. Please check the input data.")));
+			throw new UserNotCreatedException(
+					"User could not be created. Please check the input data.");
 		}
 
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.contentType(DEFAULT_MEDIA_TYPE)
-				.body(userModelAssembler.toModel(
-						new RestResponse<>(List.of(result), "User created successfully.")));
+				.body(userModelAssembler.toModel(result));
 	}
 }
