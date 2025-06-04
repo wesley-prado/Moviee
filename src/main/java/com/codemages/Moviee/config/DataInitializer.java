@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Profile;
 
 import com.codemages.moviee.dtos.ClientDTO;
 import com.codemages.moviee.dtos.UserCreateDTO;
+import com.codemages.moviee.dtos.UserResponseDTO;
 import com.codemages.moviee.entities.DocumentType;
 import com.codemages.moviee.entities.Role;
 import com.codemages.moviee.services.ClientService;
@@ -35,8 +36,11 @@ public class DataInitializer {
 						"User1#@@", "336189783",
 						DocumentType.RG.name(), Role.USER.name());
 
-				userService.createUser(admin);
-				userService.createUser(user);
+				UserResponseDTO adminResponse = userService.createUser(admin);
+				UserResponseDTO userResponse = userService.createUser(user);
+
+				System.out.println("Admin created: " + adminResponse.id());
+				System.out.println("User created: " + userResponse.id());
 			}
 
 			if (clientService.count() == 0) {

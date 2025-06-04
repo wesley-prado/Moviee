@@ -1,4 +1,4 @@
-package com.codemages.moviee.exceptions;
+package com.codemages.moviee.exceptions.global;
 
 public class ForbiddenOperationException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
@@ -10,5 +10,4 @@ public class ForbiddenOperationException extends RuntimeException {
 	public ForbiddenOperationException(String message, Throwable cause) {
 		super(message, cause);
 	}
-
 }

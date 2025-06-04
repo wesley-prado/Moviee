@@ -55,7 +55,7 @@ class UserControllerTest {
 
 	@Test
 	@WithMockUser(username = "admin", password = "Admin1#@", authorities = "ADMIN")
-	void getUsersV1_whenUserHasAdminAuthority_shouldReturnSuccess()
+	void getUsers_whenUserHasAdminAuthority_shouldReturnSuccess()
 			throws Exception {
 		when(userService.findAll()).thenReturn(userList);
 
@@ -76,7 +76,7 @@ class UserControllerTest {
 
 	@Test
 	@WithMockUser(authorities = "ROLE_USER")
-	void getUsersV1_whenUserHasUserAuthority_shouldReturnForbidden()
+	void getUsers_whenUserHasUserAuthority_shouldReturnForbidden()
 			throws Exception {
 		when(userService.findAll()).thenReturn(userList);
 
@@ -85,4 +85,7 @@ class UserControllerTest {
 
 		verify(userService, never()).findAll();
 	}
+
+	// @Test
+	// void getUser_When
 }

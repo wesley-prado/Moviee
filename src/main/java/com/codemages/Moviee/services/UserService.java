@@ -12,7 +12,7 @@ import com.codemages.moviee.dtos.UserResponseDTO;
 import com.codemages.moviee.entities.DocumentType;
 import com.codemages.moviee.entities.Role;
 import com.codemages.moviee.entities.User;
-import com.codemages.moviee.exceptions.DuplicateUserException;
+import com.codemages.moviee.exceptions.user.DuplicateUserException;
 import com.codemages.moviee.repositories.UserRepository;
 import com.codemages.moviee.utils.validators.Validator;
 
