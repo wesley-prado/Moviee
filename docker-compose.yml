@@ -1,6 +1,30 @@
 services:
   moviee:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     container_name: moviee
     ports:
-      - "8080:8080"
+      - 8080:8080
+    develop:
+      watch:
+        - action: sync+restart
+          path: ./src
+          target: /app/src
+    # volumes:
+    # - ./src/:/app/src/
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SERVER_ADDRESS=0.0.0.0
+      - SPRING_DATASOURCE_URL=jdbc:h2:mem:mydb
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.h2.Driver
+      - SPRING_DATASOURCE_USERNAME=sa
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.H2Dialect
+      - SPRING_H2_CONSOLE_ENABLED=true
+      - SPRING_H2_CONSOLE_SETTINGS_WEB_ALLOW_OTHERS=true
+    networks:
+      - moviee-network
+networks:
+  moviee-network:
+    driver: bridge

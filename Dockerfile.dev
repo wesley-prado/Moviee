@@ -1,0 +1,23 @@
+FROM openjdk:21-jdk-slim AS deps
+WORKDIR /app
+COPY pom.xml /app
+COPY .mvn .mvn
+COPY ./mvnw ./mvnw
+RUN ./mvnw de.qaware.maven:go-offline-maven-plugin:resolve-dependencies
+
+FROM openjdk:21-jdk-slim AS builder
+WORKDIR /app
+COPY --from=deps /root/.m2/repository /root/.m2/repository
+COPY . /app/
+COPY pom.xml .
+COPY .mvn .mvn
+COPY ./mvnw ./mvnw
+# Não precisamos mais copiar o entrypoint ou o inotify-tools
+# COPY ./docker-entrypoint.sh /docker-entrypoint.sh
+# COPY . /app
+# RUN apt-get update && apt-get install -y inotify-tools && rm -rf /var/lib/apt/lists/*
+# RUN chmod +x /docker-entrypoint.sh
+
+# Este é o novo ponto de entrada. Ele inicia o Spring Boot em modo de desenvolvimento.
+# O próprio plugin irá observar as mudanças no diretório /app/src (que está montado como um volume)
+ENTRYPOINT ["./mvnw", "spring-boot:run"]
