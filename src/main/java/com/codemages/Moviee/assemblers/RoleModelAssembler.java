@@ -1,4 +1,4 @@
-package com.codemages.moviee.assemblers;
+package com.codemages.Moviee.assemblers;
 
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
@@ -6,8 +6,8 @@ import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
-import com.codemages.moviee.controllers.v1.RoleController;
-import com.codemages.moviee.dtos.RoleResponseDTO;
+import com.codemages.Moviee.controllers.v1.RoleController;
+import com.codemages.Moviee.dtos.RoleResponseDTO;
 
 import lombok.NonNull;
 

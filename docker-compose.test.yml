@@ -1,20 +1,20 @@
+name: moviee-test
+
 services:
-  moviee:
+  moviee_app_test:
     build:
       context: .
-      dockerfile: Dockerfile.dev
-    container_name: moviee
+      dockerfile: Dockerfile.test
+    container_name: moviee_app_test
     ports:
-      - 8080:8080
+      - "8080:8080"
     develop:
       watch:
         - action: sync+restart
           path: ./src
           target: /app/src
-    # volumes:
-    # - ./src/:/app/src/
     environment:
-      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_PROFILES_ACTIVE=test
       - SERVER_ADDRESS=0.0.0.0
       - SPRING_DATASOURCE_URL=jdbc:h2:mem:mydb
       - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.h2.Driver

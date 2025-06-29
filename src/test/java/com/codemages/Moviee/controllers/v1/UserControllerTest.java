@@ -1,4 +1,4 @@
-package com.codemages.moviee.controllers.v1;
+package com.codemages.Moviee.controllers.v1;
 
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -12,80 +12,88 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.List;
 import java.util.UUID;
 
+import com.codemages.Moviee.config.DataInitializer;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.codemages.moviee.dtos.UserResponseDTO;
-import com.codemages.moviee.entities.Role;
-import com.codemages.moviee.entities.UserStatus;
-import com.codemages.moviee.services.UserService;
+import com.codemages.Moviee.dtos.UserResponseDTO;
+import com.codemages.Moviee.entities.Role;
+import com.codemages.Moviee.entities.UserStatus;
+import com.codemages.Moviee.services.UserService;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+  classes = {
+    com.codemages.Moviee.controllers.v1.UserController.class,
+    com.codemages.Moviee.MovieeApplication.class
+  })
+@ActiveProfiles("test")
 class UserControllerTest {
-	private static final String DEFAULT_MEDIA_TYPE = "application/hal+json";
-	private MockMvc mvc;
-	@MockitoBean
-	private UserService userService;
-	@Autowired
-	private WebApplicationContext context;
+  private static final String DEFAULT_MEDIA_TYPE = "application/hal+json";
+  
+  private MockMvc mvc;
+  @MockitoBean
+  private UserService userService;
+  //  @MockitoBean
+//  private DataInitializer dataInitializer;
+  @Autowired
+  private WebApplicationContext context;
 
-	private UUID userId = UUID.randomUUID();
-	private UserResponseDTO userResponseDTO;
-	private List<UserResponseDTO> userList;
+  private UUID userId = UUID.randomUUID();
+  private UserResponseDTO userResponseDTO = new UserResponseDTO(
+    userId, "Test User",
+    "wesleyprado.dev@gmail.com", Role.USER.name(),
+    UserStatus.ACTIVE.name()
+  );
+  private List<UserResponseDTO> userList = List.of( userResponseDTO );
 
-	@BeforeEach
-	void makeData() {
-		userResponseDTO = new UserResponseDTO(userId, "Test User",
-				"wesleyprado.dev@gmail.com", Role.USER.name(),
-				UserStatus.ACTIVE.name());
+  @BeforeEach
+  void makeData() {
+    mvc = MockMvcBuilders.webAppContextSetup( context ).apply( springSecurity() )
+      .build();
+  }
 
-		userList = List.of(userResponseDTO);
+  @Test
+  @WithMockUser(username = "admin", password = "Admin1#@", authorities = "ADMIN")
+  void getUsers_whenUserHasAdminAuthority_shouldReturnSuccess()
+    throws Exception {
+    when( userService.findAll() ).thenReturn( userList );
 
-		mvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity())
-				.build();
-	}
+    mvc.perform( get( "/api/v1/users" ).accept( DEFAULT_MEDIA_TYPE ).secure( false ) )
+      .andExpect( status().isOk() )
+      .andExpect( content().contentType( DEFAULT_MEDIA_TYPE ) )
+      .andExpect(
+        jsonPath( "$._embedded.userResponseDTOes.size()", Matchers.is( 1 ) ) )
+      .andExpect( jsonPath( "$._embedded.userResponseDTOes[0].id" )
+        .value( userId.toString() ) )
+      .andExpect( jsonPath( "$._embedded.userResponseDTOes[0].username" )
+        .value( "Test User" ) )
+      .andExpect( jsonPath( "$._embedded.userResponseDTOes[0].email" )
+        .value( "wesleyprado.dev@gmail.com" ) );
 
-	@Test
-	@WithMockUser(username = "admin", password = "Admin1#@", authorities = "ADMIN")
-	void getUsers_whenUserHasAdminAuthority_shouldReturnSuccess()
-			throws Exception {
-		when(userService.findAll()).thenReturn(userList);
+    verify( userService ).findAll();
+  }
 
-		mvc.perform(get("/api/v1/users").accept(DEFAULT_MEDIA_TYPE).secure(false))
-				.andExpect(status().isOk())
-				.andExpect(content().contentType(DEFAULT_MEDIA_TYPE))
-				.andExpect(
-						jsonPath("$._embedded.userResponseDTOes.size()", Matchers.is(1)))
-				.andExpect(jsonPath("$._embedded.userResponseDTOes[0].id")
-						.value(userId.toString()))
-				.andExpect(jsonPath("$._embedded.userResponseDTOes[0].username")
-						.value("Test User"))
-				.andExpect(jsonPath("$._embedded.userResponseDTOes[0].email")
-						.value("wesleyprado.dev@gmail.com"));
+  @Test
+  @WithMockUser(authorities = "ROLE_USER")
+  void getUsers_whenUserHasUserAuthority_shouldReturnForbidden()
+    throws Exception {
+    when( userService.findAll() ).thenReturn( userList );
 
-		verify(userService).findAll();
-	}
+    mvc.perform( get( "/api/v1/users" ).accept( DEFAULT_MEDIA_TYPE ).secure( false ) )
+      .andExpect( status().isForbidden() );
 
-	@Test
-	@WithMockUser(authorities = "ROLE_USER")
-	void getUsers_whenUserHasUserAuthority_shouldReturnForbidden()
-			throws Exception {
-		when(userService.findAll()).thenReturn(userList);
+    verify( userService, never() ).findAll();
+  }
 
-		mvc.perform(get("/api/v1/users").accept(DEFAULT_MEDIA_TYPE).secure(false))
-				.andExpect(status().isForbidden());
-
-		verify(userService, never()).findAll();
-	}
-
-	// @Test
-	// void getUser_When
+  // @Test
+  // void getUser_When
 }

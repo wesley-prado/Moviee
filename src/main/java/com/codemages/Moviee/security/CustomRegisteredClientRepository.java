@@ -1,4 +1,4 @@
-package com.codemages.moviee.security;
+package com.codemages.Moviee.security;
 
 import java.time.Duration;
 import java.util.HashSet;
@@ -17,8 +17,8 @@ import org.springframework.security.oauth2.server.authorization.settings.ClientS
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 import org.springframework.stereotype.Component;
 
-import com.codemages.moviee.entities.Client;
-import com.codemages.moviee.repositories.ClientRepository;
+import com.codemages.Moviee.entities.Client;
+import com.codemages.Moviee.repositories.ClientRepository;
 
 import lombok.RequiredArgsConstructor;
 

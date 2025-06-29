@@ -1,4 +1,4 @@
-package com.codemages.moviee.entities;
+package com.codemages.Moviee.entities;
 
 import java.util.ArrayList;
 import java.util.List;

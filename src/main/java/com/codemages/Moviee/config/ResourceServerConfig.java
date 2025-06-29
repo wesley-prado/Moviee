@@ -1,4 +1,4 @@
-package com.codemages.moviee.config;
+package com.codemages.Moviee.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.codemages.moviee.security.CustomJwtGrantedAuthoritiesConverter;
+import com.codemages.Moviee.security.CustomJwtGrantedAuthoritiesConverter;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 

@@ -1,4 +1,4 @@
-package com.codemages.moviee.security;
+package com.codemages.Moviee.security;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,4 +1,4 @@
-package com.codemages.moviee.config;
+package com.codemages.Moviee.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.codemages.moviee.utils.validators;
+package com.codemages.Moviee.utils.validators;
 
 import org.springframework.stereotype.Component;
 

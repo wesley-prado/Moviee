@@ -1,7 +1,7 @@
-package com.codemages.moviee.dtos;
+package com.codemages.Moviee.dtos;
 
-import com.codemages.moviee.utils.validators.StrongPassword;
-import com.codemages.moviee.utils.validators.ValidRole;
+import com.codemages.Moviee.utils.validators.StrongPassword;
+import com.codemages.Moviee.utils.validators.ValidRole;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

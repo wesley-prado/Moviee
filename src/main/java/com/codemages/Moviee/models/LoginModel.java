@@ -1,4 +1,4 @@
-package com.codemages.moviee.models;
+package com.codemages.Moviee.models;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

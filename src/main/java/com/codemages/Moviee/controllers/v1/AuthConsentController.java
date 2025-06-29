@@ -1,4 +1,4 @@
-package com.codemages.moviee.controllers.v1;
+package com.codemages.Moviee.controllers.v1;
 
 import java.security.Principal;
 import java.util.HashMap;

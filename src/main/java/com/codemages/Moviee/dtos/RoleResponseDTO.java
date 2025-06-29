@@ -1,3 +1,3 @@
-package com.codemages.moviee.dtos;
+package com.codemages.Moviee.dtos;
 
 public record RoleResponseDTO(String name) {}

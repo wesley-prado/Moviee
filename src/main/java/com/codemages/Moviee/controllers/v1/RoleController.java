@@ -1,12 +1,12 @@
-package com.codemages.moviee.controllers.v1;
+package com.codemages.Moviee.controllers.v1;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.codemages.moviee.assemblers.RoleModelAssembler;
-import com.codemages.moviee.config.MediaTypes;
-import com.codemages.moviee.dtos.RoleResponseDTO;
-import com.codemages.moviee.entities.Role;
+import com.codemages.Moviee.assemblers.RoleModelAssembler;
+import com.codemages.Moviee.config.MediaTypes;
+import com.codemages.Moviee.dtos.RoleResponseDTO;
+import com.codemages.Moviee.entities.Role;
 
 import lombok.RequiredArgsConstructor;
 

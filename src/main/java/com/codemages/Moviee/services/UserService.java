@@ -1,4 +1,4 @@
-package com.codemages.moviee.services;
+package com.codemages.Moviee.services;
 
 import java.util.List;
 import java.util.UUID;
@@ -7,14 +7,14 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.codemages.moviee.dtos.UserCreateDTO;
-import com.codemages.moviee.dtos.UserResponseDTO;
-import com.codemages.moviee.entities.DocumentType;
-import com.codemages.moviee.entities.Role;
-import com.codemages.moviee.entities.User;
-import com.codemages.moviee.exceptions.user.DuplicateUserException;
-import com.codemages.moviee.repositories.UserRepository;
-import com.codemages.moviee.utils.validators.Validator;
+import com.codemages.Moviee.dtos.UserCreateDTO;
+import com.codemages.Moviee.dtos.UserResponseDTO;
+import com.codemages.Moviee.entities.DocumentType;
+import com.codemages.Moviee.entities.Role;
+import com.codemages.Moviee.entities.User;
+import com.codemages.Moviee.exceptions.user.DuplicateUserException;
+import com.codemages.Moviee.repositories.UserRepository;
+import com.codemages.Moviee.utils.validators.Validator;
 
 @Service
 public class UserService {

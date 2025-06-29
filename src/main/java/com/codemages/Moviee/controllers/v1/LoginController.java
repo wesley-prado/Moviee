@@ -1,11 +1,11 @@
-package com.codemages.moviee.controllers.v1;
+package com.codemages.Moviee.controllers.v1;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.codemages.moviee.models.LoginModel;
+import com.codemages.Moviee.models.LoginModel;
 
 @Controller
 public class LoginController {

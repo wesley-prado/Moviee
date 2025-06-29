@@ -1,0 +1,54 @@
+name: moviee-dev
+
+services:
+  backend_dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: backend_dev
+    ports:
+      - "8080:8080"
+    develop:
+      watch:
+        - action: sync+restart
+          path: ./src
+          target: /app/src
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db_dev:5432/moviee_db_dev
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=admin
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - POSTGRES_DB=moviee_db_dev
+    networks:
+      - moviee-network
+    depends_on:
+      - db_dev
+    links:
+      - db_dev
+  
+  db_dev:
+    image: 'postgres:17-alpine'
+    restart: always
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    container_name: db_dev
+    environment:
+      - POSTGRES_DB=moviee_db_dev
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "-d", "moviee_db_dev", "-U", "admin" ]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
+    expose:
+      - 5432
+    networks:
+      - moviee-network
+volumes:
+  db-data:
+networks:
+  moviee-network:
+    driver: bridge

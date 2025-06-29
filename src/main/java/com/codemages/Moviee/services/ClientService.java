@@ -1,12 +1,12 @@
-package com.codemages.moviee.services;
+package com.codemages.Moviee.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.codemages.moviee.dtos.ClientDTO;
-import com.codemages.moviee.entities.Client;
-import com.codemages.moviee.repositories.ClientRepository;
+import com.codemages.Moviee.dtos.ClientDTO;
+import com.codemages.Moviee.entities.Client;
+import com.codemages.Moviee.repositories.ClientRepository;
 
 import lombok.RequiredArgsConstructor;
 

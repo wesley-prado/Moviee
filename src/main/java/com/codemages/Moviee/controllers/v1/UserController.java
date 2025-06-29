@@ -1,4 +1,4 @@
-package com.codemages.moviee.controllers.v1;
+package com.codemages.Moviee.controllers.v1;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,16 +18,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.codemages.moviee.assemblers.UserModelAssembler;
-import com.codemages.moviee.config.MediaTypes;
-import com.codemages.moviee.dtos.UserCreateDTO;
-import com.codemages.moviee.dtos.UserResponseDTO;
-import com.codemages.moviee.entities.Role;
-import com.codemages.moviee.exceptions.global.ForbiddenOperationException;
-import com.codemages.moviee.exceptions.user.UserNotCreatedException;
-import com.codemages.moviee.exceptions.user.UserNotFoundException;
-import com.codemages.moviee.security.AuthContextHelper;
-import com.codemages.moviee.services.UserService;
+import com.codemages.Moviee.assemblers.UserModelAssembler;
+import com.codemages.Moviee.config.MediaTypes;
+import com.codemages.Moviee.dtos.UserCreateDTO;
+import com.codemages.Moviee.dtos.UserResponseDTO;
+import com.codemages.Moviee.entities.Role;
+import com.codemages.Moviee.exceptions.global.ForbiddenOperationException;
+import com.codemages.Moviee.exceptions.user.UserNotCreatedException;
+import com.codemages.Moviee.exceptions.user.UserNotFoundException;
+import com.codemages.Moviee.security.AuthContextHelper;
+import com.codemages.Moviee.services.UserService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -37,59 +37,63 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserController {
 
-	@Autowired
-	private UserModelAssembler userModelAssembler;
-	@Autowired
-	private UserService userService;
-	@Autowired
-	private AuthContextHelper authContextHelper;
+  @Autowired
+  private UserModelAssembler userModelAssembler;
+  @Autowired
+  private UserService userService;
+  @Autowired
+  private AuthContextHelper authContextHelper;
 
-	@PreAuthorize("hasAuthority('ADMIN')")
-	@GetMapping(produces = MediaTypes.RESPONSE_TYPE)
-	public ResponseEntity<CollectionModel<EntityModel<UserResponseDTO>>> getUsers() {
+  @PreAuthorize("hasAuthority('ADMIN')")
+  @GetMapping(produces = MediaTypes.RESPONSE_TYPE)
+  public ResponseEntity<CollectionModel<EntityModel<UserResponseDTO>>> getUsers() {
 
-		List<UserResponseDTO> users = userService.findAll();
+    List<UserResponseDTO> users = userService.findAll();
 
-		return ResponseEntity.ok().contentType(MediaTypes.DEFAULT_MEDIA_TYPE)
-				.body(userModelAssembler.toCollectionModel(users));
-	}
+    return ResponseEntity.ok().contentType( MediaTypes.DEFAULT_MEDIA_TYPE )
+      .body( userModelAssembler.toCollectionModel( users ) );
+  }
 
-	@PreAuthorize("hasAuthority('MODERATOR')")
-	@GetMapping(value = "/{id}", produces = MediaTypes.RESPONSE_TYPE)
-	public ResponseEntity<EntityModel<UserResponseDTO>> getUser(
-			@PathVariable UUID id) {
-		UserResponseDTO dto = userService.findById(id);
+  @PreAuthorize("hasAuthority('MODERATOR')")
+  @GetMapping(value = "/{id}", produces = MediaTypes.RESPONSE_TYPE)
+  public ResponseEntity<EntityModel<UserResponseDTO>> getUser(
+    @PathVariable UUID id
+  ) {
+    UserResponseDTO dto = userService.findById( id );
 
-		if (dto == null) {
-			throw new UserNotFoundException("User with ID " + id + " not found.");
-		}
+    if ( dto == null ) {
+      throw new UserNotFoundException( "User with ID " + id + " not found." );
+    }
 
-		return ResponseEntity.ok().contentType(MediaTypes.DEFAULT_MEDIA_TYPE)
-				.body(userModelAssembler.toModel(dto));
+    return ResponseEntity.ok().contentType( MediaTypes.DEFAULT_MEDIA_TYPE )
+      .body( userModelAssembler.toModel( dto ) );
 
-	}
+  }
 
-	@PostMapping(consumes = "application/json", produces = MediaTypes.RESPONSE_TYPE)
-	public ResponseEntity<EntityModel<UserResponseDTO>> createUser(
-			@RequestBody @Valid UserCreateDTO dto) {
-		List<String> specialRoles = List.of(Role.ADMIN.name(),
-				Role.MODERATOR.name());
+  @PostMapping(consumes = "application/json", produces = MediaTypes.RESPONSE_TYPE)
+  public ResponseEntity<EntityModel<UserResponseDTO>> createUser(
+    @RequestBody @Valid UserCreateDTO dto
+  ) {
+    List<String> specialRoles = List.of(
+      Role.ADMIN.name(),
+      Role.MODERATOR.name()
+    );
 
-		if (specialRoles.contains(dto.role())
-				&& !authContextHelper.isUserAdmin()) {
-			throw new ForbiddenOperationException(
-					"Only admins can create other admins or moderators.");
-		}
+    if ( specialRoles.contains( dto.role() )
+      && !authContextHelper.isUserAdmin() ) {
+      throw new ForbiddenOperationException(
+        "Only admins can create other admins or moderators." );
+    }
 
-		UserResponseDTO result = userService.createUser(dto);
+    UserResponseDTO result = userService.createUser( dto );
 
-		if (result == null) {
-			throw new UserNotCreatedException(
-					"User could not be created. Please check the input data.");
-		}
+    if ( result == null ) {
+      throw new UserNotCreatedException(
+        "User could not be created. Please check the input data." );
+    }
 
-		return ResponseEntity.status(HttpStatus.CREATED)
-				.contentType(MediaTypes.DEFAULT_MEDIA_TYPE)
-				.body(userModelAssembler.toModel(result));
-	}
+    return ResponseEntity.status( HttpStatus.CREATED )
+      .contentType( MediaTypes.DEFAULT_MEDIA_TYPE )
+      .body( userModelAssembler.toModel( result ) );
+  }
 }

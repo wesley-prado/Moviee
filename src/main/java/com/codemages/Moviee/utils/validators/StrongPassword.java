@@ -1,4 +1,4 @@
-package com.codemages.moviee.utils.validators;
+package com.codemages.Moviee.utils.validators;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.PARAMETER;

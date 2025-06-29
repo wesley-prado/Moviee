@@ -1,4 +1,4 @@
-package com.codemages.moviee.security;
+package com.codemages.Moviee.security;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

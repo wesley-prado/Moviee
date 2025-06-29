@@ -1,4 +1,4 @@
-package com.codemages.moviee.exceptions.user;
+package com.codemages.Moviee.exceptions.user;
 
 public class DuplicateUserException extends RuntimeException {
 	public DuplicateUserException(String message) {

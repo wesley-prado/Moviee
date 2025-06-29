@@ -1,4 +1,4 @@
-package com.codemages.moviee.config;
+package com.codemages.Moviee.config;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -18,37 +18,39 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
 public class AuthorizationServerConfig {
-	private static final String CUSTOM_CONSENT_PAGE_URI = "/oauth2/consent";
-	private static final String CUSTOM_LOGIN_PAGE_URI = "/login";
+  private static final String CUSTOM_CONSENT_PAGE_URI = "/oauth2/consent";
+  private static final String CUSTOM_LOGIN_PAGE_URI = "/login";
 
-	@Bean
-	@Order(1)
-	SecurityFilterChain authServerFilterChain(HttpSecurity http)
-			throws Exception {
-		OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = OAuth2AuthorizationServerConfigurer
-				.authorizationServer();
-		RequestMatcher endpointsMatcher = authorizationServerConfigurer
-				.getEndpointsMatcher();
+  @Bean
+  @Order(1)
+  SecurityFilterChain authServerFilterChain(HttpSecurity http)
+    throws Exception {
+    OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
+			OAuth2AuthorizationServerConfigurer
+      .authorizationServer();
+    RequestMatcher endpointsMatcher = authorizationServerConfigurer
+      .getEndpointsMatcher();
 
-		authorizationServerConfigurer.oidc(withDefaults()).authorizationEndpoint(
-				auth -> auth.consentPage(CUSTOM_CONSENT_PAGE_URI));
+    authorizationServerConfigurer.oidc( withDefaults() ).authorizationEndpoint(
+      auth -> auth.consentPage( CUSTOM_CONSENT_PAGE_URI ) );
 
-		http.securityMatcher(endpointsMatcher)
-				.authorizeHttpRequests(authz -> authz.anyRequest().authenticated())
-				.csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
-				.with(authorizationServerConfigurer, withDefaults());
+    http.securityMatcher( endpointsMatcher )
+      .authorizeHttpRequests( authz -> authz.anyRequest().authenticated() )
+      .csrf( csrf -> csrf.ignoringRequestMatchers( endpointsMatcher ) )
+      .with( authorizationServerConfigurer, withDefaults() );
 
-		http.exceptionHandling(
-				exceptions -> exceptions.defaultAuthenticationEntryPointFor(
-						new LoginUrlAuthenticationEntryPoint(CUSTOM_LOGIN_PAGE_URI),
-						new MediaTypeRequestMatcher(MediaType.TEXT_HTML)));
+    http.exceptionHandling(
+      exceptions -> exceptions.defaultAuthenticationEntryPointFor(
+        new LoginUrlAuthenticationEntryPoint( CUSTOM_LOGIN_PAGE_URI ),
+        new MediaTypeRequestMatcher( MediaType.TEXT_HTML )
+      ) );
 
-		return http.build();
-	}
+    return http.build();
+  }
 
-	@Bean
-	AuthorizationServerSettings authorizationServerSettings() {
-		return AuthorizationServerSettings.builder().issuer("http://localhost:8080")
-				.build();
-	}
+  @Bean
+  AuthorizationServerSettings authorizationServerSettings() {
+    return AuthorizationServerSettings.builder().issuer( "http://localhost:8080" )
+      .build();
+  }
 }

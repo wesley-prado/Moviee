@@ -1,4 +1,4 @@
-package com.codemages.moviee.config;
+package com.codemages.Moviee.config;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;

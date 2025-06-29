@@ -1,4 +1,4 @@
-package com.codemages.moviee.exceptions.global;
+package com.codemages.Moviee.exceptions.global;
 
 import java.time.LocalDateTime;
 import java.util.List;
