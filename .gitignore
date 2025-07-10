@@ -34,3 +34,5 @@ build/
 
 ### Secret files ###
 *.p12
+*.crt
+*.key
