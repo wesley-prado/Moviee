@@ -1,5 +1,6 @@
 package com.codemages.Moviee.controllers.v1;
 
+import com.codemages.Moviee.config.test.WebLayerTestConfig;
 import com.codemages.Moviee.dtos.UserResponseDTO;
 import com.codemages.Moviee.entities.Role;
 import com.codemages.Moviee.entities.UserStatus;
@@ -8,17 +9,16 @@ import com.codemages.Moviee.services.UserService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static com.codemages.Moviee.config.MediaTypes.DEFAULT_MEDIA_TYPE;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
@@ -28,12 +28,13 @@ import java.util.UUID;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@WebMvcTest(UserController.class)
+@Import(WebLayerTestConfig.class)
 class UserControllerTest {
+  private MockMvc mvc;
+
   @Autowired
   private WebApplicationContext context;
-  private MockMvc mvc;
 
   @MockitoBean
   private UserService userServiceMock;
@@ -43,7 +44,10 @@ class UserControllerTest {
 
   @BeforeEach
   public void setup() {
-    mvc = MockMvcBuilders.webAppContextSetup( context ).apply( springSecurity() ).build();
+    mvc = MockMvcBuilders
+      .webAppContextSetup( context )
+      .apply( springSecurity() )
+      .build();
   }
 
   List<UserResponseDTO> users = List.of(
@@ -59,10 +63,10 @@ class UserControllerTest {
     throws Exception {
     when( userServiceMock.findAll() ).thenReturn( users );
 
-    mvc.perform( get( "/api/v1/users" ).accept( DEFAULT_MEDIA_TYPE )
+    mvc.perform( get( "/api/v1/users" ).accept( MediaTypes.HAL_JSON_VALUE )
         .secure( true ) )
       .andExpect( status().isOk() )
-      .andExpect( content().contentType( DEFAULT_MEDIA_TYPE ) )
+      .andExpect( content().contentType( MediaTypes.HAL_JSON_VALUE ) )
       .andExpect(
         jsonPath( "$._embedded.userResponseDTOes.size()", Matchers.is( 1 ) ) )
       .andExpect( jsonPath( "$._embedded.userResponseDTOes[0].id" )
@@ -79,9 +83,7 @@ class UserControllerTest {
   @WithMockUser(username = "user", password = "User1#@@", authorities = "USER")
   void getUsers_whenUserHasUserAuthority_shouldReturnForbidden()
     throws Exception {
-    when( userServiceMock.findAll() ).thenReturn( users );
-
-    mvc.perform( get( "/api/v1/users" ).accept( DEFAULT_MEDIA_TYPE ).secure( true ) )
+    mvc.perform( get( "/api/v1/users" ).accept( MediaTypes.HAL_JSON_VALUE ).secure( true ) )
       .andExpect( status().isForbidden() );
 
     verify( userServiceMock, never() ).findAll();
