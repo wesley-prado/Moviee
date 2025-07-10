@@ -1,22 +1,19 @@
-# Configurações que serão usadas APENAS durante os testes
-
 spring:
-  # Configuração do DataSource para o banco H2 em memória
+  config:
+    activate:
+      on-profile: test
   datasource:
-    url: jdbc:h2:mem:testdb  # URL do banco em memória. 'testdb' é o nome do banco.
-    driverClassName: org.h2.Driver
+    url: jdbc:h2:mem:mydb
+    driver-class-name: org.h2.Driver
     username: sa
-    password:
-  
-  # Configuração do JPA/Hibernate para o H2
+    password: password
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      ddl-auto: create-drop # MUITO IMPORTANTE para testes!
-    show-sql: true # Opcional: mostra os comandos SQL gerados no console
-
-  # Habilita o console do H2 para debug (acessível em http://localhost:8080/h2-console)
+    defer-datasource-initialization: true
   h2:
     console:
       enabled: true
-      path: /h2-console # O path para acessar o console
+      settings:
+        web-allow-others: true
+  allowed:
+    resources: /h2-console/**

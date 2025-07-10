@@ -24,8 +24,22 @@ services:
       - moviee-network
     depends_on:
       - db_dev
+      - ngnix_dev
     links:
       - db_dev
+      - ngnix_dev
+  
+  ngnix_dev:
+    image: 'nginx:latest'
+    container_name: ngnix_dev
+    ports:
+      - "443:443"
+    volumes:
+      - ./nginx-dev/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx-dev/nginx-selfsigned.crt:/etc/ssl/certs/nginx-selfsigned.crt
+      - ./nginx-dev/nginx-selfsigned.key:/etc/ssl/private/nginx-selfsigned.key
+    networks:
+      - moviee-network
   
   db_dev:
     image: 'postgres:17-alpine'
