@@ -1,14 +1,13 @@
 package com.codemages.Moviee.exceptions.global;
 
-import java.time.LocalDateTime;
-
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.codemages.Moviee.config.MediaTypes;
+import java.time.LocalDateTime;
 
 @RestControllerAdvice
 public class OperationFailureHandler {
@@ -20,10 +19,10 @@ public class OperationFailureHandler {
       403, ex.getMessage(),
       LocalDateTime.now(), null
     );
-    error.add( Link.of( "http://my-api-docs.com/errors/forbidden/about", "about" ) );
+    error.add( Link.of( "https://my-api-docs.com/errors/forbidden", "about" ) );
 
     return ResponseEntity.status( HttpStatus.FORBIDDEN )
-      .contentType( MediaTypes.DEFAULT_MEDIA_TYPE )
+      .contentType( MediaTypes.HAL_JSON )
       .body( error );
   }
 }

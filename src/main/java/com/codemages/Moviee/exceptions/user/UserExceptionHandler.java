@@ -1,25 +1,24 @@
 package com.codemages.Moviee.exceptions.user;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
+import com.codemages.Moviee.controllers.v1.UserController;
+import com.codemages.Moviee.exceptions.global.ErrorResponse;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.codemages.Moviee.config.MediaTypes;
-import com.codemages.Moviee.controllers.v1.UserController;
-import com.codemages.Moviee.exceptions.global.ErrorResponse;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestControllerAdvice(basePackageClasses = UserController.class)
 public class UserExceptionHandler {
   @ExceptionHandler(UserException.class)
   public ResponseEntity<ErrorResponse> handleUserException(UserException e) {
     return ResponseEntity.status( HttpStatus.BAD_REQUEST )
-      .contentType( MediaTypes.DEFAULT_MEDIA_TYPE )
+      .contentType( MediaTypes.HAL_JSON )
       .body( new ErrorResponse(
         HttpStatus.BAD_REQUEST.value(), e.getMessage(),
         LocalDateTime.now(), null
@@ -38,10 +37,10 @@ public class UserExceptionHandler {
       "Field validation error", LocalDateTime.now(), errors
     );
 
-    error.add( Link.of( "http://my-api-docs.com/errors/validations", "about" ) );
+    error.add( Link.of( "https://my-api-docs.com/errors/validations", "about" ) );
 
     return ResponseEntity.status( HttpStatus.BAD_REQUEST )
-      .contentType( MediaTypes.DEFAULT_MEDIA_TYPE )
+      .contentType( MediaTypes.HAL_JSON )
       .body( error );
   }
 
@@ -54,10 +53,10 @@ public class UserExceptionHandler {
       LocalDateTime.now(), null
     );
     error
-      .add( Link.of( "http://my-api-docs.com/errors/duplicated-user", "about" ) );
+      .add( Link.of( "https://my-api-docs.com/errors/duplicated-user", "about" ) );
 
     return ResponseEntity.status( HttpStatus.CONFLICT )
-      .contentType( MediaTypes.DEFAULT_MEDIA_TYPE )
+      .contentType( MediaTypes.HAL_JSON )
       .body( error );
   }
 }
