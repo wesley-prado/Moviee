@@ -24,10 +24,8 @@ services:
       - moviee-network
     depends_on:
       - db_dev
-      - ngnix_dev
     links:
       - db_dev
-      - ngnix_dev
   
   ngnix_dev:
     image: 'nginx:latest'
@@ -40,6 +38,8 @@ services:
       - ./nginx-dev/nginx-selfsigned.key:/etc/ssl/private/nginx-selfsigned.key
     networks:
       - moviee-network
+    depends_on:
+      - backend_dev
   
   db_dev:
     image: 'postgres:17-alpine'
