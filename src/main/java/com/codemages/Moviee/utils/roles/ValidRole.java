@@ -1,4 +1,4 @@
-package com.codemages.Moviee.utils.validators;
+package com.codemages.Moviee.utils.roles;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

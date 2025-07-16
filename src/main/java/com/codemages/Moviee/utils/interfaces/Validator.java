@@ -1,4 +1,4 @@
-package com.codemages.Moviee.utils.validators;
+package com.codemages.Moviee.utils.interfaces;
 
 public interface Validator<T> {
 	boolean isValid(T t);

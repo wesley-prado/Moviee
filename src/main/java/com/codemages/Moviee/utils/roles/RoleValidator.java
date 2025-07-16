@@ -1,4 +1,4 @@
-package com.codemages.Moviee.utils.validators;
+package com.codemages.Moviee.utils.roles;
 
 import com.codemages.Moviee.entities.Role;
 
