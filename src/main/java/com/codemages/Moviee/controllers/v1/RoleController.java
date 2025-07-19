@@ -9,6 +9,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +25,7 @@ public class RoleController {
   private RoleModelAssembler roleModelAssembler;
 
   @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
+  @PreAuthorize("isAuthenticated()")
   public ResponseEntity<CollectionModel<EntityModel<RoleResponseDTO>>> getRoles() {
     List<RoleResponseDTO> roles = Arrays.stream( Role.values() )
       .map( Role::name )
