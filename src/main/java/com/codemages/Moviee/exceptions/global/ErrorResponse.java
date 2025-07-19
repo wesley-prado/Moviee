@@ -12,10 +12,10 @@ import lombok.Getter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
 public class ErrorResponse extends RepresentationModel<ErrorResponse> {
-	private int status;
-	private String message;
-	private LocalDateTime timestamp;
-	private List<String> errors;
+	private final int status;
+	private final String message;
+	private final LocalDateTime timestamp;
+	private final List<String> errors;
 
 	public ErrorResponse(int status, String message, LocalDateTime timestamp,
 			List<String> errors) {
@@ -52,11 +52,8 @@ public class ErrorResponse extends RepresentationModel<ErrorResponse> {
 		} else if (!message.equals(other.message))
 			return false;
 		if (timestamp == null) {
-			if (other.timestamp != null)
-				return false;
-		} else if (!timestamp.equals(other.timestamp))
-			return false;
-		return true;
-	}
+      return other.timestamp == null;
+		} else return timestamp.equals( other.timestamp );
+  }
 
 }

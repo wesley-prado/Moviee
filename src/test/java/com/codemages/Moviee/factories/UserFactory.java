@@ -21,8 +21,7 @@ public class UserFactory {
     String username = sb.append( role.name().toLowerCase() )
       .append( "_" )
       .append( randomIdentifier )
-      .substring( 0, 24 )
-      .toString();
+      .substring( 0, 24 );
     return new UserCreateDTO(
       username,
       username + "@test.com",

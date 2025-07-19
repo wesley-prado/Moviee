@@ -23,37 +23,37 @@ class LoginControllerTest {
   @Test
   @DisplayName("Deve retornar a página de login com o modelo padrão")
   void login_shouldReturnLoginViewWithDefaultModel() throws Exception {
-	mvc.perform( get( "/login" ) )
-			.andExpect( status().isOk() )
-			.andExpect( view().name( "login" ) )
-			.andExpect( model().attributeExists( "loginModel" ) )
-			.andExpect( model().attribute( "loginModel", instanceOf( LoginModel.class ) ) )
-			.andExpect( model().attributeDoesNotExist( "error" ) )
-			.andExpect( model().attributeDoesNotExist( "message" ) );
+    mvc.perform( get( "/login" ) )
+      .andExpect( status().isOk() )
+      .andExpect( view().name( "login" ) )
+      .andExpect( model().attributeExists( "loginModel" ) )
+      .andExpect( model().attribute( "loginModel", instanceOf( LoginModel.class ) ) )
+      .andExpect( model().attributeDoesNotExist( "error" ) )
+      .andExpect( model().attributeDoesNotExist( "message" ) );
   }
 
   @Test
   @DisplayName("Deve retornar a página de login com mensagem de erro")
   void login_withError_shouldReturnLoginViewWithErrorMessage() throws Exception {
-	mvc.perform( get( "/login" ).param( "error", "true" ) )
-			.andExpect( status().isOk() )
-			.andExpect( view().name( "login" ) )
-			.andExpect( model().attributeExists( "loginModel" ) )
-			.andExpect( model().attribute( "error", is( "Invalid username or password." ) ) )
-			.andExpect( model().attributeDoesNotExist( "message" ) );
+    mvc.perform( get( "/login" ).param( "error", "true" ) )
+      .andExpect( status().isOk() )
+      .andExpect( view().name( "login" ) )
+      .andExpect( model().attributeExists( "loginModel" ) )
+      .andExpect( model().attribute( "error", is( "Invalid username or password." ) ) )
+      .andExpect( model().attributeDoesNotExist( "message" ) );
   }
 
   @Test
   @DisplayName("Deve retornar a página de login com mensagem de logout")
   void login_withLogout_shouldReturnLoginViewWithLogoutMessage() throws Exception {
-	mvc.perform( get( "/login" ).param( "logout", "true" ) )
-			.andExpect( status().isOk() )
-			.andExpect( view().name( "login" ) )
-			.andExpect( model().attributeExists( "loginModel" ) )
-			.andExpect( model().attribute(
-					"message",
-					is( "You have been logged out successfully." )
-			) )
-			.andExpect( model().attributeDoesNotExist( "error" ) );
+    mvc.perform( get( "/login" ).param( "logout", "true" ) )
+      .andExpect( status().isOk() )
+      .andExpect( view().name( "login" ) )
+      .andExpect( model().attributeExists( "loginModel" ) )
+      .andExpect( model().attribute(
+        "message",
+        is( "You have been logged out successfully." )
+      ) )
+      .andExpect( model().attributeDoesNotExist( "error" ) );
   }
 }

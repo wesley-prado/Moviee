@@ -33,43 +33,43 @@ public class UserController {
   @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
   public ResponseEntity<CollectionModel<EntityModel<UserResponseDTO>>> getUsers() {
 
-	List<UserResponseDTO> users = userService.findAll();
+    List<UserResponseDTO> users = userService.findAll();
 
-	return ResponseEntity.ok().contentType( MediaTypes.HAL_JSON )
-			.body( userModelAssembler.toCollectionModel( users ) );
+    return ResponseEntity.ok().contentType( MediaTypes.HAL_JSON )
+      .body( userModelAssembler.toCollectionModel( users ) );
   }
 
   @PreAuthorize("hasAuthority('MODERATOR')")
   @GetMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
   public ResponseEntity<EntityModel<UserResponseDTO>> getUser(
-		  @PathVariable UUID id
+    @PathVariable UUID id
   ) {
-	UserResponseDTO dto = userService.findById( id );
+    UserResponseDTO dto = userService.findById( id );
 
-	return ResponseEntity.ok().contentType( MediaTypes.HAL_JSON )
-			.body( userModelAssembler.toModel( dto ) );
+    return ResponseEntity.ok().contentType( MediaTypes.HAL_JSON )
+      .body( userModelAssembler.toModel( dto ) );
 
   }
 
   @PostMapping(consumes = "application/json", produces = MediaTypes.HAL_JSON_VALUE)
   public ResponseEntity<EntityModel<UserResponseDTO>> createUser(
-		  @RequestBody @Valid UserCreateDTO dto
+    @RequestBody @Valid UserCreateDTO dto
   ) {
-	List<String> specialRoles = List.of(
-			Role.ADMIN.name(),
-			Role.MODERATOR.name()
-	);
+    List<String> specialRoles = List.of(
+      Role.ADMIN.name(),
+      Role.MODERATOR.name()
+    );
 
-	if ( specialRoles.contains( dto.role() )
-			&& !authContextHelper.isUserAdmin() ) {
-	  throw new ForbiddenOperationException(
-			  "Only admins can create other admins or moderators." );
-	}
+    if ( specialRoles.contains( dto.role() )
+      && !authContextHelper.isUserAdmin() ) {
+      throw new ForbiddenOperationException(
+        "Only admins can create other admins or moderators." );
+    }
 
-	UserResponseDTO result = userService.createUser( dto );
+    UserResponseDTO result = userService.createUser( dto );
 
-	return ResponseEntity.status( HttpStatus.CREATED )
-			.contentType( MediaTypes.HAL_JSON )
-			.body( userModelAssembler.toModel( result ) );
+    return ResponseEntity.status( HttpStatus.CREATED )
+      .contentType( MediaTypes.HAL_JSON )
+      .body( userModelAssembler.toModel( result ) );
   }
 }
