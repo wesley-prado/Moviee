@@ -12,5 +12,5 @@ import org.springframework.context.annotation.Import;
   RoleHierarchyConfig.class,
   PasswordPolicyValidator.class
 })
-public class WebLayerTestConfig {
+public class UserControllerTestConfig {
 }

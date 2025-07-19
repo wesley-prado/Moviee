@@ -1,6 +1,6 @@
 package com.codemages.Moviee.controllers.v1;
 
-import com.codemages.Moviee.config.test.WebLayerTestConfig;
+import com.codemages.Moviee.config.test.UserControllerTestConfig;
 import com.codemages.Moviee.dtos.UserCreateDTO;
 import com.codemages.Moviee.dtos.UserResponseDTO;
 import com.codemages.Moviee.entities.Role;
@@ -48,7 +48,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(UserController.class)
-@Import(WebLayerTestConfig.class)
+@Import(UserControllerTestConfig.class)
 class UserControllerTest {
   private static final String USERS_ENDPOINT = "/api/v1/users";
   private final UserFactory userFactory = new UserFactory();
