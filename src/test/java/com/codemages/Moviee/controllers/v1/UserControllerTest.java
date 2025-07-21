@@ -1,6 +1,6 @@
 package com.codemages.Moviee.controllers.v1;
 
-import com.codemages.Moviee.config.test.UserControllerTestConfig;
+import com.codemages.Moviee.controllers.v1.config.UserControllerTestConfig;
 import com.codemages.Moviee.dtos.UserCreateDTO;
 import com.codemages.Moviee.dtos.UserResponseDTO;
 import com.codemages.Moviee.entities.Role;

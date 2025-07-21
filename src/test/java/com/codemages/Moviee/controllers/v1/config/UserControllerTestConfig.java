@@ -1,4 +1,4 @@
-package com.codemages.Moviee.config.test;
+package com.codemages.Moviee.controllers.v1.config;
 
 import com.codemages.Moviee.assemblers.UserModelAssembler;
 import com.codemages.Moviee.config.RoleHierarchyConfig;

@@ -1,6 +1,6 @@
 package com.codemages.Moviee.controllers.v1;
 
-import com.codemages.Moviee.config.test.RoleControllerTestConfig;
+import com.codemages.Moviee.controllers.v1.config.RoleControllerTestConfig;
 import com.codemages.Moviee.entities.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
