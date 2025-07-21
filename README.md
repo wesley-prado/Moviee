@@ -1,12 +1,16 @@
 # Moviee - Movie Reservation System
 
-Moviee is a comprehensive backend system for a movie reservation service built with Spring Boot. The service allows users to sign up, log in, browse movies, reserve seats for specific showtimes, and manage their reservations. The system features user authentication with OAuth2, role-based authorization, movie and showtime management, seat reservation functionality, and reporting on reservations.
+Moviee is a comprehensive backend system for a movie reservation service built with Spring Boot. The
+service allows users to sign up, log in, browse movies, reserve seats for specific showtimes, and
+manage their reservations. The system features user authentication with OAuth2, role-based
+authorization, movie and showtime management, seat reservation functionality, and reporting on
+reservations.
 
 ## Technology Stack
 
 - **Backend**: Java 21 with Spring Boot 3.x
 - **Security**: OAuth2 Authorization Server & Resource Server
-- **Database**: H2 (dev) / PostgreSQL (production)
+- **Database**: PostgreSQL
 - **Build Tool**: Maven
 - **Containerization**: Docker
 
@@ -63,20 +67,19 @@ The application follows a layered architecture:
 ./mvnw spring-boot:run
 ```
 
-**Using Docker:**
+**Using Docker (dev):**
 
 ```bash
-docker-compose up
+docker compose -f docker-compose.dev.yml up -d
 ```
 
-The application will be available at http://localhost:8080.
+The application will be available at https://localhost:443.
 
 ### Default Credentials
 
 The application is pre-configured with the following users in development mode:
 
 - Admin user:
-
   - Username: admin
   - Password: Admin1#@
 
@@ -102,9 +105,10 @@ The application is pre-configured with the following users in development mode:
 ### Features Implemented
 
 - ✅ User authentication with OAuth2 and JWT
-- ✅ Role-based authorization (ADMIN, USER)
+- ✅ Role-based authorization (ADMIN, USER, MODERATOR)
 - ✅ User registration and management
 - ✅ Custom login page
+- ✅ Remember-me on login
 - ✅ Custom OAuth2 consent page
 - ✅ Strong password validation
 - ✅ Docker and Docker Compose support
@@ -112,6 +116,7 @@ The application is pre-configured with the following users in development mode:
 
 ### Features To Be Implemented
 
+- ⬜ Login with Google
 - ⬜ Movie management (add, update, delete movies)
 - ⬜ Movie categorization by genre
 - ⬜ Showtime management
