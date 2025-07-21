@@ -1,7 +1,5 @@
 package com.codemages.Moviee.config;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -15,6 +13,8 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
 public class AuthorizationServerConfig {
@@ -26,8 +26,8 @@ public class AuthorizationServerConfig {
   SecurityFilterChain authServerFilterChain(HttpSecurity http)
     throws Exception {
     OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
-			OAuth2AuthorizationServerConfigurer
-      .authorizationServer();
+      OAuth2AuthorizationServerConfigurer
+        .authorizationServer();
     RequestMatcher endpointsMatcher = authorizationServerConfigurer
       .getEndpointsMatcher();
 
