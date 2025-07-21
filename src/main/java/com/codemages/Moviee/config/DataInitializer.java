@@ -1,11 +1,5 @@
 package com.codemages.Moviee.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-
 import com.codemages.Moviee.dtos.ClientDTO;
 import com.codemages.Moviee.dtos.UserCreateDTO;
 import com.codemages.Moviee.dtos.UserResponseDTO;
@@ -13,8 +7,12 @@ import com.codemages.Moviee.entities.DocumentType;
 import com.codemages.Moviee.entities.Role;
 import com.codemages.Moviee.services.ClientService;
 import com.codemages.Moviee.services.UserService;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 @Configuration
 @Profile({ "dev", "test" })
@@ -43,22 +41,21 @@ public class DataInitializer {
         UserResponseDTO adminResponse = userService.createUser( admin );
         UserResponseDTO userResponse = userService.createUser( user );
 
-        if ( adminResponse == null || userResponse == null ) {
-          throw new RuntimeException( "Failed to create initial users" );
-        }
-
         System.out.println( "Admin created: " + adminResponse.id() );
         System.out.println( "User created: " + userResponse.id() );
       }
 
       if ( clientService.count() == 0 ) {
-        var dto = new ClientDTO(
+        clientService.save( new ClientDTO(
           "my_client_id",
           "my_client_secret",
           "http://127.0.0.1:8080/login/oauth2/code/client-server"
-        );
-
-        clientService.save( dto );
+        ) );
+        clientService.save( new ClientDTO(
+          "postman",
+          "some_password",
+          "https://oauth.pstmn.io/v1/callback"
+        ) );
       }
     };
   }
