@@ -6,8 +6,8 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     container_name: backend_dev
-    ports:
-      - "8080:8080"
+    expose:
+      - "8080"
     develop:
       watch:
         - action: sync+restart
@@ -20,6 +20,8 @@ services:
       - SPRING_DATASOURCE_PASSWORD=admin
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - POSTGRES_DB=moviee_db_dev
+      - MOVIEE_SECURITY_REMEMBER_ME_KEY={{MOVIEE_SECURITY_REMEMBER_ME_KEY}}
+      - SERVER_FORWARD_HEADERS_STRATEGY=NATIVE
     networks:
       - moviee-network
     depends_on:
