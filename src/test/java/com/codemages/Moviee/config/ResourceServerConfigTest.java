@@ -6,25 +6,27 @@ import com.codemages.Moviee.entities.User;
 import com.codemages.Moviee.repositories.UserRepository;
 import com.codemages.Moviee.support.IntegrationTestContainerSingleton;
 import com.codemages.Moviee.utils.password.interfaces.PasswordGenerator;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@AutoConfigureMockMvc
 public class ResourceServerConfigTest extends IntegrationTestContainerSingleton {
   @Autowired
   private UserRepository userRepository;
@@ -33,10 +35,17 @@ public class ResourceServerConfigTest extends IntegrationTestContainerSingleton 
   private PasswordEncoder passwordEncoder;
 
   @Autowired
+  private WebApplicationContext context;
+
   private MockMvc mvc;
 
   @Autowired
   private PasswordGenerator passwordGenerator;
+
+  @BeforeEach
+  void setUp() {
+	mvc = MockMvcBuilders.webAppContextSetup( context ).apply( springSecurity() ).build();
+  }
 
   @Test
   @DisplayName("Deve permitir acesso à página de login para qualquer usuário")
@@ -77,7 +86,7 @@ public class ResourceServerConfigTest extends IntegrationTestContainerSingleton 
   @Test
   @Transactional
   @DisplayName("Deve autenticar via cookie remember-me após login inicial")
-  void rememberMe_shouldAuthenticateUserOnNewSesssion() throws Exception {
+  void rememberMe_shouldAuthenticateUserOnNewSession() throws Exception {
 	String pass = passwordGenerator.generate();
 	var userEntity = new User(
 			null,
