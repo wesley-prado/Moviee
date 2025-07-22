@@ -5,14 +5,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @RequiredArgsConstructor
 public abstract class IntegrationTestContainerSingleton {
-  static final JdbcDatabaseContainer CONTAINER = new PostgreSQLContainer<>( "postgres:latest" );
+  static final PostgreSQLContainer<?> CONTAINER = new PostgreSQLContainer<>( "postgres:latest" );
 
   static {
     CONTAINER.start();
