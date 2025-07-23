@@ -7,6 +7,7 @@ import com.codemages.Moviee.repositories.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -14,6 +15,7 @@ public class ClientService {
   private final ClientRepository clientRepository;
   private final PasswordEncoder passwordEncoder;
 
+  @Transactional
   public void save(ClientDTO dto) {
     var client = new Client();
     client.setClientId( dto.clientId() );
@@ -23,6 +25,7 @@ public class ClientService {
     clientRepository.save( client );
   }
 
+  @Transactional
   public void update(ClientDTO dto) throws ClientNotFoundException {
     var client = clientRepository.findByClientId( dto.clientId() );
 

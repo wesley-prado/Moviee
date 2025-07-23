@@ -11,6 +11,7 @@ import com.codemages.Moviee.repositories.UserRepository;
 import com.codemages.Moviee.utils.password.interfaces.PasswordValidator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +33,7 @@ public class UserService {
     this.passwordValidator = passwordValidator;
   }
 
+  @Transactional
   public UserResponseDTO createUser(UserCreateDTO userCreateDto) {
     validateUser( userCreateDto );
 
@@ -73,10 +75,12 @@ public class UserService {
     );
   }
 
+  @Transactional(readOnly = true)
   public List<UserResponseDTO> findAll() {
     return userRepository.findAll().stream().map( this::toUserResponseDTO ).toList();
   }
 
+  @Transactional(readOnly = true)
   public UserResponseDTO findById(UUID id) {
     return toUserResponseDTO( userRepository.findById( id )
       .orElseThrow( () -> new UserNotFoundException( "User not found with id: " + id ) ) );
