@@ -19,7 +19,6 @@ public class ClientService {
   public void save(ClientDTO dto) {
     var client = new Client();
     client.setClientId( dto.clientId() );
-    client.setClientSecret( passwordEncoder.encode( dto.clientSecret() ) );
     client.setRedirectUri( dto.redirectUri() );
 
     clientRepository.save( client );
@@ -33,7 +32,6 @@ public class ClientService {
       throw new ClientNotFoundException( "Client with ID " + dto.clientId() + " does not exist." );
     }
 
-    client.setClientSecret( passwordEncoder.encode( dto.clientSecret() ) );
     client.setRedirectUri( dto.redirectUri() );
     clientRepository.save( client );
   }
