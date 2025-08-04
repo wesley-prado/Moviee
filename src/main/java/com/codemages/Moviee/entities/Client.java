@@ -17,4 +17,5 @@ public class Client {
 
   private String clientId;
   private String redirectUri;
+  private String clientName;
 }
