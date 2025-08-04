@@ -59,6 +59,7 @@ services:
       timeout: 60s
       retries: 5
       start_period: 80s
+    entrypoint: [ "docker-entrypoint.sh",  "-c", "shared_buffers=256MB", "-c", "max_connections=200" ]
     expose:
       - 5432
     networks:
