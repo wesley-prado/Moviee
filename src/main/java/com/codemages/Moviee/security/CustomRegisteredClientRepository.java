@@ -53,8 +53,6 @@ public class CustomRegisteredClientRepository
       return null;
     }
 
-    System.out.println( client.getClientName() );
-
     return toRegisteredClient( client );
   }
 
