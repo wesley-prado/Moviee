@@ -35,17 +35,12 @@ public class CustomRegisteredClientRepository
   @Override
   @Nullable
   public RegisteredClient findById(String id) {
-    System.out.println(
-      "##### DEBUG: Procurando cliente com ID: " + id + " #####" ); // Adicione esta linha
     var client = clientRepository.findById( UUID.fromString( id ) );
 
     if ( client.isEmpty() ) {
-      System.out.println( "##### DEBUG: Cliente NÃO encontrado! #####" ); // Adicione esta linha
       return null;
     }
 
-    System.out.println( "##### DEBUG: Cliente encontrado, convertendo para RegisteredClient. " +
-      "#####" ); // Adicione esta linha
     return toRegisteredClient( client.get() );
   }
 
@@ -64,6 +59,7 @@ public class CustomRegisteredClientRepository
   private RegisteredClient toRegisteredClient(Client client) {
     return RegisteredClient.withId( client.getId().toString() )
       .clientId( client.getClientId() )
+      .clientName( client.getClientName() )
       .clientAuthenticationMethod( ClientAuthenticationMethod.NONE )
       .authorizationGrantType( AuthorizationGrantType.AUTHORIZATION_CODE )
       .redirectUris( uris -> {
