@@ -45,12 +45,4 @@ public class AuthorizationServerConfig {
     return AuthorizationServerSettings.builder().issuer( "http://localhost:8080" )
       .build();
   }
-
-//  @Bean
-//  RegisteredClientRepository registeredClientRepository(
-//    @Autowired ClientRepository clientRepository,
-//    @Autowired PasswordEncoder passwordEncoder
-//  ) {
-//    return new CustomRegisteredClientRepository( clientRepository, passwordEncoder );
-//  }
 }
