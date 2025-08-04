@@ -48,12 +48,10 @@ public class DataInitializer {
       if ( clientService.count() == 0 ) {
         clientService.save( new ClientDTO(
           "my_client_id",
-          "my_client_secret",
           "http://127.0.0.1:8080/login/oauth2/code/client-server"
         ) );
         clientService.save( new ClientDTO(
           "postman",
-          "some_password",
           "https://oauth.pstmn.io/v1/callback"
         ) );
       }
