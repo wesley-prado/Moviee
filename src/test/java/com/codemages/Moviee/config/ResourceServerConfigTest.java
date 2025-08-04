@@ -50,6 +50,7 @@ public class ResourceServerConfigTest extends IntegrationTestContainerSingleton 
 
   @Test
   @DisplayName("Deve permitir acesso à página de login para qualquer usuário")
+  @WithAnonymousUser
   void loginPage_shouldBePublic() throws Exception {
     mvc.perform( get( "/login" ) ).andExpect( status().isOk() );
   }
