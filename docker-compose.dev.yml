@@ -23,8 +23,6 @@ services:
     depends_on:
       db_dev:
         condition: service_healthy
-    links:
-      - db_dev
   
   ngnix_dev:
     image: 'nginx:latest'
@@ -46,12 +44,10 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
     container_name: db_dev
-    environment:
-      - POSTGRES_DB=moviee_db_dev
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin
+    env_file:
+      - .env.dev
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready", "-d", "moviee_db_dev", "-U", "admin" ]
+      test: [ "CMD-SHELL", "pg_isready" ]
       interval: 30s
       timeout: 60s
       retries: 5
