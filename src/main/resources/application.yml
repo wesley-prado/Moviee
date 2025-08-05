@@ -2,19 +2,34 @@ spring:
   profiles.active: ${SPRING_ACTIVE_PROFILE:default}
   application:
     name: moviee
-logging.level.org.springframework:
-  web: DEBUG
-  security: DEBUG
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
 ---
 spring:
   config:
     activate:
       on-profile: dev
-  jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  logging.level.org:
+    springframework:
+      web: DEBUG
+      security: DEBUG
     hibernate:
-      ddl-auto: update
+      SQL: DEBUG
+      type:
+        level: TRACE
+    root: INFO
+    flywaydb: DEBUG
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
     show-sql: true
     generate-ddl: true
+  flyway:
+    baseline-on-migrate: true
 server:
   port: 8080

@@ -36,6 +36,8 @@ build/
 *.p12
 *.crt
 *.key
+.env.*
+!.env.example
 
 ## Test coverage reports
 htmlReport/
