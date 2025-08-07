@@ -1,64 +1,52 @@
 package com.codemages.Moviee.entities;
 
+import jakarta.persistence.*;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.UUID;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
-
 @Entity
 @Table(name = "user_tb")
-@Getter
-@Setter
+@Data
 public class User implements Serializable {
-	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	private UUID id;
-	private String username;
-	private String email;
-	private String password;
-	private String document;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
+  @Column(nullable = false, unique = true, length = 20)
+  private String username;
+  @Column(nullable = false, unique = true)
+  private String email;
+  @Column(nullable = false)
+  private String password;
+  @Column(nullable = true, unique = true, length = 20)
+  private String document;
 
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
-	private DocumentType documentType;
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false, length = 10)
+  private DocumentType documentType;
 
-	@Enumerated(EnumType.STRING)
-	private Role role;
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false, length = 25)
+  private Role role;
 
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
-	private UserStatus status;
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false, length = 25)
+  private UserStatus status;
 
-	public User() {}
+  public User() {}
 
-	public User(UUID id, String username, String email, String password,
-			Role role, String document, DocumentType documentType) {
-		this.id = id;
-		this.username = username;
-		this.email = email;
-		this.password = password;
-		this.role = role;
-		this.status = UserStatus.ACTIVE;
-		this.document = document;
-		this.documentType = documentType;
-	}
-
-	public void activate() {
-		this.status = UserStatus.ACTIVE;
-	}
-
-	public void deactivate() {
-		this.status = UserStatus.INACTIVE;
-	}
+  public User(
+    UUID id, String username, String email, String password,
+    Role role, String document, DocumentType documentType
+  ) {
+    this.id = id;
+    this.username = username;
+    this.email = email;
+    this.password = password;
+    this.role = role;
+    this.status = UserStatus.ACTIVE;
+    this.document = document;
+    this.documentType = documentType;
+  }
 }
