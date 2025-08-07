@@ -86,6 +86,13 @@ public class UserService {
       .orElseThrow( () -> new UserNotFoundException( "User not found with id: " + id ) ) );
   }
 
+  @Transactional(readOnly = true)
+  public boolean isUsernameTaken(String username) {
+    Optional<User> user = userRepository.findByUsername( username );
+
+    return user.isPresent();
+  }
+
   private UserResponseDTO toUserResponseDTO(User u) {
     return new UserResponseDTO(
       u.getId(),

@@ -26,22 +26,15 @@ public class DataInitializer {
   @Bean
   CommandLineRunner initData() {
     return args -> {
-      if ( userService.count() == 0 ) {
-        UserCreateDTO admin = new UserCreateDTO(
-          "admin", "admin@mail.com",
-          "Admin1#@", "30342640038",
-          DocumentType.CPF.name(), Role.ADMIN.name()
-        );
+      if ( !userService.isUsernameTaken( "user" ) ) {
         UserCreateDTO user = new UserCreateDTO(
           "user", "user@mail.com",
           "User1#@@", "336189783",
           DocumentType.RG.name(), Role.USER.name()
         );
 
-        UserResponseDTO adminResponse = userService.createUser( admin );
         UserResponseDTO userResponse = userService.createUser( user );
 
-        System.out.println( "Admin created: " + adminResponse.id() );
         System.out.println( "User created: " + userResponse.id() );
       }
 
