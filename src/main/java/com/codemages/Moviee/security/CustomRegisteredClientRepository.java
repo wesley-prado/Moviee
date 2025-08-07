@@ -11,6 +11,7 @@ import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 import java.util.UUID;
@@ -23,15 +24,18 @@ public class CustomRegisteredClientRepository
 
   private final ClientRepository clientRepository;
 
+  @Transactional
   @Override
   public void save(RegisteredClient registeredClient) {
     var client = new Client();
     client.setClientId( registeredClient.getClientId() );
+    client.setClientName( registeredClient.getClientName() );
     client.setRedirectUri( String.join( ",", registeredClient.getRedirectUris() ) );
 
     clientRepository.save( client );
   }
 
+  @Transactional(readOnly = true)
   @Override
   @Nullable
   public RegisteredClient findById(String id) {
@@ -44,6 +48,7 @@ public class CustomRegisteredClientRepository
     return toRegisteredClient( client.get() );
   }
 
+  @Transactional(readOnly = true)
   @Override
   @Nullable
   public RegisteredClient findByClientId(String clientId) {
@@ -62,6 +67,7 @@ public class CustomRegisteredClientRepository
       .clientName( client.getClientName() )
       .clientAuthenticationMethod( ClientAuthenticationMethod.NONE )
       .authorizationGrantType( AuthorizationGrantType.AUTHORIZATION_CODE )
+      .authorizationGrantType( AuthorizationGrantType.REFRESH_TOKEN )
       .redirectUris( uris -> {
         if ( client.getRedirectUri() != null && !client.getRedirectUri().isEmpty() ) {
           uris.addAll( Set.of( client.getRedirectUri().split( "," ) ) );
@@ -69,7 +75,9 @@ public class CustomRegisteredClientRepository
       } )
       .scopes( scopes -> {
         scopes.add( OidcScopes.OPENID );
+        scopes.add( OidcScopes.PROFILE );
         scopes.add( OidcScopes.EMAIL );
+        scopes.add( "offline_access" );
       } )
       .clientSettings( new CustomClientSettings().getClientSettings() )
       .tokenSettings( new CustomTokenSettings().getSettings() )
