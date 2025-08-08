@@ -6,6 +6,8 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     container_name: backend_dev
+    ports:
+      - "5005:5005"
     expose:
       - "8080"
     develop:
@@ -16,6 +18,8 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=dev
       - SERVER_FORWARD_HEADERS_STRATEGY=NATIVE
+      # DEBUG
+      - MAVEN_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
     env_file:
       - .env.dev
     networks:

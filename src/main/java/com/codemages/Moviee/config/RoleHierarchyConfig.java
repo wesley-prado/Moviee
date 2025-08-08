@@ -14,18 +14,22 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @EnableMethodSecurity
 public class RoleHierarchyConfig {
 
-	@Bean
-	RoleHierarchy roleHierarchy() {
-		String hierarchy = "ADMIN > MODERATOR \n MODERATOR > USER";
-		return RoleHierarchyImpl.fromHierarchy(hierarchy);
-	}
+  @Bean
+  RoleHierarchy roleHierarchy() {
+    return RoleHierarchyImpl.withRolePrefix( "" )
+      .role( "ADMIN" ).implies( "MODERATOR" )
+      .role( "MODERATOR" ).implies( "USER" )
+      .build();
+  }
 
-	@Bean
-	MethodSecurityExpressionHandler methodSecurityExpressionHandler(
-			RoleHierarchy roleHierarchy) {
-		DefaultMethodSecurityExpressionHandler expressionHandler = new DefaultMethodSecurityExpressionHandler();
-		expressionHandler.setRoleHierarchy(roleHierarchy);
+  @Bean
+  MethodSecurityExpressionHandler methodSecurityExpressionHandler(
+    RoleHierarchy roleHierarchy
+  ) {
+    DefaultMethodSecurityExpressionHandler expressionHandler =
+      new DefaultMethodSecurityExpressionHandler();
+    expressionHandler.setRoleHierarchy( roleHierarchy );
 
-		return expressionHandler;
-	}
+    return expressionHandler;
+  }
 }
