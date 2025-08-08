@@ -38,8 +38,7 @@ public class AuthorizationServerConfig {
   SecurityFilterChain authServerFilterChain(
     HttpSecurity http,
     OAuth2AuthorizationService authorizationService
-  )
-    throws Exception {
+  ) throws Exception {
     var authServerConfigurer = OAuth2AuthorizationServerConfigurer.authorizationServer();
 
     authServerConfigurer.oidc( Customizer.withDefaults() )
@@ -67,8 +66,7 @@ public class AuthorizationServerConfig {
 
   @Bean
   AuthorizationServerSettings authorizationServerSettings() {
-    return AuthorizationServerSettings.builder().issuer( securityProperties.issuerUri() )
-      .build();
+    return AuthorizationServerSettings.builder().issuer( securityProperties.issuerUri() ).build();
   }
 
   @Bean
