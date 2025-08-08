@@ -3,7 +3,6 @@ package com.codemages.Moviee.config;
 import com.codemages.Moviee.config.properties.SecurityProperties;
 import com.codemages.Moviee.security.CustomJwtGrantedAuthoritiesConverter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -15,7 +14,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
-@EnableConfigurationProperties(SecurityProperties.class)
 @RequiredArgsConstructor
 public class ResourceServerConfig {
   private final SecurityProperties securityProperties;
