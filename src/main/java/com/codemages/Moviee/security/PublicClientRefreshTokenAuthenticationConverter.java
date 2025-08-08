@@ -51,7 +51,7 @@ public class PublicClientRefreshTokenAuthenticationConverter implements Authenti
     Map<String, Object> additionalParameters = new HashMap<>();
     parameters.forEach( (key, value) -> additionalParameters.put(
       key,
-      (value.size() == 1) ? value.get( 0 ) : value.toArray( new String[ 0 ] )
+      (value.size() == 1) ? value.getFirst() : value.toArray( new String[ 0 ] )
     ) );
 
     return new OAuth2ClientAuthenticationToken(

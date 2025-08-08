@@ -1,5 +1,6 @@
 package com.codemages.Moviee.security;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -16,9 +17,9 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.util.Assert;
 
 @Slf4j
+@RequiredArgsConstructor
 public final class PublicClientRefreshTokenAuthenticationProvider implements
                                                                   AuthenticationProvider {
-
   private static final String ERROR_URI = "https://datatracker.ietf" +
     ".org/doc/html/rfc6749#section-3.2.1";
 
