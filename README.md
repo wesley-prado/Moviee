@@ -131,6 +131,21 @@ The application is pre-configured with the following users in development mode:
 - ⬜ Integration tests
 - ⬜ CI/CD pipeline
 
+## Notes on Login and Consent Pages
+
+Although this project is primarily a backend system without a dedicated frontend, it includes a
+custom login page (`/login`) and OAuth2 consent page (`/oauth2/consent`).
+
+These pages are included intentionally **for learning and exploration purposes** to understand and
+configure the full OAuth2 Authorization Server flow with Spring Authorization Server.
+
+In a production backend-only API, these pages typically would not exist or would be handled by a
+separate frontend client. The inclusion here is purely didactic and meant to demonstrate how to
+customize these flows.
+
+Future improvements may include separating the Authorization Server and Resource Server
+responsibilities and removing these pages to align strictly with a backend API architecture.
+
 ## License
 
 This project is licensed under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
