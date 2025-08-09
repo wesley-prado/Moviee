@@ -6,8 +6,6 @@ and manage their reservations.
 The system features user authentication with OAuth2, role-based authorization, movie and showtime
 management, seat reservation functionality, and reporting on reservations.
 
----
-
 ## 🚀 Technology Stack
 
 ![Java 21](https://img.shields.io/badge/Java-21-blue?logo=java&logoColor=white)  
@@ -15,8 +13,6 @@ management, seat reservation functionality, and reporting on reservations.
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-blue?logo=postgresql&logoColor=white)  
 ![Maven 3.9.9](https://img.shields.io/badge/Maven-3.9-red?logo=apachemaven&logoColor=white)  
 ![Docker](https://img.shields.io/badge/Docker-28-blue?logo=docker&logoColor=white)
-
----
 
 ## 🏗 Project Structure
 
@@ -28,8 +24,6 @@ management, seat reservation functionality, and reporting on reservations.
 - **🚨 Exceptions:** Custom exception handling
 - **🔒 Security:** Authentication and authorization configuration
 - **🛠 Utils:** Utility classes and validators
-
----
 
 ## ✨ Features
 
@@ -54,8 +48,6 @@ management, seat reservation functionality, and reporting on reservations.
 - Maven wrapper for easier build management
 - H2 in-memory database for development
 - PostgreSQL support for production
-
----
 
 ## 🚦 Getting Started
 
@@ -87,8 +79,6 @@ The application will be available at [https://localhost:443](https://localhost:4
   * Username: `user`
   * Password: `User1#@@`
 
----
-
 ## 🛣 API Endpoints
 
 ### 👥 User Management
@@ -101,8 +91,6 @@ The application will be available at [https://localhost:443](https://localhost:4
 
 * `GET /login` - Login page
 * `GET /oauth2/consent` - OAuth2 consent page
-
----
 
 ## 📈 Project Status
 
@@ -135,8 +123,6 @@ The application will be available at [https://localhost:443](https://localhost:4
 * [ ] Integration tests
 * [ ] CI/CD pipeline
 
----
-
 ## 📝 Notes on Login and Consent Pages
 
 Although this project is primarily a backend system without a dedicated frontend, it includes a
@@ -151,8 +137,6 @@ customize these flows.
 
 Future improvements may include separating the Authorization Server and Resource Server
 responsibilities and removing these pages to align strictly with a backend API architecture.
-
----
 
 ## 📄 License
 
