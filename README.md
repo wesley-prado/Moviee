@@ -1,35 +1,33 @@
-# Moviee - Movie Reservation System
+# 🎬 Moviee - Movie Reservation System
 
-Moviee is a comprehensive backend system for a movie reservation service built with Spring Boot. The
-service allows users to sign up, log in, browse movies, reserve seats for specific showtimes, and
-manage their reservations. The system features user authentication with OAuth2, role-based
-authorization, movie and showtime management, seat reservation functionality, and reporting on
-reservations.
+Moviee is a comprehensive backend system for a movie reservation service built with Spring Boot.  
+The service allows users to sign up, log in, browse movies, reserve seats for specific showtimes,
+and manage their reservations.  
+The system features user authentication with OAuth2, role-based authorization, movie and showtime
+management, seat reservation functionality, and reporting on reservations.
 
-## Technology Stack
+## 🚀 Technology Stack
 
-- **Backend**: Java 21 with Spring Boot 3.x
-- **Security**: OAuth2 Authorization Server & Resource Server
-- **Database**: PostgreSQL
-- **Build Tool**: Maven
-- **Containerization**: Docker
+![Java 21](https://img.shields.io/badge/Java-21-blue?logo=java&logoColor=white)  
+![Spring Boot 3.4.6](https://img.shields.io/badge/Spring_Boot-3.4.6-green?logo=springboot&logoColor=white)  
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-blue?logo=postgresql&logoColor=white)  
+![Maven 3.9.9](https://img.shields.io/badge/Maven-3.9-red?logo=apachemaven&logoColor=white)  
+![Docker](https://img.shields.io/badge/Docker-28-blue?logo=docker&logoColor=white)
 
-## Project Structure
+## 🏗 Project Structure
 
-The application follows a layered architecture:
+- **📦 Controllers:** Handle HTTP requests and responses
+- **⚙️ Services:** Contain business logic
+- **📚 Repositories:** Handle data access operations
+- **📝 DTOs:** Data transfer objects for API contracts
+- **🏛 Entities:** Domain models mapped to database tables
+- **🚨 Exceptions:** Custom exception handling
+- **🔒 Security:** Authentication and authorization configuration
+- **🛠 Utils:** Utility classes and validators
 
-- **Controllers**: Handle HTTP requests and responses
-- **Services**: Contain business logic
-- **Repositories**: Handle data access operations
-- **DTOs**: Data transfer objects for API contracts
-- **Entities**: Domain models mapped to database tables
-- **Exceptions**: Custom exception handling
-- **Security**: Authentication and authorization configuration
-- **Utils**: Utility classes and validators
+## ✨ Features
 
-## Features
-
-### User Authentication and Authorization
+### 🔐 User Authentication and Authorization
 
 - OAuth2-based authentication system
 - Role-based access control (ADMIN, USER)
@@ -38,12 +36,12 @@ The application follows a layered architecture:
 - Password validation with strong password requirements
 - JWT token-based authentication
 
-### API Documentation
+### 📚 API Documentation
 
 - REST API with HAL (Hypertext Application Language) support
 - HATEOAS implementation for API discoverability
 
-### Development and Deployment
+### 🛠 Development and Deployment
 
 - Docker support for containerized deployment
 - Docker Compose configuration for orchestration
@@ -51,21 +49,15 @@ The application follows a layered architecture:
 - H2 in-memory database for development
 - PostgreSQL support for production
 
-## Getting Started
+## 🚦 Getting Started
 
-### Prerequisites
+### 📋 Prerequisites
 
 - Java 21 or higher
 - Maven (or use the included mvnw wrapper)
 - Docker and Docker Compose (optional, for containerized deployment)
 
-### Running the Application
-
-**Using Maven:**
-
-```bash
-./mvnw spring-boot:run
-```
+### ▶️ Running the Application
 
 **Using Docker (dev):**
 
@@ -73,65 +65,65 @@ The application follows a layered architecture:
 docker compose -f docker-compose.dev.yml up -d
 ```
 
-The application will be available at https://localhost:443.
+The application will be available at [https://localhost:443](https://localhost:443).
 
-### Default Credentials
+### 🔑 Default Credentials
 
-The application is pre-configured with the following users in development mode:
+* **Admin user:**
 
-- Admin user:
-  - Username: admin
-  - Password: Admin1#@
+  * Username: `admin`
+  * Password: `Admin1#@`
 
-- Regular user:
-  - Username: user
-  - Password: User1#@@
+* **Regular user:**
 
-## API Endpoints
+  * Username: `user`
+  * Password: `User1#@@`
 
-### User Management
+## 🛣 API Endpoints
 
-- `GET /api/v1/users` - Get all users (ADMIN only)
-- `GET /api/v1/users/{id}` - Get user by ID
-- `POST /api/v1/users` - Create new user
+### 👥 User Management
 
-### Authentication
+* `GET /api/v1/users` - Get all users (ADMIN only)
+* `GET /api/v1/users/{id}` - Get user by ID
+* `POST /api/v1/users` - Create new user
 
-- `GET /login` - Login page
-- `GET /oauth2/consent` - OAuth2 consent page
+### 🔐 Authentication
 
-## Project Status
+* `GET /login` - Login page
+* `GET /oauth2/consent` - OAuth2 consent page
 
-### Features Implemented
+## 📈 Project Status
 
-- ✅ User authentication with OAuth2 and JWT
-- ✅ Role-based authorization (ADMIN, USER, MODERATOR)
-- ✅ User registration and management
-- ✅ Custom login page
-- ✅ Remember-me on login
-- ✅ Custom OAuth2 consent page
-- ✅ Strong password validation
-- ✅ Docker and Docker Compose support
-- ✅ HAL+JSON API with HATEOAS
+### ✅ Features Implemented
 
-### Features To Be Implemented
+* [x] User authentication with OAuth2 and JWT
+* [x] Role-based authorization (ADMIN, USER, MODERATOR)
+* [x] User registration and management
+* [x] Custom login page
+* [x] Remember-me on login
+* [x] Custom OAuth2 consent page
+* [x] Strong password validation
+* [x] Docker and Docker Compose support
+* [x] HAL+JSON API with HATEOAS
 
-- ⬜ Login with Google
-- ⬜ Movie management (add, update, delete movies)
-- ⬜ Movie categorization by genre
-- ⬜ Showtime management
-- ⬜ Seat reservation system
-- ⬜ Booking management
-- ⬜ User reservation overview
-- ⬜ Reservation cancellation
-- ⬜ Admin reporting (reservations, capacity, revenue)
-- ⬜ Email notifications
-- ⬜ File upload for movie posters
-- ⬜ API documentation with OpenAPI/Swagger
-- ⬜ Integration tests
-- ⬜ CI/CD pipeline
+### 🚧 Features To Be Implemented
 
-## Notes on Login and Consent Pages
+* [ ] Login with Google
+* [ ] Movie management (add, update, delete movies)
+* [ ] Movie categorization by genre
+* [ ] Showtime management
+* [ ] Seat reservation system
+* [ ] Booking management
+* [ ] User reservation overview
+* [ ] Reservation cancellation
+* [ ] Admin reporting (reservations, capacity, revenue)
+* [ ] Email notifications
+* [ ] File upload for movie posters
+* [ ] API documentation with OpenAPI/Swagger
+* [ ] Integration tests
+* [ ] CI/CD pipeline
+
+## 📝 Notes on Login and Consent Pages
 
 Although this project is primarily a backend system without a dedicated frontend, it includes a
 custom login page (`/login`) and OAuth2 consent page (`/oauth2/consent`).
@@ -146,6 +138,6 @@ customize these flows.
 Future improvements may include separating the Authorization Server and Resource Server
 responsibilities and removing these pages to align strictly with a backend API architecture.
 
-## License
+## 📄 License
 
 This project is licensed under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
