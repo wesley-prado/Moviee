@@ -1,6 +1,5 @@
 package com.codemages.Moviee.config;
 
-import com.codemages.Moviee.security.OAuth2PublicClientRefreshTokenGenerator;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
@@ -9,13 +8,11 @@ import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.oauth2.core.OAuth2Token;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
-import org.springframework.security.oauth2.server.authorization.token.*;
+import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
+import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -64,17 +61,5 @@ public class TokenStoreConfig {
         } );
       }
     };
-  }
-
-  @Bean
-  OAuth2TokenGenerator<OAuth2Token> tokenGenerator(JWKSource<SecurityContext> jwkSource) {
-    JwtEncoder jwtEncoder = new NimbusJwtEncoder( jwkSource );
-    JwtGenerator jwtAccessTokenGenerator = new JwtGenerator( jwtEncoder );
-    jwtAccessTokenGenerator.setJwtCustomizer( jwtCustomizer() );
-
-    return new DelegatingOAuth2TokenGenerator(
-      jwtAccessTokenGenerator,
-      new OAuth2PublicClientRefreshTokenGenerator()
-    );
   }
 }
