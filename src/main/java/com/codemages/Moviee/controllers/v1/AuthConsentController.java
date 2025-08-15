@@ -22,7 +22,7 @@ import java.util.Set;
 public class AuthConsentController {
   private final RegisteredClientRepository registeredClientRepository;
 
-  @GetMapping("/oauth2/consent")
+  @GetMapping("/auth/consent")
   public String consent(
     Principal principal, Model model,
     @RequestParam(OAuth2ParameterNames.CLIENT_ID) String clientId,

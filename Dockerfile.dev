@@ -8,10 +8,8 @@ RUN ./mvnw de.qaware.maven:go-offline-maven-plugin:resolve-dependencies
 FROM openjdk:21-jdk-slim AS builder
 WORKDIR /app
 COPY --from=deps /root/.m2/repository /root/.m2/repository
-COPY . /app/
-RUN chmod +x /app/docker-entrypoint.sh
-COPY pom.xml .
-COPY .mvn .mvn
-COPY ./mvnw ./mvnw
+COPY . .
+RUN chmod +x ./docker-entrypoint.sh
 
-ENTRYPOINT ["/app/docker-entrypoint.sh"]
+ENTRYPOINT [ "/app/docker-entrypoint.sh" ]
+CMD [ "./mvnw", "spring-boot:run", "-Dspring-boot.run.arguments=--logging.level.org.springframework=TRACE" ]

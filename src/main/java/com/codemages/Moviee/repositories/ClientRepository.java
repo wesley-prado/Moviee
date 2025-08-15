@@ -1,11 +1,11 @@
 package com.codemages.Moviee.repositories;
 
-import java.util.UUID;
-
+import com.codemages.Moviee.entities.Client;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.codemages.Moviee.entities.Client;
+import java.util.Optional;
+import java.util.UUID;
 
 public interface ClientRepository extends JpaRepository<Client, UUID> {
-	Client findByClientId(String clientId);
+  Optional<Client> findByClientId(String clientId);
 }

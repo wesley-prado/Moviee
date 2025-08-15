@@ -1,9 +1,10 @@
 CREATE TABLE client_tb
 (
-  id           UUID         NOT NULL,
-  client_id    VARCHAR(100) NOT NULL,
-  redirect_uri VARCHAR(255) NOT NULL,
-  client_name  VARCHAR(100) NOT NULL,
+  id            UUID         NOT NULL,
+  client_id     VARCHAR(100) NOT NULL,
+  client_secret VARCHAR(255) NOT NULL,
+  redirect_uri  VARCHAR(255) NOT NULL,
+  client_name   VARCHAR(255) NOT NULL,
   CONSTRAINT pk_client_tb PRIMARY KEY (id)
 );
 

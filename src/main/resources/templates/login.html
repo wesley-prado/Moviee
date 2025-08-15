@@ -1,187 +1,173 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Moviee - Login</title>
-		<link
-			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-			rel="stylesheet"
-		/>
-		<style>
-			body {
-				background-color: #121212;
-				color: #f8f9fa;
-				height: 100vh;
-			}
-			.login-container {
-				max-width: 400px;
-				margin: 0 auto;
-				padding-top: 100px;
-			}
-			.card {
-				color: #f8f9fa;
-				background-color: #1e1e1e;
-				border: none;
-				border-radius: 10px;
-				box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-			}
-			.btn-primary {
-				background-color: #6200ee;
-				border-color: #6200ee;
-			}
-			.btn-primary:hover {
-				background-color: #7c4dff;
-				border-color: #7c4dff;
-			}
-			.form-control {
-				background-color: #2d2d2d;
-				border-color: #2d2d2d;
-				color: #f8f9fa;
-			}
-			.form-control:focus {
-				background-color: #333333;
-				color: #f8f9fa;
-				border-color: #6200ee;
-				box-shadow: 0 0 0 0.25rem rgba(98, 0, 238, 0.25);
-			}
-			.logo {
-				max-width: 150px;
-				margin-bottom: 20px;
-			}
-			.oauth-btn {
-				margin-bottom: 10px;
-				width: 100%;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				padding: 8px;
-			}
-			.oauth-btn img {
-				height: 24px;
-				margin-right: 10px;
-			}
-		</style>
-	</head>
-	<body>
-		<div class="container login-container">
-			<div class="text-center mb-4">
-				<h1 class="mb-4">Moviee</h1>
-			</div>
-			<div class="card p-4">
-				<div class="card-body">
-					<h2 class="text-center mb-4">Sign In</h2>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Moviee - Login</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <style>
+    body {
+      background-color: #121212;
+      color: #f8f9fa;
+      height: 100vh;
+    }
 
-					<div th:if="${error}" class="alert alert-danger">
-						Invalid username or password.
-					</div>
-					<div th:if="${logout}" class="alert alert-success">
-						You have been logged out.
-					</div>
+    .login-container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding-top: 100px;
+    }
 
-					<form th:action="@{/login}" method="post" th:object="${loginModel}">
-						<div class="mb-3">
-							<label for="username" class="form-label">Username</label>
-							<input
-								type="text"
-								id="username"
-								name="username"
-								th:field="*{username}"
-								class="form-control"
-								required
-								autofocus
-							/>
-						</div>
+    .card {
+      color: #f8f9fa;
+      background-color: #1e1e1e;
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
 
-						<div class="mb-3">
-							<label for="password" class="form-label">Password</label>
-							<input
-								type="password"
-								id="password"
-								name="password"
-								th:field="*{password}"
-								class="form-control"
-								required
-							/>
-						</div>
+    .btn-primary {
+      background-color: #6200ee;
+      border-color: #6200ee;
+    }
 
-						<div class="mb-3 form-check">
-							<input
-								type="checkbox"
-								class="form-check-input"
-								id="remember-me"
-								name="remember-me"
-								th:field="*{rememberMe}"
-							/>
-							<label class="form-check-label" for="remember-me"
-								>Remember me</label
-							>
-						</div>
+    .btn-primary:hover {
+      background-color: #7c4dff;
+      border-color: #7c4dff;
+    }
 
-						<div class="d-grid gap-2">
-							<button type="submit" class="btn btn-primary">Sign In</button>
-						</div>
-					</form>
+    .form-control {
+      background-color: #2d2d2d;
+      border-color: #2d2d2d;
+      color: #f8f9fa;
+    }
 
-					<hr class="my-4" />
+    .form-control:focus {
+      background-color: #333333;
+      color: #f8f9fa;
+      border-color: #6200ee;
+      box-shadow: 0 0 0 0.25rem rgba(98, 0, 238, 0.25);
+    }
 
-					<div class="text-center mb-3">
-						<p>Or sign in with:</p>
-					</div>
+    .logo {
+      max-width: 150px;
+      margin-bottom: 20px;
+    }
 
-					<div class="d-grid gap-2">
-						<a
-							th:href="@{/oauth2/authorization/github}"
-							class="btn btn-dark oauth-btn"
-						>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="24"
-								height="24"
-								fill="currentColor"
-								class="bi bi-github me-2"
-								viewBox="0 0 16 16"
-							>
-								<path
-									d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"
-								/>
-							</svg>
-							Continue with GitHub
-						</a>
-						<a
-							th:href="@{/oauth2/authorization/google}"
-							class="btn btn-light oauth-btn"
-						>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="24"
-								height="24"
-								viewBox="0 0 24 24"
-								class="me-2"
-							>
-								<path
-									d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z"
-								/>
-							</svg>
-							Continue with Google
-						</a>
-					</div>
+    .oauth-btn {
+      margin-bottom: 10px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+    }
 
-					<div class="mt-3 text-center">
-						<p>
-							Don't have an account?
-							<a
-								th:href="@{/register}"
-								class="text-decoration-none"
-								style="color: #7c4dff"
-								>Sign up</a
-							>
-						</p>
-					</div>
-				</div>
-			</div>
-		</div>
+    .oauth-btn img {
+      height: 24px;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+<div class="container login-container">
+  <div class="text-center mb-4">
+    <h1 class="mb-4">Moviee</h1>
+  </div>
+  <div class="card p-4">
+    <div class="card-body">
+      <h2 class="text-center mb-4">Sign In</h2>
 
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-	</body>
+      <div th:if="${error}" th:text="${error}" class="alert alert-danger">
+      </div>
+      <div th:if="${logout}" th:text="${logout}" class="alert alert-success">
+      </div>
+
+      <form th:action="@{/auth/login}" method="post">
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            class="form-control"
+            required
+            autofocus
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="form-control"
+            required
+          />
+        </div>
+
+        <div class="mb-3 form-check">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            id="remember-me"
+            name="remember-me"
+          />
+          <label class="form-check-label" for="remember-me"
+          >Remember me</label
+          >
+        </div>
+
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-primary">Sign In</button>
+        </div>
+      </form>
+
+      <hr class="my-4" />
+
+      <div class="text-center mb-3">
+        <p>Or sign in with:</p>
+      </div>
+
+      <div class="d-grid gap-2">
+        <a
+          th:href="@{/oauth2/authorization/google}"
+          class="btn btn-light oauth-btn"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            class="me-2"
+          >
+            <path
+              d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z"
+            />
+          </svg>
+          Continue with Google
+        </a>
+      </div>
+
+      <div class="mt-3 text-center">
+        <p>
+          Don't have an account?
+          <a
+            th:href="@{/register}"
+            class="text-decoration-none"
+            style="color: #7c4dff"
+          >Sign up</a
+          >
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

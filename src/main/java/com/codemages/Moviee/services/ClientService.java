@@ -2,9 +2,10 @@ package com.codemages.Moviee.services;
 
 import com.codemages.Moviee.dtos.ClientDTO;
 import com.codemages.Moviee.entities.Client;
-import com.codemages.Moviee.exceptions.client.ClientNotFoundException;
+import com.codemages.Moviee.exceptions.ClientIdAlreadyExistsException;
 import com.codemages.Moviee.repositories.ClientRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,29 +13,25 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ClientService {
   private final ClientRepository clientRepository;
+  private final PasswordEncoder passwordEncoder;
 
   @Transactional
   public void save(ClientDTO dto) {
+    clientRepository.findByClientId( dto.clientId() ).ifPresent( client -> {
+      throw new ClientIdAlreadyExistsException(
+        "Client ID '" + dto.clientId() + "' already exists." );
+    } );
+
     var client = new Client();
     client.setClientId( dto.clientId() );
+    client.setClientSecret( passwordEncoder.encode( dto.clientSecret() ) );
     client.setRedirectUri( dto.redirectUri() );
     client.setClientName( dto.clientName() );
 
     clientRepository.save( client );
   }
 
-  @Transactional
-  public void update(ClientDTO dto) throws ClientNotFoundException {
-    var client = clientRepository.findByClientId( dto.clientId() );
-
-    if ( client == null ) {
-      throw new ClientNotFoundException( "Client with ID " + dto.clientId() + " does not exist." );
-    }
-
-    client.setRedirectUri( dto.redirectUri() );
-    clientRepository.save( client );
-  }
-
+  @Transactional(readOnly = true)
   public int count() {
     return (int) clientRepository.count();
   }
