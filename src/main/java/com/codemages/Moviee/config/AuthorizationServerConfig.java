@@ -18,13 +18,15 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 @EnableMethodSecurity
 @EnableConfigurationProperties(SecurityProperties.class)
 public class AuthorizationServerConfig {
+  private static final String CONSENT_URL = "/auth/consent";
 
   @Bean
   @Order(Ordered.HIGHEST_PRECEDENCE)
   public SecurityFilterChain authServerFilterChain(HttpSecurity http) throws Exception {
     var authServerConfigurer = new OAuth2AuthorizationServerConfigurer();
 
-    authServerConfigurer.oidc( Customizer.withDefaults() );
+    authServerConfigurer.oidc( Customizer.withDefaults() )
+      .authorizationEndpoint( endpoint -> endpoint.consentPage( CONSENT_URL ) );
 
     http.securityMatcher( authServerConfigurer.getEndpointsMatcher() )
       .authorizeHttpRequests( authorize -> authorize.anyRequest().authenticated() )
