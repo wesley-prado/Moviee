@@ -71,7 +71,7 @@ class UserControllerTest {
     mvc = MockMvcBuilders.webAppContextSetup( context ).apply( springSecurity() ).build();
   }
 
-  List<UserResponseDTO> users = List.of(
+  final List<UserResponseDTO> users = List.of(
     userFactory.createValidUserResponseDTO( userFactory.createValidUserCreateDTO( Role.USER ) ),
     userFactory.createValidUserResponseDTO( userFactory.createValidUserCreateDTO( Role.MODERATOR ) ),
     userFactory.createValidUserResponseDTO( userFactory.createValidUserCreateDTO( Role.ADMIN ) )

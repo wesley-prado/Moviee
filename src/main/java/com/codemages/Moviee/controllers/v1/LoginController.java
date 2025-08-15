@@ -1,6 +1,5 @@
 package com.codemages.Moviee.controllers.v1;
 
-import com.codemages.Moviee.models.LoginModel;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +19,6 @@ public class LoginController {
     if ( logout != null ) {
       model.addAttribute( "logout", "You have been logged out successfully." );
     }
-
-    model.addAttribute( "loginModel", new LoginModel() );
 
     return "login";
   }
