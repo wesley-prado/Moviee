@@ -35,4 +35,9 @@ public class ClientService {
   public int count() {
     return (int) clientRepository.count();
   }
+
+  @Transactional(readOnly = true)
+  public boolean existsByClientId(String clientId) {
+    return clientRepository.existsByClientId( clientId );
+  }
 }
