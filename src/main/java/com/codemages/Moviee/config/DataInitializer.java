@@ -35,13 +35,14 @@ public class DataInitializer {
         System.out.println( "User created: " + userResponse.id() );
       }
 
-      if ( clientService.count() == 0 ) {
+      if ( !clientService.existsByClientId( "postman" ) ) {
         clientService.save( new ClientDTO(
           "postman",
           "my_client_secret",
           "Postman Client",
           "https://oauth.pstmn.io/v1/callback"
         ) );
+        System.out.println( "Client 'postman' created." );
       }
     };
   }

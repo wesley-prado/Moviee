@@ -50,7 +50,8 @@ public class TokenStoreConfig {
     return OAuth2AuthorizationServerConfiguration.jwtDecoder( jwkSource );
   }
 
-  OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer() {
+  @Bean
+  public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer() {
     return context -> {
       if ( OAuth2TokenType.ACCESS_TOKEN.equals( context.getTokenType() ) ) {
         context.getClaims().claims( claims -> {
