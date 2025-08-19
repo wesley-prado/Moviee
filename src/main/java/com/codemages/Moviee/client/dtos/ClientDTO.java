@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-import static com.codemages.Moviee.user.contants.RegexConstants.URL_PATTERN;
+import static com.codemages.Moviee.client.constants.RegexConstants.URL_PATTERN;
 
 public record ClientDTO(
   @NotBlank(message = "This field cannot be blank") @Size(min = 5, max = 100) String clientId,

@@ -7,7 +7,7 @@ import lombok.Data;
 
 import java.util.UUID;
 
-import static com.codemages.Moviee.user.contants.RegexConstants.URL_PATTERN;
+import static com.codemages.Moviee.client.constants.RegexConstants.URL_PATTERN;
 
 @Entity
 @Table(name = "clients")

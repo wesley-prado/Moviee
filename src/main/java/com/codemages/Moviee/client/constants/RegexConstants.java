@@ -1,4 +1,4 @@
-package com.codemages.Moviee.user.contants;
+package com.codemages.Moviee.client.constants;
 
 public final class RegexConstants {
   private RegexConstants() {}
