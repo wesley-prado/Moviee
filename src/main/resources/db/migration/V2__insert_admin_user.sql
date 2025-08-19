@@ -1,4 +1,4 @@
-INSERT INTO user_tb (id, username, email, password, document, document_type, role, status)
+INSERT INTO users (id, username, email, password, document, document_type, role, status)
 VALUES ('c32118b1-f73e-4498-bdc1-1356b8a5cbad',
         'admin',
         'wesleyprado.dev@gmail.com',

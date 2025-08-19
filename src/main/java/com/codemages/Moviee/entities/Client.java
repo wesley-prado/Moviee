@@ -10,7 +10,7 @@ import java.util.UUID;
 import static com.codemages.Moviee.utils.contants.RegexConstants.URL_PATTERN;
 
 @Entity
-@Table(name = "client_tb")
+@Table(name = "clients")
 @Data
 public class Client {
   @Id
@@ -21,10 +21,10 @@ public class Client {
   @Column(nullable = false, unique = true, length = 100)
   @Size(min = 5, max = 100)
   private String clientId;
-  @Column(nullable = false, length = 255)
+  @Column(nullable = false)
   @Size(min = 8, max = 255)
   private String clientSecret;
-  @Column(nullable = false, length = 255)
+  @Column(nullable = false)
   @Pattern(regexp = URL_PATTERN, message = "Invalid URL")
   private String redirectUri;
   @Column(nullable = false, length = 100)

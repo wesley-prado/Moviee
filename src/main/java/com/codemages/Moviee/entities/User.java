@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
-@Table(name = "user_tb")
+@Table(name = "users")
 @Data
 public class User implements Serializable {
   @Id
@@ -19,11 +19,11 @@ public class User implements Serializable {
   private String email;
   @Column(nullable = false)
   private String password;
-  @Column(nullable = true, unique = true, length = 20)
+  @Column(unique = true, length = 20)
   private String document;
 
   @Enumerated(EnumType.STRING)
-  @Column(nullable = true, length = 10)
+  @Column(length = 10)
   private DocumentType documentType;
 
   @Enumerated(EnumType.STRING)
