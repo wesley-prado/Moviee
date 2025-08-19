@@ -15,7 +15,7 @@ CREATE TABLE user_tb
   email         VARCHAR(255) NOT NULL,
   password      VARCHAR(255) NOT NULL,
   document      VARCHAR(20),
-  document_type VARCHAR(10)  NOT NULL,
+  document_type VARCHAR(10),
   role          VARCHAR(25)  NOT NULL,
   status        VARCHAR(25)  NOT NULL,
   CONSTRAINT pk_user_tb PRIMARY KEY (id)
