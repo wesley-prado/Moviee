@@ -1,0 +1,24 @@
+package com.codemages.Moviee.user.assemblers;
+
+import com.codemages.Moviee.user.controllers.v1.RoleController;
+import com.codemages.Moviee.user.dto.RoleResponseDTO;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.RepresentationModelAssembler;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.stereotype.Component;
+
+@Component
+public class RoleModelAssembler
+  implements RepresentationModelAssembler<RoleResponseDTO, EntityModel<RoleResponseDTO>> {
+
+  @Override
+  public EntityModel<RoleResponseDTO> toModel(
+    RoleResponseDTO response
+  ) {
+    Link rolesLink = WebMvcLinkBuilder.linkTo( WebMvcLinkBuilder.methodOn( RoleController.class )
+      .getRoles() ).withRel( "roles" );
+
+    return EntityModel.of( response, rolesLink );
+  }
+}
