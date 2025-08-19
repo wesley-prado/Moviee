@@ -23,7 +23,7 @@ public class User implements Serializable {
   private String document;
 
   @Enumerated(EnumType.STRING)
-  @Column(nullable = false, length = 10)
+  @Column(nullable = true, length = 10)
   private DocumentType documentType;
 
   @Enumerated(EnumType.STRING)
