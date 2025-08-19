@@ -89,8 +89,8 @@ The application will be available at [https://localhost:443](https://localhost:4
 
 ### 🔐 Authentication
 
-* `GET /login` - Login page
-* `GET /oauth2/consent` - OAuth2 consent page
+* `GET /auth/login` - Login page
+* `GET /auth/consent` - OAuth2 consent page
 
 ## 📈 Project Status
 
