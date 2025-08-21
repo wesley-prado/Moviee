@@ -4,7 +4,6 @@ import com.codemages.Moviee.user.assemblers.RoleModelAssembler;
 import com.codemages.Moviee.user.dto.RoleResponseDTO;
 import com.codemages.Moviee.user.enums.Role;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.MediaTypes;
@@ -21,8 +20,7 @@ import java.util.List;
 @RequestMapping("/api/v1/roles")
 @RequiredArgsConstructor
 public class RoleController {
-  @Autowired
-  private RoleModelAssembler roleModelAssembler;
+  private final RoleModelAssembler roleModelAssembler;
 
   @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
   @PreAuthorize("isAuthenticated()")
