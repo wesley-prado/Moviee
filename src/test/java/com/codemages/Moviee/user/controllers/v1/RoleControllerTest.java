@@ -52,7 +52,7 @@ public class RoleControllerTest {
         .accept( MediaTypes.HAL_JSON ) )
       .andExpect( status().isOk() )
       .andExpect( content().contentType( MediaTypes.HAL_JSON ) )
-      .andExpect( jsonPath( "$._embedded.roleResponseDTOes", hasSize( Role.values().length ) ) );
+      .andExpect( jsonPath( "$._embedded.roles", hasSize( Role.values().length ) ) );
   }
 
   @Test
