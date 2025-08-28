@@ -1,6 +1,6 @@
 package com.codemages.Moviee.user.assemblers;
 
-import com.codemages.Moviee.user.controllers.v1.UserController;
+import com.codemages.Moviee.user.controllers.v1.PrivateUserController;
 import com.codemages.Moviee.user.dto.UserResponseDTO;
 import lombok.NonNull;
 import org.springframework.hateoas.EntityModel;
@@ -19,11 +19,11 @@ public class UserModelAssembler implements
 			UserResponseDTO response) {
 		Link selfLink = WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder
-						.methodOn(UserController.class)
+          .methodOn( PrivateUserController.class )
 						.getUser(response.id()))
 				.withSelfRel();
 		Link usersLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
-				.methodOn(UserController.class).getUsers())
+        .methodOn( PrivateUserController.class ).getUsers() )
 				.withRel("users");
 
 		return EntityModel.of(response, selfLink, usersLink);
