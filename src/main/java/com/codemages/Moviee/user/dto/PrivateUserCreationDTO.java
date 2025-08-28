@@ -1,6 +1,6 @@
 package com.codemages.Moviee.user.dto;
 
-import com.codemages.Moviee.security.password.StrongPassword;
+import com.codemages.Moviee.auth.security.password.StrongPassword;
 import com.codemages.Moviee.user.constant.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

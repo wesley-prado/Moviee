@@ -1,8 +1,8 @@
 package com.codemages.Moviee.security.config;
 
 import com.codemages.Moviee.IntegrationTestContainerSingleton;
-import com.codemages.Moviee.security.config.constants.ApiPaths;
-import com.codemages.Moviee.security.password.interfaces.PasswordGenerator;
+import com.codemages.Moviee.auth.security.config.constants.ApiPaths;
+import com.codemages.Moviee.auth.security.password.PasswordGenerator;
 import com.codemages.Moviee.user.User;
 import com.codemages.Moviee.user.UserRepository;
 import com.codemages.Moviee.user.constant.DocumentType;

@@ -1,7 +1,7 @@
 package com.codemages.Moviee.user.factory;
 
-import com.codemages.Moviee.security.password.CustomPasswordGenerator;
-import com.codemages.Moviee.security.password.interfaces.PasswordGenerator;
+import com.codemages.Moviee.auth.security.password.CustomPasswordGenerator;
+import com.codemages.Moviee.auth.security.password.PasswordGenerator;
 import com.codemages.Moviee.user.constant.DocumentType;
 import com.codemages.Moviee.user.constant.Role;
 import com.codemages.Moviee.user.constant.UserStatus;

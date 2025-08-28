@@ -1,6 +1,6 @@
 package com.codemages.Moviee.user;
 
-import com.codemages.Moviee.security.password.interfaces.PasswordValidator;
+import com.codemages.Moviee.auth.security.password.PasswordValidator;
 import com.codemages.Moviee.user.constant.UserStatus;
 import com.codemages.Moviee.user.dto.PrivateUserCreationDTO;
 import com.codemages.Moviee.user.dto.PublicUserCreationDTO;

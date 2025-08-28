@@ -1,6 +1,7 @@
 package com.codemages.Moviee.security.controller.v1;
 
-import com.codemages.Moviee.security.config.constants.ApiPaths;
+import com.codemages.Moviee.auth.security.config.constants.ApiPaths;
+import com.codemages.Moviee.auth.security.controller.v1.LoginController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

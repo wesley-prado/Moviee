@@ -1,6 +1,7 @@
 package com.codemages.Moviee.security.password;
 
-import com.codemages.Moviee.security.password.interfaces.PasswordValidator;
+import com.codemages.Moviee.auth.security.password.PasswordPolicyValidator;
+import com.codemages.Moviee.auth.security.password.PasswordValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
