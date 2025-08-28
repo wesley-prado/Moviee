@@ -1,6 +1,6 @@
 package com.codemages.Moviee.movie.controllers;
 
-import com.codemages.Moviee.constants.ControllerConstants;
+import com.codemages.Moviee.constant.ControllerConstants;
 import com.codemages.Moviee.movie.MovieService;
 import com.codemages.Moviee.movie.assemblers.MovieModelAssembler;
 import com.codemages.Moviee.movie.dto.MovieResponseDTO;
@@ -23,7 +23,7 @@ public class PublicMovieController {
   private static final MovieModelAssembler movieModelAssembler = new MovieModelAssembler();
 
   @GetMapping
-  public ResponseEntity<CollectionModel<EntityModel<MovieResponseDTO>>> getMovies() {
+  public ResponseEntity<CollectionModel<EntityModel<MovieResponseDTO>>> getAllMovies() {
     List<MovieResponseDTO> movies = movieService.findAll();
 
     return ResponseEntity.ok()

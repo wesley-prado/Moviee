@@ -14,7 +14,7 @@ public class MovieModelAssembler
   @Override
   public @NotNull EntityModel<MovieResponseDTO> toModel(@NotNull MovieResponseDTO entity) {
     Link moviesLink = WebMvcLinkBuilder.linkTo(
-      WebMvcLinkBuilder.methodOn( PublicMovieController.class ).getMovies()
+      WebMvcLinkBuilder.methodOn( PublicMovieController.class ).getAllMovies()
     ).withRel( "movies" );
     Link genresLink = WebMvcLinkBuilder.linkTo(
       WebMvcLinkBuilder.methodOn( PublicGenreController.class ).getGenres()

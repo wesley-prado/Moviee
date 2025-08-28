@@ -1,6 +1,6 @@
 package com.codemages.Moviee.movie.controllers;
 
-import com.codemages.Moviee.constants.ControllerConstants;
+import com.codemages.Moviee.constant.ControllerConstants;
 import com.codemages.Moviee.movie.GenreService;
 import com.codemages.Moviee.movie.assemblers.GenreModelAssembler;
 import com.codemages.Moviee.movie.dto.GenreResponseDTO;
