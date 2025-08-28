@@ -8,6 +8,7 @@ import com.codemages.Moviee.user.UserRepository;
 import com.codemages.Moviee.user.enums.DocumentType;
 import com.codemages.Moviee.user.enums.Role;
 import org.junit.Rule;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -57,6 +58,7 @@ public class DefaultSecurityConfigTest extends IntegrationTestContainerSingleton
   void setUp() {
     mvc = MockMvcBuilders.webAppContextSetup( context ).apply( springSecurity() ).build();
 
+    Assertions.assertNotNull( ((JdbcTokenRepositoryImpl) persistentTokenRepository).getJdbcTemplate() );
     ((JdbcTokenRepositoryImpl) persistentTokenRepository).getJdbcTemplate()
       .update( "DELETE FROM persistent_logins" );
   }
