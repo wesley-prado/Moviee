@@ -1,5 +1,6 @@
 package com.codemages.Moviee.security.config;
 
+import com.codemages.Moviee.security.config.constants.ApiPaths;
 import com.codemages.Moviee.security.config.properties.SecurityProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -18,21 +19,19 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 @EnableMethodSecurity
 @EnableConfigurationProperties(SecurityProperties.class)
 public class AuthorizationServerConfig {
-  private static final String CONSENT_URL = "/auth/consent";
-
   @Bean
   @Order(Ordered.HIGHEST_PRECEDENCE)
   public SecurityFilterChain authServerFilterChain(HttpSecurity http) throws Exception {
     var authServerConfigurer = new OAuth2AuthorizationServerConfigurer();
 
     authServerConfigurer.oidc( Customizer.withDefaults() )
-      .authorizationEndpoint( endpoint -> endpoint.consentPage( CONSENT_URL ) );
-
+      .authorizationEndpoint( endpoint -> endpoint.consentPage( ApiPaths.CONSENT ) );
+    
     http.securityMatcher( authServerConfigurer.getEndpointsMatcher() )
       .authorizeHttpRequests( authorize -> authorize.anyRequest().authenticated() )
       .csrf( csrf -> csrf.ignoringRequestMatchers( authServerConfigurer.getEndpointsMatcher() ) )
       .exceptionHandling( exceptions -> exceptions.authenticationEntryPoint( new LoginUrlAuthenticationEntryPoint(
-        "/auth/login" ) ) )
+        ApiPaths.LOGIN ) ) )
       .with( authServerConfigurer, Customizer.withDefaults() );
 
     return http.build();
