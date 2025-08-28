@@ -1,15 +1,12 @@
 package com.codemages.Moviee.security.config;
 
 import com.codemages.Moviee.IntegrationTestContainerSingleton;
-import com.codemages.Moviee.security.password.interfaces.PasswordGenerator;
-import com.codemages.Moviee.user.UserRepository;
 import org.junit.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.rules.Timeout;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -28,18 +25,9 @@ public class ResourceServerConfigTest extends IntegrationTestContainerSingleton 
   private static final String EXPLORER_ENDPOINT = "/explorer/index.html#uri=/";
 
   @Autowired
-  private UserRepository userRepository;
-
-  @Autowired
-  private PasswordEncoder passwordEncoder;
-
-  @Autowired
   private WebApplicationContext context;
 
   private MockMvc mvc;
-
-  @Autowired
-  private PasswordGenerator passwordGenerator;
 
   @BeforeEach
   void setUp() {
@@ -67,6 +55,4 @@ public class ResourceServerConfigTest extends IntegrationTestContainerSingleton 
   void explorer_shouldBeAllowedForAdminRole() throws Exception {
     mvc.perform( get( EXPLORER_ENDPOINT ) ).andExpect( status().isOk() );
   }
-
-
 }
