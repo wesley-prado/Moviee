@@ -1,7 +1,7 @@
 package com.codemages.Moviee.movie.assemblers;
 
-import com.codemages.Moviee.movie.controllers.PublicGenreController;
-import com.codemages.Moviee.movie.controllers.PublicMovieController;
+import com.codemages.Moviee.movie.controller.PublicGenreController;
+import com.codemages.Moviee.movie.controller.PublicMovieController;
 import com.codemages.Moviee.movie.dto.MovieResponseDTO;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.hateoas.EntityModel;

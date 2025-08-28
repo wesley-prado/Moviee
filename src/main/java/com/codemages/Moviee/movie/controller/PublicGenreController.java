@@ -1,4 +1,4 @@
-package com.codemages.Moviee.movie.controllers;
+package com.codemages.Moviee.movie.controller;
 
 import com.codemages.Moviee.constant.ControllerConstants;
 import com.codemages.Moviee.movie.GenreService;
