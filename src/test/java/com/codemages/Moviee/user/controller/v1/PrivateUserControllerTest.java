@@ -6,7 +6,7 @@ import com.codemages.Moviee.user.constant.Role;
 import com.codemages.Moviee.user.dto.PrivateUserCreationDTO;
 import com.codemages.Moviee.user.dto.UserResponseDTO;
 import com.codemages.Moviee.user.exception.UserNotFoundException;
-import com.codemages.Moviee.user.factories.UserFactory;
+import com.codemages.Moviee.user.factory.UserFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import org.hamcrest.Matchers;

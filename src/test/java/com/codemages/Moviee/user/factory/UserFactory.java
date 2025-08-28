@@ -1,4 +1,4 @@
-package com.codemages.Moviee.user.factories;
+package com.codemages.Moviee.user.factory;
 
 import com.codemages.Moviee.security.password.CustomPasswordGenerator;
 import com.codemages.Moviee.security.password.interfaces.PasswordGenerator;

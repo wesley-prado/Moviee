@@ -1,4 +1,4 @@
-package com.codemages.Moviee.security.helpers;
+package com.codemages.Moviee.security.helper;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

@@ -1,4 +1,4 @@
-package com.codemages.Moviee.security.factories;
+package com.codemages.Moviee.security.factory;
 
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
