@@ -100,7 +100,7 @@
               <label
                 class="form-check-label font-weight-bold"
                 th:for="${scope.scope}"
-                th:text="${scope.scope}=='profile' ? (${scope.description}+'('+${principalName}+')'):${scope.scope} + ': ' + ${scope.description}"
+                th:text="${scope.scope}=='profile' ? (${scope.description}+' ('+${principalName}+')'):${scope.scope} + ': ' + ${scope.description}"
               ></label>
             </div>
           </div>
