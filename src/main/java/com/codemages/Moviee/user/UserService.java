@@ -1,12 +1,13 @@
 package com.codemages.Moviee.user;
 
 import com.codemages.Moviee.security.password.interfaces.PasswordValidator;
-import com.codemages.Moviee.user.dto.UserCreateDTO;
+import com.codemages.Moviee.user.dto.PrivateUserCreationDTO;
+import com.codemages.Moviee.user.dto.PublicUserCreationDTO;
 import com.codemages.Moviee.user.dto.UserResponseDTO;
-import com.codemages.Moviee.user.enums.DocumentType;
-import com.codemages.Moviee.user.enums.Role;
+import com.codemages.Moviee.user.enums.UserStatus;
 import com.codemages.Moviee.user.exceptions.DuplicateUserException;
 import com.codemages.Moviee.user.exceptions.UserNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,71 +17,68 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
   private final PasswordValidator passwordValidator;
+  private final UserMapper userMapper = UserMapper.INSTANCE;
 
-  public UserService(
-    UserRepository userRepository,
-    PasswordEncoder passwordEncoder,
-    PasswordValidator passwordValidator
-  ) {
-    this.userRepository = userRepository;
-    this.passwordEncoder = passwordEncoder;
-    this.passwordValidator = passwordValidator;
+  @Transactional
+  public UserResponseDTO createPublicUser(PublicUserCreationDTO publicDto) {
+    UserCreationRequest request = UserCreationRequest.from( publicDto );
+
+    return createUser( request );
   }
 
   @Transactional
-  public UserResponseDTO createUser(UserCreateDTO userCreateDto) {
-    validateUser( userCreateDto );
+  public UserResponseDTO createPrivateUser(PrivateUserCreationDTO privateDto) {
+    UserCreationRequest request = UserCreationRequest.from( privateDto );
 
-    return toUserResponseDTO( userRepository.save( createUserEntity( userCreateDto ) ) );
+    return createUser( request );
   }
 
-  private void validateUser(UserCreateDTO userCreateDto) {
-    if ( !passwordValidator.isValid( userCreateDto.password() ) ) {
+  private UserResponseDTO createUser(UserCreationRequest request) {
+    validateUser( request );
+
+    var user = userMapper.toEntity( request );
+    user.setStatus( UserStatus.ACTIVE );
+    user.setPassword( passwordEncoder.encode( user.getPassword() ) );
+
+    return userMapper.toResponseDTO( userRepository.save( user ) );
+  }
+
+  private void validateUser(UserCreationRequest request) {
+    if ( !passwordValidator.isValid( request.password() ) ) {
       throw new IllegalArgumentException( "Password is not valid" );
     }
 
     Optional<User> u = userRepository.findOptionalByEmailOrUsername(
-      userCreateDto.email(),
-      userCreateDto.username()
+      request.email(),
+      request.username()
     );
 
     if ( u.isEmpty() ) {
       return;
     }
 
-    if ( u.get().getEmail().equals( userCreateDto.email() ) ) {
+    if ( u.get().getEmail().equals( request.email() ) ) {
       throw new DuplicateUserException( "Email already registered" );
     }
 
-    if ( u.get().getUsername().equals( userCreateDto.username() ) ) {
-      throw new DuplicateUserException( "Username already registered" );
+    if ( u.get().getUsername().equals( request.username() ) ) {
+      throw new DuplicateUserException( "Username already taken" );
     }
-  }
-
-  private User createUserEntity(UserCreateDTO userCreateDto) {
-    return new User(
-      null,
-      userCreateDto.username(),
-      userCreateDto.email(),
-      passwordEncoder.encode( userCreateDto.password() ),
-      Role.valueOf( userCreateDto.role() ),
-      userCreateDto.document(),
-      DocumentType.fromString( userCreateDto.documentType() )
-    );
   }
 
   @Transactional(readOnly = true)
   public List<UserResponseDTO> findAll() {
-    return userRepository.findAll().stream().map( this::toUserResponseDTO ).toList();
+    return userRepository.findAll().stream().map( userMapper::toResponseDTO ).toList();
   }
 
   @Transactional(readOnly = true)
   public UserResponseDTO findById(UUID id) {
-    return toUserResponseDTO( userRepository.findById( id )
+    return userMapper.toResponseDTO( userRepository.findById( id )
       .orElseThrow( () -> new UserNotFoundException( "User not found with id: " + id ) ) );
   }
 
@@ -89,15 +87,5 @@ public class UserService {
     Optional<User> user = userRepository.findByUsername( username );
 
     return user.isPresent();
-  }
-
-  private UserResponseDTO toUserResponseDTO(User u) {
-    return new UserResponseDTO(
-      u.getId(),
-      u.getUsername(),
-      u.getEmail(),
-      u.getRole().name(),
-      u.getStatus().toString()
-    );
   }
 }
