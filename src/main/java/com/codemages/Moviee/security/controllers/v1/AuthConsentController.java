@@ -1,5 +1,6 @@
 package com.codemages.Moviee.security.controllers.v1;
 
+import com.codemages.Moviee.security.config.constants.ApiPaths;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
@@ -22,7 +23,7 @@ import java.util.Set;
 public class AuthConsentController {
   private final RegisteredClientRepository registeredClientRepository;
 
-  @GetMapping("/auth/consent")
+  @GetMapping(ApiPaths.CONSENT)
   public String consent(
     Principal principal, Model model,
     @RequestParam(OAuth2ParameterNames.CLIENT_ID) String clientId,
