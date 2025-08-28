@@ -2,6 +2,7 @@ package com.codemages.Moviee.user.assemblers;
 
 import com.codemages.Moviee.user.controllers.v1.PrivateRoleController;
 import com.codemages.Moviee.user.dto.RoleResponseDTO;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
@@ -13,8 +14,8 @@ public class RoleModelAssembler
   implements RepresentationModelAssembler<RoleResponseDTO, EntityModel<RoleResponseDTO>> {
 
   @Override
-  public EntityModel<RoleResponseDTO> toModel(
-    RoleResponseDTO response
+  public @NotNull EntityModel<RoleResponseDTO> toModel(
+    @NotNull RoleResponseDTO response
   ) {
     Link rolesLink =
       WebMvcLinkBuilder.linkTo( WebMvcLinkBuilder.methodOn( PrivateRoleController.class )
