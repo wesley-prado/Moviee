@@ -1,6 +1,5 @@
 package com.codemages.Moviee;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -12,14 +11,20 @@ public abstract class IntegrationTestContainerSingleton {
   private static final PostgreSQLContainer<?> CONTAINER = new PostgreSQLContainer<>(
     "postgres:latest" ).withEnv( "POSTGRES_INITDB_ARGS", "-d" );
 
+  private static boolean containerStarted = false;
+
   @BeforeAll
   static void beforeAll() {
-    CONTAINER.start();
-  }
+    if ( containerStarted ) return;
 
-  @AfterAll
-  static void afterAll() {
-    CONTAINER.stop();
+    CONTAINER.start();
+    containerStarted = true;
+
+    Runtime.getRuntime().addShutdownHook( new Thread( () -> {
+      if ( CONTAINER.isRunning() ) {
+        CONTAINER.stop();
+      }
+    } ) );
   }
 
   @DynamicPropertySource
@@ -29,5 +34,6 @@ public abstract class IntegrationTestContainerSingleton {
     registry.add( "spring.datasource.password", CONTAINER::getPassword );
     registry.add( "spring.jpa.hibernate.ddl-auto", () -> "update" );
     registry.add( "moviee.security.remember-me-key", () -> "remember-me-key" );
+    registry.add( "moviee.security.issuer-uri", () -> "http://moviee.test.com/" );
   }
 }
