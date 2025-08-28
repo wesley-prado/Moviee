@@ -2,12 +2,12 @@ package com.codemages.Moviee.user.factories;
 
 import com.codemages.Moviee.security.password.CustomPasswordGenerator;
 import com.codemages.Moviee.security.password.interfaces.PasswordGenerator;
+import com.codemages.Moviee.user.constant.DocumentType;
+import com.codemages.Moviee.user.constant.Role;
+import com.codemages.Moviee.user.constant.UserStatus;
 import com.codemages.Moviee.user.dto.PrivateUserCreationDTO;
 import com.codemages.Moviee.user.dto.PublicUserCreationDTO;
 import com.codemages.Moviee.user.dto.UserResponseDTO;
-import com.codemages.Moviee.user.enums.DocumentType;
-import com.codemages.Moviee.user.enums.Role;
-import com.codemages.Moviee.user.enums.UserStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;

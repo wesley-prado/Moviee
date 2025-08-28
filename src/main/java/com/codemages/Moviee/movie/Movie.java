@@ -1,6 +1,6 @@
 package com.codemages.Moviee.movie;
 
-import com.codemages.Moviee.movie.enums.Genre;
+import com.codemages.Moviee.movie.constant.Genre;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

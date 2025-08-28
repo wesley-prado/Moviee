@@ -1,11 +1,11 @@
 package com.codemages.Moviee.security.config;
 
 import com.codemages.Moviee.client.ClientService;
-import com.codemages.Moviee.client.dtos.ClientDTO;
+import com.codemages.Moviee.client.dto.ClientDTO;
 import com.codemages.Moviee.user.UserService;
+import com.codemages.Moviee.user.constant.DocumentType;
 import com.codemages.Moviee.user.dto.PublicUserCreationDTO;
 import com.codemages.Moviee.user.dto.UserResponseDTO;
-import com.codemages.Moviee.user.enums.DocumentType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;

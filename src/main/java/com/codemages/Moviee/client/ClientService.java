@@ -1,7 +1,7 @@
 package com.codemages.Moviee.client;
 
-import com.codemages.Moviee.client.dtos.ClientDTO;
-import com.codemages.Moviee.client.exceptions.ClientIdAlreadyExistsException;
+import com.codemages.Moviee.client.dto.ClientDTO;
+import com.codemages.Moviee.client.exception.ClientIdAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

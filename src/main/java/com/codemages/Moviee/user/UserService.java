@@ -1,12 +1,12 @@
 package com.codemages.Moviee.user;
 
 import com.codemages.Moviee.security.password.interfaces.PasswordValidator;
+import com.codemages.Moviee.user.constant.UserStatus;
 import com.codemages.Moviee.user.dto.PrivateUserCreationDTO;
 import com.codemages.Moviee.user.dto.PublicUserCreationDTO;
 import com.codemages.Moviee.user.dto.UserResponseDTO;
-import com.codemages.Moviee.user.enums.UserStatus;
-import com.codemages.Moviee.user.exceptions.DuplicateUserException;
-import com.codemages.Moviee.user.exceptions.UserNotFoundException;
+import com.codemages.Moviee.user.exception.DuplicateUserException;
+import com.codemages.Moviee.user.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

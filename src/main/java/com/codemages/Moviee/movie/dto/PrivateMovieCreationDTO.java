@@ -1,6 +1,6 @@
 package com.codemages.Moviee.movie.dto;
 
-import com.codemages.Moviee.movie.enums.Genre;
+import com.codemages.Moviee.movie.constant.Genre;
 import jakarta.validation.constraints.*;
 import org.hibernate.validator.constraints.Range;
 

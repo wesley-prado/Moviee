@@ -1,9 +1,9 @@
 package com.codemages.Moviee.user;
 
+import com.codemages.Moviee.user.constant.DocumentType;
+import com.codemages.Moviee.user.constant.Role;
 import com.codemages.Moviee.user.dto.PrivateUserCreationDTO;
 import com.codemages.Moviee.user.dto.PublicUserCreationDTO;
-import com.codemages.Moviee.user.enums.DocumentType;
-import com.codemages.Moviee.user.enums.Role;
 
 record UserCreationRequest(
   String username,

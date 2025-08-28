@@ -1,7 +1,7 @@
 package com.codemages.Moviee.security.config;
 
 import com.codemages.Moviee.security.config.constants.ApiPaths;
-import com.codemages.Moviee.user.enums.Role;
+import com.codemages.Moviee.user.constant.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

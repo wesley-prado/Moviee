@@ -1,8 +1,8 @@
 package com.codemages.Moviee.user;
 
-import com.codemages.Moviee.user.enums.DocumentType;
-import com.codemages.Moviee.user.enums.Role;
-import com.codemages.Moviee.user.enums.UserStatus;
+import com.codemages.Moviee.user.constant.DocumentType;
+import com.codemages.Moviee.user.constant.Role;
+import com.codemages.Moviee.user.constant.UserStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.hateoas.server.core.Relation;
