@@ -5,6 +5,7 @@ import com.codemages.Moviee.user.enums.Role;
 import com.codemages.Moviee.user.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.hateoas.server.core.Relation;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -12,6 +13,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "users")
 @Data
+@Relation(value = "user", collectionRelation = "users")
 public class User implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
