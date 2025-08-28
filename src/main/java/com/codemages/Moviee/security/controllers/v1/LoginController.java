@@ -1,5 +1,6 @@
 package com.codemages.Moviee.security.controllers.v1;
 
+import com.codemages.Moviee.security.config.constants.ApiPaths;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class LoginController {
-  @GetMapping("/auth/login")
+  @GetMapping(ApiPaths.LOGIN)
   public String login(
     Model model, @RequestParam(required = false) String error,
     @RequestParam(required = false) String logout
