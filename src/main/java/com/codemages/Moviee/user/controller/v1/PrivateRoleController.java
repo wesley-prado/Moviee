@@ -1,6 +1,6 @@
 package com.codemages.Moviee.user.controller.v1;
 
-import com.codemages.Moviee.constant.ControllerConstants;
+import com.codemages.Moviee.constant.ControllerConstant;
 import com.codemages.Moviee.user.assembler.RoleModelAssembler;
 import com.codemages.Moviee.user.constant.Role;
 import com.codemages.Moviee.user.dto.RoleResponseDTO;
@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@RequestMapping(ControllerConstants.API_BASE + "/v1/roles")
+@RequestMapping(ControllerConstant.API_BASE + "/v1/roles")
 @RequiredArgsConstructor
 public class PrivateRoleController {
   private final RoleModelAssembler roleModelAssembler;

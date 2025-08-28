@@ -1,6 +1,6 @@
 package com.codemages.Moviee.movie.controller;
 
-import com.codemages.Moviee.constant.ControllerConstants;
+import com.codemages.Moviee.constant.ControllerConstant;
 import com.codemages.Moviee.movie.MovieService;
 import com.codemages.Moviee.movie.assembler.MovieModelAssembler;
 import com.codemages.Moviee.movie.dto.MovieResponseDTO;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(ControllerConstants.API_BASE + "/v1/movies")
+@RequestMapping(ControllerConstant.API_BASE + "/v1/movies")
 @RequiredArgsConstructor
 public class PrivateMovieController {
   private final MovieService movieService;

@@ -1,6 +1,6 @@
 package com.codemages.Moviee.user.controller.v1;
 
-import com.codemages.Moviee.constant.ControllerConstants;
+import com.codemages.Moviee.constant.ControllerConstant;
 import com.codemages.Moviee.user.UserService;
 import com.codemages.Moviee.user.assembler.UserModelAssembler;
 import com.codemages.Moviee.user.dto.PrivateUserCreationDTO;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(ControllerConstants.API_BASE + "/v1/users")
+@RequestMapping(ControllerConstant.API_BASE + "/v1/users")
 @RequiredArgsConstructor
 public class PrivateUserController {
   private final UserModelAssembler userModelAssembler;

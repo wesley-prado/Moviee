@@ -1,6 +1,6 @@
 package com.codemages.Moviee.movie.controller;
 
-import com.codemages.Moviee.constant.ControllerConstants;
+import com.codemages.Moviee.constant.ControllerConstant;
 import com.codemages.Moviee.movie.GenreService;
 import com.codemages.Moviee.movie.assembler.GenreModelAssembler;
 import com.codemages.Moviee.movie.constant.Genre;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(ControllerConstants.PUBLIC_API_BASE + "/v1/genres")
+@RequestMapping(ControllerConstant.PUBLIC_API_BASE + "/v1/genres")
 @AllArgsConstructor
 public class PublicGenreController {
   private final GenreService genreService;
