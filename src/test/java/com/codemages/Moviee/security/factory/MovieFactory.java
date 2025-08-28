@@ -1,20 +1,24 @@
 package com.codemages.Moviee.security.factory;
 
-import com.codemages.Moviee.movie.constant.Genre;
-import com.codemages.Moviee.movie.dto.GenreResponseDTO;
-import com.codemages.Moviee.movie.dto.MovieResponseDTO;
-import com.codemages.Moviee.movie.dto.PrivateMovieCreationDTO;
+import com.codemages.Moviee.cinema.movie.Movie;
+import com.codemages.Moviee.cinema.movie.constant.Genre;
+import com.codemages.Moviee.cinema.movie.dto.GenreResponseDTO;
+import com.codemages.Moviee.cinema.movie.dto.MovieResponseDTO;
+import com.codemages.Moviee.cinema.movie.dto.PrivateMovieCreationDTO;
+import com.codemages.Moviee.movie.test.util.IdGenerator;
 
 import java.util.List;
 
 public class MovieFactory {
+  private static final String entityName = Movie.class.getTypeName();
+
   public static PrivateMovieCreationDTO createMovieRequest() {
     return new MovieFactory.Builder().build();
   }
 
   public static MovieResponseDTO createMovieResponseDTO() {
     return MovieResponseDTO.builder()
-      .id( Id.getValue() )
+      .id( IdGenerator.nextId( entityName ) )
       .title( "Inception" )
       .year( 2010 )
       .genres( List.of(
