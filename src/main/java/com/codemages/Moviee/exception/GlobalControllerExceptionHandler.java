@@ -1,4 +1,4 @@
-package com.codemages.Moviee.exceptions;
+package com.codemages.Moviee.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

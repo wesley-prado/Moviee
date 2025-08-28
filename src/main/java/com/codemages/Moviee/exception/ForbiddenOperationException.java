@@ -1,4 +1,4 @@
-package com.codemages.Moviee.exceptions;
+package com.codemages.Moviee.exception;
 
 import java.io.Serial;
 

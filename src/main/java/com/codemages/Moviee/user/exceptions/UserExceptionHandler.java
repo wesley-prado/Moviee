@@ -1,6 +1,6 @@
 package com.codemages.Moviee.user.exceptions;
 
-import com.codemages.Moviee.exceptions.ErrorResponse;
+import com.codemages.Moviee.exception.ErrorResponse;
 import com.codemages.Moviee.user.controllers.v1.PrivateUserController;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
