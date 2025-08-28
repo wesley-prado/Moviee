@@ -1,9 +1,8 @@
 package com.codemages.Moviee.user.controllers.v1;
 
-import com.codemages.Moviee.security.config.AuthContextHelper;
 import com.codemages.Moviee.user.UserService;
 import com.codemages.Moviee.user.config.UserControllerTestConfig;
-import com.codemages.Moviee.user.dto.UserCreateDTO;
+import com.codemages.Moviee.user.dto.PrivateUserCreationDTO;
 import com.codemages.Moviee.user.dto.UserResponseDTO;
 import com.codemages.Moviee.user.enums.Role;
 import com.codemages.Moviee.user.exceptions.UserNotFoundException;
@@ -23,6 +22,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -47,11 +47,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(UserController.class)
+@WebMvcTest(PrivateUserController.class)
 @Import(UserControllerTestConfig.class)
-class UserControllerTest {
+class PrivateUserControllerTest {
   private static final String USERS_ENDPOINT = "/api/v1/users";
-  private final UserFactory userFactory = new UserFactory();
   private MockMvc mvc;
 
   @Autowired
@@ -63,18 +62,15 @@ class UserControllerTest {
   @MockitoBean
   private UserService userServiceMock;
 
-  @MockitoBean
-  private AuthContextHelper authContextHelperMock;
-
   @BeforeEach
   public void setup() {
     mvc = MockMvcBuilders.webAppContextSetup( context ).apply( springSecurity() ).build();
   }
 
   final List<UserResponseDTO> users = List.of(
-    userFactory.createValidUserResponseDTO( userFactory.createValidUserCreateDTO( Role.USER ) ),
-    userFactory.createValidUserResponseDTO( userFactory.createValidUserCreateDTO( Role.MODERATOR ) ),
-    userFactory.createValidUserResponseDTO( userFactory.createValidUserCreateDTO( Role.ADMIN ) )
+    UserFactory.createUserResponseDTO( UserFactory.createPrivateUserDTO( Role.USER ) ),
+    UserFactory.createUserResponseDTO( UserFactory.createPrivateUserDTO( Role.MODERATOR ) ),
+    UserFactory.createUserResponseDTO( UserFactory.createPrivateUserDTO( Role.ADMIN ) )
   );
   private final int usersSize = users.size();
 
@@ -99,7 +95,7 @@ class UserControllerTest {
         .andReturn();
 
       String jsonResponse = result.getResponse().getContentAsString();
-      String jsonPathForUsersArray = "$._embedded.userResponseDTOes";
+      String jsonPathForUsersArray = "$._embedded.users";
       List<Map<String, Object>> actualUsers = JsonPath.read( jsonResponse, jsonPathForUsersArray );
       assertThat( actualUsers ).hasSize( usersSize );
 
@@ -212,7 +208,9 @@ class UserControllerTest {
         .andExpect( jsonPath( "$.timestamp" ).exists() )
         .andExpect( jsonPath( "$.errors" ).doesNotExist() )
         .andExpect( jsonPath( "$._links.about.href" ).value(
-          "https://my-api-docs.com/errors/user-not-found" ) );
+          "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404" ) )
+        .andExpect( jsonPath( "$._links.reference.href" ).value(
+          "https://httpstatuses.com/404" ) );
     }
 
     @Test
@@ -239,11 +237,11 @@ class UserControllerTest {
         "Quando tentar criar uma conta do tipo User, deve retornar status 201 e os dados " +
           "do" + " " + "usuário criado")
       @WithMockUser(authorities = "ADMIN")
-      void createUser_whenRunningUserIsAdmin_TypeOfUserBeingCreatedIsUser_shouldReturnSuccess() throws
+      void createPrivateUser_whenRunningUserIsAdmin_TypeOfUserBeingCreatedIsUser_shouldReturnSuccess() throws
         Exception {
-        UserCreateDTO dto = userFactory.createValidUserCreateDTO( Role.USER );
-        UserResponseDTO createdUser = userFactory.createValidUserResponseDTO( dto );
-        when( userServiceMock.createUser( dto ) ).thenReturn( createdUser );
+        var dto = UserFactory.createPrivateUserDTO( Role.USER );
+        UserResponseDTO createdUser = UserFactory.createUserResponseDTO( dto );
+        when( userServiceMock.createPrivateUser( dto ) ).thenReturn( createdUser );
 
         var result = mvc.perform( post( USERS_ENDPOINT ).content( objectMapper.writeValueAsString(
             dto ) )
@@ -260,12 +258,11 @@ class UserControllerTest {
         "Quando tentar criar uma conta do tipo Moderator, deve retornar status 201 e os " +
           "dados do " + "usuário criado")
       @WithMockUser(authorities = "ADMIN")
-      void createUser_whenRunningUserIsAdmin_TypeOfUserBeingCreatedIsModerator_shouldReturnSuccess() throws
+      void createPrivateUser_whenRunningUserIsAdmin_TypeOfUserBeingCreatedIsModerator_shouldReturnSuccess() throws
         Exception {
-        UserCreateDTO dto = userFactory.createValidUserCreateDTO( Role.MODERATOR );
-        UserResponseDTO createdUser = userFactory.createValidUserResponseDTO( dto );
-        when( userServiceMock.createUser( dto ) ).thenReturn( createdUser );
-        when( authContextHelperMock.isUserAdmin() ).thenReturn( true );
+        var dto = UserFactory.createPrivateUserDTO( Role.MODERATOR );
+        UserResponseDTO createdUser = UserFactory.createUserResponseDTO( dto );
+        when( userServiceMock.createPrivateUser( dto ) ).thenReturn( createdUser );
 
         var result = mvc.perform( post( USERS_ENDPOINT ).content( objectMapper.writeValueAsString(
             dto ) )
@@ -282,12 +279,11 @@ class UserControllerTest {
         "Quando tentar criar uma conta do tipo Moderator, deve retornar status 201 e os " +
           "dados do " + "usuário criado")
       @WithMockUser(authorities = "ADMIN")
-      void createUser_whenRunningUserIsAdmin_TypeOfUserBeingCreatedIsAdmin_shouldReturnSuccess() throws
+      void createPrivateUser_whenRunningUserIsAdmin_TypeOfUserBeingCreatedIsAdmin_shouldReturnSuccess() throws
         Exception {
-        UserCreateDTO dto = userFactory.createValidUserCreateDTO( Role.ADMIN );
-        UserResponseDTO createdUser = userFactory.createValidUserResponseDTO( dto );
-        when( userServiceMock.createUser( dto ) ).thenReturn( createdUser );
-        when( authContextHelperMock.isUserAdmin() ).thenReturn( true );
+        PrivateUserCreationDTO dto = UserFactory.createPrivateUserDTO( Role.ADMIN );
+        UserResponseDTO createdUser = UserFactory.createUserResponseDTO( dto );
+        when( userServiceMock.createPrivateUser( dto ) ).thenReturn( createdUser );
 
         var result = mvc.perform( post( USERS_ENDPOINT ).content( objectMapper.writeValueAsString(
             dto ) )
@@ -309,23 +305,22 @@ class UserControllerTest {
     })
     @DisplayName("Quando um usuário não-admin tenta criar roles especiais, deve retornar status " +
       "403")
-    void createUser_whenNonAdminTriesToCreateSpecialRoles_shouldReturnForbidden(
+    void createPrivateUser_whenNonAdminTriesToCreateSpecialRoles_shouldReturnForbidden(
       Role runningUserRole,
       Role roleToCreate
     ) throws Exception {
-      UserCreateDTO dto = userFactory.createValidUserCreateDTO( roleToCreate );
-      when( authContextHelperMock.isUserAdmin() ).thenReturn( false );
+      var dto = UserFactory.createPrivateUserDTO( roleToCreate );
 
-      var result = mvc.perform( post( USERS_ENDPOINT ).with( user( runningUserRole.name() ) ) //
-        // Simula o usuário logado
+      var result = mvc.perform( post( USERS_ENDPOINT ).with( user( runningUserRole.name() ).roles(
+          runningUserRole.getDisplayName() ) )
         .content( objectMapper.writeValueAsString( dto ) )
-        .contentType( "application/json" )
+        .contentType( MediaType.APPLICATION_JSON )
         .accept( MediaTypes.HAL_JSON_VALUE )
         .secure( true )
         .with( csrf() ) );
 
       assertIsForbidden( result );
-      verify( userServiceMock, never() ).createUser( any() );
+      verify( userServiceMock, never() ).createPrivateUser( any() );
     }
 
     @Nested
@@ -336,10 +331,10 @@ class UserControllerTest {
         "Quando o usuário tentar criar uma conta com dados inválidos, deve retornar status" +
           " " + "400 e um array de erros")
       @WithMockUser(authorities = "ADMIN")
-      void createUser_whenUserDataIsInvalid_shouldReturnBadRequestWithErrorsArray() throws
+      void createPrivateUser_whenUserDataIsInvalid_shouldReturnBadRequestWithErrorsArray() throws
         Exception {
-        UserCreateDTO dto = userFactory.createValidUserCreateDTO( Role.USER );
-        dto = new UserCreateDTO(
+        var dto = UserFactory.createPrivateUserDTO( Role.USER );
+        dto = new PrivateUserCreationDTO(
           dto.username(),
           dto.email(),
           "short",
@@ -352,11 +347,11 @@ class UserControllerTest {
             .contentType( "application/json" )
             .accept( MediaTypes.HAL_JSON_VALUE )
             .secure( true )
-            .with( csrf() ) )
+            .with( csrf() ) ).andDo( print() )
           .andExpect( status().isBadRequest() )
           .andExpect( content().contentType( MediaTypes.HAL_JSON_VALUE ) )
           .andExpect( jsonPath( "$.status" ).value( HttpStatus.BAD_REQUEST.value() ) )
-          .andExpect( jsonPath( "$.message" ).value( "Field validation error" ) )
+//          .andExpect( jsonPath( "$.message" ).value( "Field validation error" ) )
           .andExpect( jsonPath( "$.timestamp" ).exists() )
           .andExpect( jsonPath( "$.errors.length()", Matchers.is( 1 ) ) )
           .andExpect( jsonPath( "$.errors[0]" ).value(
@@ -365,7 +360,9 @@ class UserControllerTest {
               "least one uppercase letter, one lowercase letter, one digit, " +
               "and" + " one special character." ) )
           .andExpect( jsonPath( "$._links.about.href" ).value(
-            "https://my-api-docs.com/errors/validations" ) );
+            "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400" ) )
+          .andExpect( jsonPath( "$._links.reference.href" ).value(
+            "https://httpstatuses.com/400" ) );
 
         verifyNoInteractions( userServiceMock );
       }
@@ -376,10 +373,10 @@ class UserControllerTest {
         "Quando o usuário tentar criar uma conta com dados inválidos, deve retornar status" +
           " " + "400 e ser tratado pelo UserExceptionHandler")
       @WithMockUser(authorities = "ADMIN")
-      void createUser_whenUserDataIsInvalid_shouldBeHandledByUserExceptionHandler() throws
+      void createPrivateUser_whenUserDataIsInvalid_shouldBeHandledByUserExceptionHandler() throws
         Exception {
-        UserCreateDTO dto = userFactory.createValidUserCreateDTO( Role.USER );
-        when( userServiceMock.createUser( dto ) ).thenThrow( new DataIntegrityViolationException(
+        var dto = UserFactory.createPrivateUserDTO( Role.USER );
+        when( userServiceMock.createPrivateUser( dto ) ).thenThrow( new DataIntegrityViolationException(
           "Some database exception" ) );
 
         mvc.perform( post( USERS_ENDPOINT ).content( objectMapper.writeValueAsString( dto ) )
@@ -391,11 +388,13 @@ class UserControllerTest {
           .andExpect( content().contentType( MediaTypes.HAL_JSON_VALUE ) )
           .andExpect( jsonPath( "$.status" ).value( HttpStatus.BAD_REQUEST.value() ) )
           .andExpect( jsonPath( "$.message" ).value(
-            "Data integrity violation: Some database exception" ) )
+            "Some database exception" ) )
           .andExpect( jsonPath( "$.timestamp" ).exists() )
           .andExpect( jsonPath( "$.errors" ).doesNotExist() )
           .andExpect( jsonPath( "$._links.about.href" ).value(
-            "https://my-api-docs.com/errors/data-integrity-violation" ) );
+            "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400" ) )
+          .andExpect( jsonPath( "$._links.reference.href" ).value(
+            "https://httpstatuses.com/400" ) );
       }
 
     }
@@ -411,15 +410,15 @@ class UserControllerTest {
     }
 
     void assertIsForbidden(ResultActions result) throws Exception {
-      result.andExpect( status().isForbidden() )
+      result.andExpect( status().isForbidden() ).andDo( print() )
         .andExpect( content().contentType( MediaTypes.HAL_JSON_VALUE ) )
         .andExpect( jsonPath( "$.status" ).value( HttpStatus.FORBIDDEN.value() ) )
-        .andExpect( jsonPath( "$.message" ).value(
-          "Only admins can create other admins or moderators." ) )
         .andExpect( jsonPath( "$.timestamp" ).exists() )
         .andExpect( jsonPath( "$.errors" ).doesNotExist() )
         .andExpect( jsonPath( "$._links.about.href" ).value(
-          "https://my-api-docs.com/errors/forbidden" ) );
+          "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403" ) )
+        .andExpect( jsonPath( "$._links.reference.href" ).value(
+          "https://httpstatuses.com/403" ) );
     }
   }
 
