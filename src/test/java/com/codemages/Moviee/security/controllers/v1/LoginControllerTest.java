@@ -1,5 +1,6 @@
 package com.codemages.Moviee.security.controllers.v1;
 
+import com.codemages.Moviee.security.config.constants.ApiPaths;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +15,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(LoginController.class)
 @AutoConfigureMockMvc(addFilters = false)
 class LoginControllerTest {
-  private static final String LOGIN_URL = "/auth/login";
-
   @Autowired
   private MockMvc mvc;
 
   @Test
   @DisplayName("Deve retornar a página de login com o modelo padrão")
   void login_shouldReturnLoginViewWithDefaultModel() throws Exception {
-    mvc.perform( get( LOGIN_URL ) )
+    mvc.perform( get( ApiPaths.LOGIN ) )
       .andExpect( status().isOk() )
       .andExpect( view().name( "login" ) )
       .andExpect( model().attributeDoesNotExist( "error" ) )
@@ -32,7 +31,7 @@ class LoginControllerTest {
   @Test
   @DisplayName("Deve retornar a página de login com mensagem de erro")
   void login_withError_shouldReturnLoginViewWithErrorMessage() throws Exception {
-    mvc.perform( get( LOGIN_URL ).param( "error", "true" ) )
+    mvc.perform( get( ApiPaths.LOGIN ).param( "error", "true" ) )
       .andExpect( status().isOk() )
       .andExpect( view().name( "login" ) )
       .andExpect( model().attribute( "error", is( "Invalid username or password." ) ) )
@@ -42,7 +41,7 @@ class LoginControllerTest {
   @Test
   @DisplayName("Deve retornar a página de login com mensagem de logout")
   void login_withLogout_shouldReturnLoginViewWithLogoutMessage() throws Exception {
-    mvc.perform( get( LOGIN_URL ).param( "logout", "true" ) )
+    mvc.perform( get( ApiPaths.LOGIN ).param( "logout", "true" ) )
       .andExpect( status().isOk() )
       .andExpect( view().name( "login" ) )
       .andExpect( model().attribute(
