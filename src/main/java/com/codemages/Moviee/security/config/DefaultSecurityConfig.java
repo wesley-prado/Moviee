@@ -1,48 +1,41 @@
 package com.codemages.Moviee.security.config;
 
+import com.codemages.Moviee.security.config.constants.ApiPaths;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.RememberMeConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-
-import javax.sql.DataSource;
 
 @Configuration
+@RequiredArgsConstructor
 public class DefaultSecurityConfig {
+  private final Customizer<RememberMeConfigurer<HttpSecurity>> rememberMeCustomizer;
 
   @Bean
   @Order(2)
-  public SecurityFilterChain defaultSecurityFilterChain(
-    HttpSecurity http,
-    DataSource dataSource
-  ) throws Exception {
+  public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
     http
+      .securityMatcher( ApiPaths.UI_RESOURCES )
       .authorizeHttpRequests( authorize -> authorize
-        .requestMatchers( "/auth/login", "/css/**", "/js/**" ).permitAll()
+        .requestMatchers( ApiPaths.LOGIN, ApiPaths.CSS, ApiPaths.JS, ApiPaths.ERROR ).permitAll()
         .anyRequest().authenticated()
-      ).csrf( csrf -> csrf.ignoringRequestMatchers( "/auth/login" ) )
-      .formLogin( formLogin ->
-        formLogin.loginPage( "/auth/login" )
       )
-      .rememberMe( rememberMe ->
-        rememberMe.tokenRepository( persistentTokenRepository( dataSource ) )
-      ).logout( logout ->
-        logout.logoutSuccessUrl( "/auth/login?logout" )
+      .csrf( csrf -> csrf.ignoringRequestMatchers( ApiPaths.LOGIN ) )
+      .formLogin( formLogin ->
+        formLogin.loginPage( ApiPaths.LOGIN )
+      )
+      .logout( logout ->
+        logout.logoutUrl( ApiPaths.LOGOUT )
+          .logoutSuccessUrl( ApiPaths.LOGIN + "?logout" )
           .deleteCookies( "JSESSIONID", "remember-me" )
           .invalidateHttpSession( true )
-          .clearAuthentication( true ) );
+          .clearAuthentication( true ) )
+      .rememberMe( rememberMeCustomizer );
 
     return http.build();
-  }
-
-  @Bean
-  public PersistentTokenRepository persistentTokenRepository(DataSource dataSource) {
-    JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
-    tokenRepository.setDataSource( dataSource );
-
-    return tokenRepository;
   }
 }
