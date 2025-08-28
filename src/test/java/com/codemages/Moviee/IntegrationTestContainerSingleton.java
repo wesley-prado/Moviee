@@ -34,6 +34,6 @@ public abstract class IntegrationTestContainerSingleton {
     registry.add( "spring.datasource.password", CONTAINER::getPassword );
     registry.add( "spring.jpa.hibernate.ddl-auto", () -> "update" );
     registry.add( "moviee.security.remember-me-key", () -> "remember-me-key" );
-    registry.add( "moviee.security.issuer-uri", () -> "http://moviee.test.com/" );
+    registry.add( "moviee.security.issuer-uri", () -> "https://moviee.test.com/" );
   }
 }
