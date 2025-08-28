@@ -25,7 +25,7 @@ public class AuthConsentControllerTest {
   private RegisteredClientRepository registeredClientRepository;
 
   @Test
-  @WithMockUser(username = "testuser", roles = { "USER" })
+  @WithMockUser(username = "testuser")
   void consent_withValidClientIdAndScope_shouldReturnConsentView() throws Exception {
     var client = RegisteredClientFactory.createValidClient();
     when( registeredClientRepository.findByClientId( client.getClientId() ) ).thenReturn( client );
@@ -39,7 +39,7 @@ public class AuthConsentControllerTest {
   }
 
   @Test
-  @WithMockUser(username = "testuser", roles = { "USER" })
+  @WithMockUser(username = "testuser")
   void consent_withInvalidClientIdAndScope_shouldReturnConsentView() throws Exception {
     mvc.perform( get( ApiPaths.CONSENT )
         .param( OAuth2ParameterNames.CLIENT_ID, "invalid_id" )
