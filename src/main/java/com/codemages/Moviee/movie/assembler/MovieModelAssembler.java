@@ -1,4 +1,4 @@
-package com.codemages.Moviee.movie.assemblers;
+package com.codemages.Moviee.movie.assembler;
 
 import com.codemages.Moviee.movie.controller.PublicGenreController;
 import com.codemages.Moviee.movie.controller.PublicMovieController;

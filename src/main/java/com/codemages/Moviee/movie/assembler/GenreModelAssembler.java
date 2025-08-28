@@ -1,4 +1,4 @@
-package com.codemages.Moviee.movie.assemblers;
+package com.codemages.Moviee.movie.assembler;
 
 import com.codemages.Moviee.movie.dto.GenreResponseDTO;
 import org.jetbrains.annotations.NotNull;

@@ -2,7 +2,7 @@ package com.codemages.Moviee.movie.controller;
 
 import com.codemages.Moviee.constant.ControllerConstants;
 import com.codemages.Moviee.movie.GenreService;
-import com.codemages.Moviee.movie.assemblers.GenreModelAssembler;
+import com.codemages.Moviee.movie.assembler.GenreModelAssembler;
 import com.codemages.Moviee.movie.dto.GenreResponseDTO;
 import com.codemages.Moviee.movie.enums.Genre;
 import lombok.AllArgsConstructor;

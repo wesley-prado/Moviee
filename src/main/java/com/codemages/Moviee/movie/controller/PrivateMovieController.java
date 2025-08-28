@@ -2,7 +2,7 @@ package com.codemages.Moviee.movie.controller;
 
 import com.codemages.Moviee.constant.ControllerConstants;
 import com.codemages.Moviee.movie.MovieService;
-import com.codemages.Moviee.movie.assemblers.MovieModelAssembler;
+import com.codemages.Moviee.movie.assembler.MovieModelAssembler;
 import com.codemages.Moviee.movie.dto.MovieResponseDTO;
 import com.codemages.Moviee.movie.dto.PrivateMovieCreationDTO;
 import jakarta.validation.Valid;
