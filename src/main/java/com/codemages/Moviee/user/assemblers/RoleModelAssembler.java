@@ -1,6 +1,6 @@
 package com.codemages.Moviee.user.assemblers;
 
-import com.codemages.Moviee.user.controllers.v1.RoleController;
+import com.codemages.Moviee.user.controllers.v1.PrivateRoleController;
 import com.codemages.Moviee.user.dto.RoleResponseDTO;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
@@ -16,7 +16,8 @@ public class RoleModelAssembler
   public EntityModel<RoleResponseDTO> toModel(
     RoleResponseDTO response
   ) {
-    Link rolesLink = WebMvcLinkBuilder.linkTo( WebMvcLinkBuilder.methodOn( RoleController.class )
+    Link rolesLink =
+      WebMvcLinkBuilder.linkTo( WebMvcLinkBuilder.methodOn( PrivateRoleController.class )
       .getRoles() ).withRel( "roles" );
 
     return EntityModel.of( response, rolesLink );

@@ -1,20 +1,31 @@
 package com.codemages.Moviee.user.enums;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public enum Role {
-	USER,
-	ADMIN,
-	MODERATOR;
+  USER( "User", "Basic user role with limited access" ),
+  ADMIN( "Admin", "Administrator with full access" ),
+  MODERATOR( "Moderator", "Moderator with elevated privileges" );
 
-	public static List<String> getRoles() {
-		List<String> roles = new ArrayList<>();
+  private final String displayName;
+  private final String description;
 
-		for (Role role : Role.values()) {
-			roles.add(role.name());
-		}
+  Role(String displayName, String description) {
+    this.displayName = displayName;
+    this.description = description;
+  }
 
-		return roles;
-	}
+  public static List<String> getRoles() {
+    List<String> roles = new ArrayList<>();
+
+    for (Role role : Role.values()) {
+      roles.add( role.displayName );
+    }
+
+    return roles;
+  }
 }
