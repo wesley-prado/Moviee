@@ -63,12 +63,12 @@ public class ErrorResponse extends RepresentationModel<ErrorResponse> {
   }
 
   public static ResponseEntity<ErrorResponse> create(
-    Throwable ex,
+    String message,
     HttpStatus status,
     List<String> errors
   ) {
     var error = new ErrorResponse(
-      status.value(), ex.getMessage(),
+      status.value(), message,
       LocalDateTime.now(), errors
     );
     error.add( Link.of(

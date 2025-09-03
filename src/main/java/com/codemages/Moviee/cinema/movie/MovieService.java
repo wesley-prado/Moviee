@@ -1,7 +1,8 @@
 package com.codemages.Moviee.cinema.movie;
 
+import com.codemages.Moviee.cinema.movie.dto.MovieCreationDTO;
 import com.codemages.Moviee.cinema.movie.dto.MovieResponseDTO;
-import com.codemages.Moviee.cinema.movie.dto.PrivateMovieCreationDTO;
+import com.codemages.Moviee.cinema.movie.exception.MovieNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,14 @@ public class MovieService {
     return toResponseDTOCollection( movies );
   }
 
+  public MovieResponseDTO findById(Long id) {
+    Movie movie = movieRepository.findById( id )
+      .orElseThrow( () -> new MovieNotFoundException(
+        "Filme com o Id " + id + " não encontrado" ) );
+
+    return toResponseDTO( movie );
+  }
+
   private List<MovieResponseDTO> toResponseDTOCollection(List<Movie> movies) {
     return movies.stream().map( this::toResponseDTO ).toList();
   }
@@ -34,7 +43,7 @@ public class MovieService {
       .build();
   }
 
-  private Movie toModel(@Valid PrivateMovieCreationDTO dto) {
+  private Movie toModel(@Valid MovieCreationDTO dto) {
     return Movie.builder()
       .title( dto.title() )
       .year( dto.year() )
@@ -48,7 +57,7 @@ public class MovieService {
       .build();
   }
 
-  public MovieResponseDTO save(PrivateMovieCreationDTO dto) {
+  public MovieResponseDTO save(MovieCreationDTO dto) {
     Movie movie = toModel( dto );
 
     movie = movieRepository.save( movie );

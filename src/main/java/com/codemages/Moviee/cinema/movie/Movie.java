@@ -14,9 +14,9 @@ import java.util.List;
 @Table(name = "movies")
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Movie {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

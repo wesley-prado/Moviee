@@ -12,7 +12,6 @@ public enum Genre {
   HISTORICAL( "Historical" ),
   HORROR( "Horror" ),
   TERROR( "Terror" ),
-  SCIENCE_FICTION( "Science Fiction" ),
   WESTERN( "Western" ),
   SCI_FI( "Sci-Fi" ),
   ROMANCE( "Romance" );

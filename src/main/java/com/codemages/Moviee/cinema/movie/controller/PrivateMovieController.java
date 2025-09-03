@@ -3,18 +3,16 @@ package com.codemages.Moviee.cinema.movie.controller;
 import com.codemages.Moviee.cinema.movie.MovieService;
 import com.codemages.Moviee.cinema.movie.assembler.MovieModelAssembler;
 import com.codemages.Moviee.cinema.movie.dto.MovieResponseDTO;
-import com.codemages.Moviee.cinema.movie.dto.PrivateMovieCreationDTO;
+import com.codemages.Moviee.cinema.movie.dto.MovieCreationDTO;
 import com.codemages.Moviee.constant.ControllerConstant;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(ControllerConstant.API_BASE + "/v1/movies")
@@ -28,12 +26,13 @@ public class PrivateMovieController {
   @PostMapping
   public ResponseEntity<EntityModel<MovieResponseDTO>> createMovie(
     @RequestBody @Valid
-    PrivateMovieCreationDTO dto
+    MovieCreationDTO dto
   ) {
     MovieResponseDTO result = movieService.save( dto );
+    var model = movieModelAssembler.toModel( result );
 
-    return ResponseEntity.ok()
+    return ResponseEntity.created( model.getRequiredLink( IanaLinkRelations.SELF ).toUri() )
       .contentType( MediaTypes.HAL_JSON )
-      .body( movieModelAssembler.toModel( result ) );
+      .body( model );
   }
 }

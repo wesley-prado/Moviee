@@ -11,21 +11,23 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserModelAssembler implements
-		RepresentationModelAssembler<UserResponseDTO, EntityModel<UserResponseDTO>> {
+                                RepresentationModelAssembler<UserResponseDTO,
+                                  EntityModel<UserResponseDTO>> {
 
-	@NonNull
-	@Override
-	public EntityModel<UserResponseDTO> toModel(
-			UserResponseDTO response) {
-		Link selfLink = WebMvcLinkBuilder
-				.linkTo(WebMvcLinkBuilder
-          .methodOn( PrivateUserController.class )
-						.getUser(response.id()))
-				.withSelfRel();
-		Link usersLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
+  @NonNull
+  @Override
+  public EntityModel<UserResponseDTO> toModel(
+    UserResponseDTO dto
+  ) {
+    Link selfLink = WebMvcLinkBuilder
+      .linkTo( WebMvcLinkBuilder
+        .methodOn( PrivateUserController.class )
+        .getUser( dto.id() ) )
+      .withSelfRel();
+    Link usersLink = WebMvcLinkBuilder.linkTo( WebMvcLinkBuilder
         .methodOn( PrivateUserController.class ).getUsers() )
-				.withRel("users");
+      .withRel( "users" );
 
-		return EntityModel.of(response, selfLink, usersLink);
-	}
+    return EntityModel.of( dto, selfLink, usersLink );
+  }
 }
