@@ -1,8 +1,7 @@
 package com.codemages.Moviee.cinema.room.assembler;
 
-import com.codemages.Moviee.cinema.room.controller.v1.PrivateRoomController;
 import com.codemages.Moviee.cinema.room.controller.v1.PublicRoomController;
-import com.codemages.Moviee.cinema.room.dto.RoomResponseDTO;
+import com.codemages.Moviee.cinema.room.dto.response.RoomResponseDTO;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -18,7 +17,7 @@ public class RoomModelAssembler
   @Override
   public EntityModel<RoomResponseDTO> toModel(@NotNull RoomResponseDTO dto) {
     var selfLink =
-      linkTo( methodOn( PrivateRoomController.class ).findRoomById( dto.id() ) ).withSelfRel();
+      linkTo( methodOn( PublicRoomController.class ).findRoomById( dto.id() ) ).withSelfRel();
 
     return EntityModel.of( dto, selfLink );
   }
