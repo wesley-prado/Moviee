@@ -1,8 +1,10 @@
 package com.codemages.Moviee.exception;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,7 +13,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.nio.file.AccessDeniedException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalControllerExceptionHandler {
@@ -63,5 +68,31 @@ public class GlobalControllerExceptionHandler {
     Exception ex
   ) {
     return ErrorResponse.create( ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null );
+  }
+
+  @ExceptionHandler(HttpMessageNotReadableException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ResponseEntity<ErrorResponse> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
+    String customMessage = "A requisição JSON está malformada ou contém valores com " +
+      "tipos/formatos inválidos.";
+    Throwable cause = ex.getMostSpecificCause();
+
+    if ( cause instanceof InvalidFormatException ) {
+      if ( ((InvalidFormatException) cause).getTargetType().isEnum() ) {
+        String enumValues = Arrays.stream( ((InvalidFormatException) cause).getTargetType()
+            .getEnumConstants() )
+          .map( Object::toString )
+          .collect( Collectors.joining( ", " ) );
+
+        customMessage =
+          "Valor de enum inválido. Por favor, use um dos seguintes valores: [" + enumValues + "]";
+      }
+    }
+
+    return ErrorResponse.create(
+      customMessage,
+      HttpStatus.BAD_REQUEST,
+      Collections.singletonList( cause.getMessage() )
+    );
   }
 }
