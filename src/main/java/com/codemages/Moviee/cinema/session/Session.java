@@ -9,7 +9,11 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "sessions")
+@Table(name = "sessions",
+  indexes = {
+    @Index(name = "idx_active_sessions", columnList = "room_id")
+  }
+)
 @Getter
 @Setter
 @AllArgsConstructor
