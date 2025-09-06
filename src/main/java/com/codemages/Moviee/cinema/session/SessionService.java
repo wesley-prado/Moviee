@@ -6,12 +6,16 @@ import com.codemages.Moviee.cinema.room.RoomRepository;
 import com.codemages.Moviee.cinema.room.exception.RoomNotFoundException;
 import com.codemages.Moviee.cinema.session.dto.SessionCreationDTO;
 import com.codemages.Moviee.cinema.session.dto.SessionResponseDTO;
+import com.codemages.Moviee.cinema.session.exception.SessionDatetimeOverlapException;
 import com.codemages.Moviee.cinema.session.exception.SessionNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +23,14 @@ public class SessionService {
   private final SessionRepository sessionRepository;
   private final MovieRepository movieRepository;
   private final RoomRepository roomRepository;
+  private static final ZoneId ZONE_ID = ZoneId.of( "America/Sao_Paulo" );
+
+  @Transactional(readOnly = true)
+  public List<SessionResponseDTO> findAll() {
+    return sessionRepository.findAll().stream()
+      .map( this::toSessionResponseDTO )
+      .toList();
+  }
 
   @Transactional(readOnly = true)
   public SessionResponseDTO findById(Long id) {
@@ -29,7 +41,7 @@ public class SessionService {
   }
 
   @Transactional
-  public SessionResponseDTO save(SessionCreationDTO dto) {
+  public SessionResponseDTO createSession(SessionCreationDTO dto) {
     var movie = movieRepository.findById( dto.movieId() )
       .orElseThrow( () -> new MovieNotFoundException(
         "Filme com o Id " + dto.movieId() + " não encontrado" ) );
@@ -37,13 +49,27 @@ public class SessionService {
       .orElseThrow( () -> new RoomNotFoundException(
         "Sala com o Id " + dto.roomId() + " não encontrada" ) );
 
-    LocalDateTime endTime = dto.startTime().plusMinutes( movie.getDurationInMinutes() );
+    ZonedDateTime endTime = dto.startTime()
+      .plusMinutes( movie.getDurationInMinutes() );
 
     var session = Session.builder()
-      .movie( movie ).room( room ).startTime( dto.startTime() ).endTime( endTime ).build();
+      .movie( movie )
+      .room( room )
+      .startTime( dto.startTime() )
+      .endTime( endTime )
+      .build();
 
-    var savedEntity = sessionRepository.save( session );
-    return toSessionResponseDTO( savedEntity );
+    try {
+      var savedEntity = sessionRepository.save( session );
+      return toSessionResponseDTO( savedEntity );
+    } catch (DataIntegrityViolationException e) {
+      if ( e.getMessage().contains( "sessions_room_time_overlap_excl" ) ) {
+        throw new SessionDatetimeOverlapException(
+          "Conflito de horário: Já existe uma sessão agendada para essa sala nesse horário." );
+      }
+
+      throw e;
+    }
   }
 
   private SessionResponseDTO toSessionResponseDTO(Session session) {
@@ -51,8 +77,12 @@ public class SessionService {
       .id( session.getId() )
       .movieTitle( session.getMovie().getTitle() )
       .roomName( session.getRoom().getName() )
-      .startTime( session.getStartTime().toString() )
-      .endTime( session.getEndTime().toString() )
+      .startTime( SessionService.convertToLocalTime( session.getStartTime() ) )
+      .endTime( SessionService.convertToLocalTime( session.getEndTime() ) )
       .build();
+  }
+
+  private static ZonedDateTime convertToLocalTime(ZonedDateTime dateTime) {
+    return dateTime.withZoneSameInstant( ZONE_ID );
   }
 }

@@ -18,6 +18,9 @@ public class Room {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Column(nullable = false, unique = true, length = 50)
+  private String name;
+
   @Enumerated(EnumType.STRING)
   @Column(nullable = false, columnDefinition = "VARCHAR(20) DEFAULT 'ACTIVE'")
   @Builder.Default
@@ -25,8 +28,5 @@ public class Room {
 
   @JdbcTypeCode(SqlTypes.JSON)
   @Column(columnDefinition = "jsonb")
-  private String layout;
-
-  @Column(nullable = false, unique = true, length = 50)
-  private String name;
+  private String rows;
 }

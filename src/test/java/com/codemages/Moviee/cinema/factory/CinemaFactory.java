@@ -35,7 +35,7 @@ public class CinemaFactory {
   }
 
   public static Session createSession(Movie movie, Room room) {
-    var now = java.time.LocalDateTime.now();
+    var now = java.time.ZonedDateTime.now();
     var twoHoursAhead = now.plusHours( 2 );
 
     return Session.builder()

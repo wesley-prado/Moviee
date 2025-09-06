@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @Builder
 public record SessionCreationDTO(
@@ -14,5 +14,5 @@ public record SessionCreationDTO(
   Long roomId,
   @NotNull(message = "É necessário fornecer a data e hora de início da sessão")
   @Future(message = "O horário de início deve ser uma data futura")
-  LocalDateTime startTime
+  ZonedDateTime startTime
 ) {}
