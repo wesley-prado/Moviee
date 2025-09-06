@@ -46,12 +46,13 @@ public class SessionServiceTest {
     when( movieRepository.findById( 1L ) ).thenReturn( Optional.of( movie ) );
     when( roomRepository.findById( 1L ) ).thenReturn( Optional.of( room ) );
 
+    //TODO: Corrigir teste utilizando o ZoneId de Sao Paulo
     var expectedResponse = SessionResponseDTO.builder()
       .id( 1L )
       .movieTitle( movie.getTitle() )
       .roomName( room.getName() )
-      .startTime( session.getStartTime().toString() )
-      .endTime( session.getStartTime().plusHours( 2 ).toString() )
+      .startTime( session.getStartTime() )
+      .endTime( session.getStartTime().plusHours( 2 ) )
       .build();
 
     SessionResponseDTO actualResponse = sessionService.findById( 1L );
@@ -74,7 +75,7 @@ public class SessionServiceTest {
 
   @Test
   @DisplayName("Deve retornar uma exception quando o Id do filme nao for encontrado")
-  void save_WhenMovieIdDoesNotExist_ShouldThrowException() {
+  void createSession_WhenMovieIdDoesNotExist_ShouldThrowException() {
     var room = createRoom();
     when( roomRepository.findById( 1L ) ).thenReturn( Optional.of( room ) );
     when( movieRepository.findById( 1L ) ).thenReturn( Optional.empty() );
